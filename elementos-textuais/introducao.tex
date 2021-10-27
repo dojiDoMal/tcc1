@@ -1,0 +1,43 @@
+\chapter{Introdução}
+\label{cap:introducao}
+
+Shader é um tipo de programa de computador utilizado para simular como a luz interage com os objetos ou as superfícies \cite{unityShaders}. Por meio de seu uso é possível criar aspectos visuais nas superfícies de objetos 3D, para que com o uso de texturas, seja possível obter uma aparência de metal ou de madeira, por exemplo.
+
+Por demandar recursos computacionais da GPU em tempo real, a performance de execução desses programas é um assunto que requer atenção, ainda mais levando em consideração o avanço da tecnologia de computação gráfica, que exige a renderização em um curto intervalo de tempo de gráficos cada vez mais realistas. Quanto maior a frequência de realização de cálculos e processamentos durante esse processo, maior será o impacto na performance de um jogo. Ao fazer uso de shaders custosos e não otimizados, podem ocorrer alguns problemas como surgimento de artefatos, incompatibilidade com hardwares de gerações passadas e o superaquecimento da GPU devido a cargas muito altas de trabalho. 
+
+Para realizar o desenvolvimento, a execução e o estudo de performance dos shaders, três dos mais populares motores de jogo foram escolhidos. O primeiro foi o Godot, um software para produção de jogos 2D e 3D criado no ano de 2007, quando seus desenvolvedores perceberam duas importantes mudanças no cenário de desenvolvimento de games: uma foi a melhoria de hardware disponível que permitiu que dispositivos portáteis ganhassem mais poder de processamento, a outra mudança foi na forma que as CPUs passaram a ser divididas em múltiplos núcleos, o que permitiu o advento do processamento paralelo \cite{godotEngine}.
+
+O segundo motor de jogo, Unity, é a escolha mais comum entre desenvolvedores de jogos profissionais e amadores por sua capacidade de prototipação rápida e pela ampla gama de plataformas-alvo de compilação. Ela foi criada com os objetivos de fornecer uma engine de custo acessível com ferramentas profissionais e democratizar o acesso à indústria de desenvolvimento de games \cite{unityHistory}.
+
+O terceiro motor de jogo escolhido foi a Unreal Engine, produzida pela Epic Games para desenvolvimento de jogos e aplicações, seja de grandes orçamentos e níveis de promoção, seja de editoras ou produtoras independentes e com baixo orçamento. É o mais robusto e também é muito utilizado tanto por desenvolvedores profissionais quanto iniciantes \cite{unrealEngine}.
+
+\section{Justificativa}
+\label{sec:justificativa}
+
+O processo de criação de shaders pode vir a apresentar-se, dependendo do nível de complexidade exigido pela tarefa, como uma atividade custosa e que exige elevados recursos computacionais. Sendo assim, o estudo das ferramentas de criação de shaders é importante para definir processos de otimização de performance para que empresas, indivíduos ou entusiastas possam economizar tempo e recursos ao utilizar essas ferramentas. 
+
+Cabe ressaltar que a execução de programas de shaders muito custosos pode acarretar em problemas como queda da taxa de quadros por segundo, travamentos durante a execução do programa e na pior hipótese danos permanentes ao hardware que acabam por prejudicar o utilizador final e que de maneira geral acarretam em uma má experiência de usuário. 
+
+No contexto específico dos jogos eletrônicos, o uso de shaders não otimizados pode fazer com que o jogo torne-se lento e apresente travamentos. Essas são características que tornam um jogo não atrativo e que geram sensações negativas no usuário. Elas fazem com que ele perca o interesse e se sinta frustrado, sendo levado à compartilhar feedback negativo, cujo acaba por prejudicar a imagem e as vendas do produto. Isso tem como consequência motivar outros possíveis usuários a não comprarem o jogo, principalmente aqueles que não possuem hardware compatível.
+
+Nesse caso, a utilidade desse estudo consiste em descobrir qual game engine, utilizando critérios quantizados de performance, apresenta a melhor ferramenta para criação de Shaders. Além disso, shaders otimizados tornam-se favoráveis para serem aplicados para um público maior por ampliar a possibilidade de hardware compatível, ou seja, os jogos ou aplicações que fazem uso desse recurso conseguem ter um alcance maior e mais vendas.
+
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+\subsection{Objetivo Geral}
+\label{sec:objetivo-geral}
+
+Analisar e comparar as principais ferramentas de desenvolvimento de shaders dentre as game engines especificadas no escopo deste trabalho com foco na otimização de performance em cada uma, identificando os processos-chave característicos de construção e execução de shaders.
+
+\subsection{Objetivos Específicos}
+\label{sec:objetivos-especificos}
+
+	\begin{alineas}
+		\item Discriminar as ferramentas de criação de shader de cada game engine bem como suas características individuais.
+		\item Determinar os indicadores que serão utilizados para mensurar os parâmetros que serão avaliados nos testes dos shaders.
+		\item Desenvolver um “cenário” padrão que possa ser aplicado aos shaders a serem testados.
+		\item Realizar testes de performance dos shaders para cada game engine.
+		\item Avaliar os resultados obtidos após a conclusão dos testes.
+	\end{alineas}
