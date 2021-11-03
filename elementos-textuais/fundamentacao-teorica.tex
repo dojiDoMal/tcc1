@@ -121,9 +121,29 @@ No caso do suporte a visualização 3D estéreo, mais dois buffers serão utiliz
 
 O buffer de acumulação é capaz de reproduzir efeitos complexos como suavização em tela cheia de alta qualidade, profundidade de campo e desfoque de movimento. Ele funciona como um buffer de cor, porém com maior precisão, capaz de acumular imagens para produzir uma úncia imagem composta. Seguindo essa linha, o \textit{multisample buffer} é capaz de produzir várias amostras da renderização para realizar suavização sem precisar renderizar a cena mais de uma vez \cite{GLSLBook}. Por último, os buffers auxiliares (mais de um pode ser utilizado) servem para guardar dados genéricos.
 
-\subsubsection{Pipeline do OpenGL e seus Comandos}
-\label{sec:pipeline-opengl-comandos}
+\subsubsection{Pipeline do OpenGL}
+\label{sec:pipeline-opengl}
 
+Para que a máquina de estados do OpenGL possa operar corretamente, foi definida uma ordem específica em que as operações envolvidas no processo de renderização precisam ser realizadas, essa padronização é chamada de \textit{pipeline} gráfica \cite{GLSLBook} e pode ser vista na Figura 7. Todos os dados, seja de geometria seja de pixels, são guardados em uma lista para serem usados sob demanda. Caso não se deseje fazer uso da lista é possível processar os dados em modo imediato (VIEIRA, 2017)\nocite{pipelnRef}.
+
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:pipeline} Pipeline gráfico do OpenGL.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=15cm]{figuras/pipeline.png}}
+		}{
+			\Fonte{\url{http://www.ic.uff.br/~anselmo/cursos/CGI/slidesGrad/CG_aula4(introducaoaOpenGL).pdf}}
+		}
+	\end{figure}
+	\nocite{pipeline}
+	
+Como todas as primitivas geométricas podem ser descritas por vértices, as curvas e as superfícies paramétricas são descritas pelos pontos de controle e pelas funções polinomiais chamadas funções base. A função dos avaliadores nesse caso é fornecer um método para derivar os vértices usados para representar a superfície dos pontos de controle. O método é o mapeamento polinomial, que produz as normais da superfície, as coordenadas da textura, as cores, e valores de coordenadas espaciais dos pontos de controle (VIEIRA, 2017).
+
+O estágio das operações por vértice converte os vértices em primitivas. Alguns dados do vértice são transformados em matrizes de pontos flutuantes. Nesta etapa ocorre a projeção de coordenadas do espaço do mundo para o espaço da tela. Inclui algumas etapas como geração e transformação de coordenadas de textura, e também cálculos de luz para produção dos valores de cor. Por isso é normal que essa etapa exija mais recursos computacionais. Logo em seguida ocorre a montagem das primitivas por meio do \textit{clipping}, que é a eliminação de parte da geometria desnecessária para a renderização (VIEIRA, 2017).
+
+Paralelamente, os dados de pixels contidos em uma matriz na memória do sistema são empacotados e escalados, inclinados e processados por um mapa de pixels. Os resultados podem ser escritos na memória da textura ou emitidos à uma etapa de rasterização, que serão então empacotados em um formato apropriado e retornados a uma matriz de memória do sistema. Em seguida ocorre o mapeamento de texturas (processo de aplicar uma imagem a uma primitiva gráfica) que estejam sendo utilizadas; é possível aplicar imagens de texturas em objetos geométricos para tornar estes mais realísticos (VIEIRA, 2017).
+
+Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada quadrado do fragmento corresponde a um pixel no \textit{frame buffer}, sendo que os valores da cor e da profundidade são atribuídos para cada um. Ao final são executadas mais algumas operações antes de armazenar os valores no \textit{frame buffer} como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; cálculos de neblina; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017).
 
 \subsection{GLSL}
 \label{sec:glsl}
