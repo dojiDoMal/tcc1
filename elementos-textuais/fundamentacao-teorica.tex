@@ -154,9 +154,21 @@ Rasterização é a etapa de conversão de dados tanto geométricos como de pixe
 \subsubsection{Matrizes de transformação de coordenadas}
 \label{sec:matrizes-transformacao-coordenadas}
 
-Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais nas imagens 2D que são exibidas na tela. Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações, como posição dos vértices e normais da superfície, do modelo do objeto 3D que são interpretadas como coordenadas do espaço do objeto \cite{GLSLBook}. 
+Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais em imagens 2D que são exibidas na tela. Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações do modelo do objeto 3D, como posição dos vértices e normais da superfície, para interpretá-las como coordenadas do espaço do objeto \cite{GLSLBook}. 
 
 Como cada objeto tem suas próprias características é necessário definir um sistema de coordenadas uniforme para que seja possível usar vários objetos em uma única cena. Para isso é utilizado o sistema de coordenadas global, e aqui a API vai um passo além e realiza mais uma conversão para o sistema de coordenadas de olho levando em consideração a posição da câmera na cena, seu ponto focal (para onde a câmera está olhando) e o vetor de direção para cima (e.g. a orientação da câmera) \cite{GLSLBook}. 
+
+Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. O cálculo das normais é semelhante, a diferença é que é utilizada a matriz transposta da inversa da matriz \textit{modelView} para multiplicar um vetor de normais. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea (Apêndice --- A) usada para transformação para o espaço de projeção. Os três conjunto de elementos ($ m_{0} $, $ m_{1} $, $ m_{2} $), ($ m_{4} $, $ m_{5} $, $ m_{6} $) e ($ m_{8} $, $ m_{9} $, $ m_{10} $) são usados para rotação e escala e representam os três eixos ortogonais x, y e z \cite{openglOnline}.
+
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=7cm]{figuras/modelView.png}}
+		}{
+			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+		}
+	\end{figure}
 
 	\begin{equation}
 		\begin{bmatrix}
@@ -175,19 +187,55 @@ Como cada objeto tem suas próprias características é necessário definir um s
 		\end{bmatrix}
 	\end{equation}
 
-Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea para transformação para espaço de projeção \cite{openglOnline}
-
-	\begin{figure}[h!]
+Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de projeção para definir como os vértices serão projetados na tela, os valores dessa matriz dependem se modo de projeção utilizado é em perspectiva ou ortográfico (Figura \ref{fig:frustum}) e são mostrados nas equações \ref{eq-persp} e \ref{eq-ortho} respectivamente. Os valores obtidos nessa operação são normalizados entre -1 e 1 para que seja feita a última operação de transformação, dessa vez as coordenadas são convertidas para o espeço de tela. A partir desse ponto elas continuam para o processo de rasterização da pipeline do OpenGL \cite{openglOnline}. 
+	\begin{figure}[htp]
 		\centering
-		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/modelView.png}}
+        \Caption{\label{fig:frustum} Modos de projeção de câmera. As letras correspondem a \textit{left, right, bottom, top, near e far}.}
+        \begin{subfigure}{0.64\textwidth}
+        \UNIFORfig{}{
+			\fbox{\includegraphics[width=\linewidth]{figuras/persp.png}}
 		}{
+		    \caption{\Gls{view-frustum} em perspectiva}
+		}
+        \end{subfigure}
+        \begin{subfigure}{0.64\textwidth}
+        \UNIFORfig{}{
+			\fbox{\includegraphics[width=\linewidth]{figuras/ortho.png}}
+		}{
+		    \caption{\Gls{view-frustum} ortográfico}
+		}
+        \end{subfigure}
+		{
 			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
 		}
 	\end{figure}
 
-In computer graphics, MODELING is the process of defining a numerical representation of an object that is to be rendered. For OpenGL, this usually means creating a polygonal representation of an object so that it can be drawn with the polygon primitives built into OpenGL. At a minimum, a polygonal representation of an object needs to include the coordinates of each vertex in each polygon and the connectivity information that defines the polygons. Additional data might include the color of each vertex, the surface normal at each vertex, one or more texture coordinates at each vertex, and so on.
+
+	\begin{equation} \label{eq-persp}
+		M_{persp}
+		=
+		\begin{bmatrix}
+			\cfrac{2n}{r-l} & 0 & \cfrac{r+l}{r-l} & 0 \\
+			0 & \cfrac{2n}{t-b} & \cfrac{t+b}{t-b} & 0 \\
+			0 & 0 & \cfrac{-(f+n)}{f-n} & \cfrac{-2fn}{f-n}\\
+			0 & 0 & -1 & 0 \\
+		\end{bmatrix}
+	\end{equation}
+
+	\begin{equation} \label{eq-ortho}
+		M_{orto}
+		=
+		\begin{bmatrix}
+			\cfrac{2}{r-l} & 0 & 0 & -\cfrac{r+l}{r-l} \\
+			0 & \cfrac{2}{t-b} & 0 & -\cfrac{t+b}{t-b} \\
+			0 & 0 & \cfrac{-2}{f-n} & -\cfrac{f+n}{f-n}\\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix}
+	\end{equation}
+
+
+
+
 
 \subsection{GLSL}
 \label{sec:glsl}
