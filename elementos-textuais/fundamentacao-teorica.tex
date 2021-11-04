@@ -121,7 +121,7 @@ No caso do suporte a visualização 3D estéreo, mais dois buffers serão utiliz
 
 O buffer de acumulação é capaz de reproduzir efeitos complexos como suavização em tela cheia de alta qualidade, profundidade de campo e desfoque de movimento. Ele funciona como um buffer de cor, porém com maior precisão, capaz de acumular imagens para produzir uma úncia imagem composta. Seguindo essa linha, o \textit{multisample buffer} é capaz de produzir várias amostras da renderização para realizar suavização sem precisar renderizar a cena mais de uma vez \cite{GLSLBook}. Por último, os buffers auxiliares (mais de um pode ser utilizado) servem para guardar dados genéricos.
 
-\subsubsection{Pipeline do OpenGL}
+\subsubsection{Pipeline gráfica do OpenGL}
 \label{sec:pipeline-opengl}
 
 Para que a máquina de estados do OpenGL possa operar corretamente, foi definida uma ordem específica em que as operações envolvidas no processo de renderização precisam ser realizadas, essa padronização é chamada de \textit{pipeline} gráfica \cite{GLSLBook} e pode ser vista na Figura 7. Todos os dados necessários para desenhar a geometria estão contidos em espaço em memória e podem ser lidos pelo OpenGL de três maneiras diferentes. 
@@ -150,6 +150,44 @@ Logo em seguida ocorre a montagem das primitivas por meio do \textit{clipping} (
 Outra operação que ocorre nesse estágio é a projeção das coordenadas da perspectiva para coordenadas da janela. Além disso, há ainda uma etapa opcional de \textit{culling} onde os polígonos são testados para saber se será preciso descartar faces posteriores, anteriores ou ambas \cite{GLSLBook}. Paralelamente a esse processo, os dados de pixels contidos em uma matriz na memória do sistema são empacotados e escalados, inclinados e processados por um mapa de pixels. Os resultados, que serão então empacotados em um formato apropriado e retornados a uma matriz de memória do sistema, podem ser escritos na memória da textura ou emitidos à uma etapa de rasterização.
 
 Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada quadrado do fragmento corresponde a um pixel no \textit{frame buffer}, sendo que os valores da cor e da profundidade são atribuídos para cada um. Ao final são executadas mais algumas operações antes de armazenar os valores no \textit{frame buffer} como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Apesar dessa etapa possuir muitos processos, as operações são relativamente simples e podem ser executadas eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
+
+\subsubsection{Matrizes de transformação de coordenadas}
+\label{sec:matrizes-transformacao-coordenadas}
+
+Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais nas imagens 2D que são exibidas na tela. Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações, como posição dos vértices e normais da superfície, do modelo do objeto 3D que são interpretadas como coordenadas do espaço do objeto \cite{GLSLBook}. 
+
+Como cada objeto tem suas próprias características é necessário definir um sistema de coordenadas uniforme para que seja possível usar vários objetos em uma única cena. Para isso é utilizado o sistema de coordenadas global, e aqui a API vai um passo além e realiza mais uma conversão para o sistema de coordenadas de olho levando em consideração a posição da câmera na cena, seu ponto focal (para onde a câmera está olhando) e o vetor de direção para cima (e.g. a orientação da câmera) \cite{GLSLBook}. 
+
+	\begin{equation}
+		\begin{bmatrix}
+			x_{olho} \\
+			y_{olho} \\
+			z_{olho} \\
+			w_{olho} \\
+		\end{bmatrix}
+		=
+		M_{modelView} \cdot
+		\begin{bmatrix}
+			x_{obj} \\
+			y_{obj} \\
+			z_{obj} \\
+			w_{obj} \\
+		\end{bmatrix}
+	\end{equation}
+
+Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea para transformação para espaço de projeção \cite{openglOnline}
+
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=8cm]{figuras/modelView.png}}
+		}{
+			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+		}
+	\end{figure}
+
+In computer graphics, MODELING is the process of defining a numerical representation of an object that is to be rendered. For OpenGL, this usually means creating a polygonal representation of an object so that it can be drawn with the polygon primitives built into OpenGL. At a minimum, a polygonal representation of an object needs to include the coordinates of each vertex in each polygon and the connectivity information that defines the polygons. Additional data might include the color of each vertex, the surface normal at each vertex, one or more texture coordinates at each vertex, and so on.
 
 \subsection{GLSL}
 \label{sec:glsl}
