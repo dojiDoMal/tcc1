@@ -151,24 +151,27 @@ Outra operação que ocorre nesse estágio é a projeção das coordenadas da pe
 
 Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada quadrado do fragmento corresponde a um pixel no \textit{frame buffer}, sendo que os valores da cor e da profundidade são atribuídos para cada um. Ao final são executadas mais algumas operações antes de armazenar os valores no \textit{frame buffer} como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Apesar dessa etapa possuir muitos processos, as operações são relativamente simples e podem ser executadas eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
 
+Em relação a etapa de texturização, uma das mais complexas, é interessante destacar que a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também fornece métodos para trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
+
+É importante destacar que a API também fornece a possibilidade de utilizar texturas do tipo \textit{mipmap} --- várias representações da mesma imagem, porém cada uma tem metade da resolução da anterior --- em conjunto com o parâmetro de nível de detalhe que será detalhado mais adiante, mas que de forma simplificada permite a otimização do processo de renderização de objetos que estão distantes da câmera. 
+
 \subsubsection{Matrizes de transformação de coordenadas}
 \label{sec:matrizes-transformacao-coordenadas}
 
-Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais em imagens 2D que são exibidas na tela. Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações do modelo do objeto 3D, como posição dos vértices e normais da superfície, para interpretá-las como coordenadas do espaço do objeto \cite{GLSLBook}. 
+Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais em imagens 2D que são exibidas na tela (Figura \ref{fig:spaces}). Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações do modelo do objeto 3D, como posição dos vértices e normais da superfície, para interpretá-las como coordenadas do espaço do objeto \cite{GLSLBook}. 
 
-Como cada objeto tem suas próprias características é necessário definir um sistema de coordenadas uniforme para que seja possível usar vários objetos em uma única cena. Para isso é utilizado o sistema de coordenadas global, e aqui a API vai um passo além e realiza mais uma conversão para o sistema de coordenadas de olho levando em consideração a posição da câmera na cena, seu ponto focal (para onde a câmera está olhando) e o vetor de direção para cima (e.g. a orientação da câmera) \cite{GLSLBook}. 
-
-Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. O cálculo das normais é semelhante, a diferença é que é utilizada a matriz transposta da inversa da matriz \textit{modelView} para multiplicar um vetor de normais. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea (Apêndice --- A) usada para transformação para o espaço de projeção. Os três conjunto de elementos ($ m_{0} $, $ m_{1} $, $ m_{2} $), ($ m_{4} $, $ m_{5} $, $ m_{6} $) e ($ m_{8} $, $ m_{9} $, $ m_{10} $) são usados para rotação e escala e representam os três eixos ortogonais x, y e z \cite{openglOnline}.
-
-	\begin{figure}[h!]
+	\begin{figure}[htp]
 		\centering
-		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
+		\Caption{\label{fig:spaces} Processo de transformação entre os sistemas de coordenadas e seus espaços.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=7cm]{figuras/modelView.png}}
+			\fbox{\includegraphics[width=12cm]{figuras/spaces.png}}
 		}{
-			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+			\Fonte{\url{https://learnopengl.com/img/getting-started/coordinate_systems.png}}
 		}
 	\end{figure}
+	\nocite{spaces}
+
+Como cada objeto tem suas próprias características é necessário definir um sistema de coordenadas uniforme para que seja possível usar vários objetos em uma única cena. Para isso é utilizado o sistema de coordenadas global, e aqui a API vai um passo além e realiza mais uma conversão para o sistema de coordenadas de olho levando em consideração a posição da câmera na cena, seu ponto focal (para onde a câmera está olhando) e o vetor de direção para cima (e.g. a orientação da câmera) \cite{GLSLBook}. 
 
 	\begin{equation}
 		\begin{bmatrix}
@@ -187,18 +190,54 @@ Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrize
 		\end{bmatrix}
 	\end{equation}
 
-Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de projeção para definir como os vértices serão projetados na tela, os valores dessa matriz dependem se modo de projeção utilizado é em perspectiva ou ortográfico (Figura \ref{fig:frustum}) e são mostrados nas equações \ref{eq-persp} e \ref{eq-ortho} respectivamente. Os valores obtidos nessa operação são normalizados entre -1 e 1 para que seja feita a última operação de transformação, dessa vez as coordenadas são convertidas para o espeço de tela. A partir desse ponto elas continuam para o processo de rasterização da pipeline do OpenGL \cite{openglOnline}. 
-	\begin{figure}[htp]
+Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. O cálculo das normais é semelhante, a diferença é que é utilizada a matriz transposta da inversa da matriz \textit{modelView} para multiplicar um vetor de normais. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea (Apêndice --- A) usada para transformação para o espaço de projeção. Os três conjunto de elementos ($ m_{0} $, $ m_{1} $, $ m_{2} $), ($ m_{4} $, $ m_{5} $, $ m_{6} $) e ($ m_{8} $, $ m_{9} $, $ m_{10} $) são usados para rotação e escala e representam os três eixos ortogonais x, y e z \cite{openglOnline}.
+
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=7cm]{figuras/modelView.png}}
+		}{
+			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+		}
+	\end{figure}
+
+Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de projeção para definir como os vértices serão projetados na tela, os valores dessa matriz dependem se modo de projeção utilizado é em perspectiva ou ortográfico (Figura \ref{fig:frustum}) e são mostrados nas equações \ref{eq-persp} e \ref{eq-ortho} respectivamente. 
+
+	\begin{equation} \label{eq-persp}
+		\resizebox{.35\hsize}{!}{$ M_{persp}
+		=
+		\begin{bmatrix}
+			\cfrac{2n}{r-l} & 0 & \cfrac{r+l}{r-l} & 0 \\
+			0 & \cfrac{2n}{t-b} & \cfrac{t+b}{t-b} & 0 \\
+			0 & 0 & \cfrac{-(f+n)}{f-n} & \cfrac{-2fn}{f-n}\\
+			0 & 0 & -1 & 0 \\
+		\end{bmatrix} $}
+	\end{equation}
+	\begin{equation} \label{eq-ortho}
+		\resizebox{.35\hsize}{!}{$ M_{orto}
+		=
+		\begin{bmatrix}
+			\cfrac{2}{r-l} & 0 & 0 & -\cfrac{r+l}{r-l} \\
+			0 & \cfrac{2}{t-b} & 0 & -\cfrac{t+b}{t-b} \\
+			0 & 0 & \cfrac{-2}{f-n} & -\cfrac{f+n}{f-n}\\
+			0 & 0 & 0 & 1 \\
+		\end{bmatrix} $}
+	\end{equation}
+
+Os valores obtidos nessa operação são normalizados em uma região cúbica definida pelos pontos (-1, -1, -1) e (1, 1, 1) para espaço de coordenadas de dispositivo normalizado, isso significa que os valores passam a ser algum valor entre -1 e 1. Essa etapa é necessária para qua a área de visualização seja apropriadamente mapeada em uma janela de exibição de tamanho arbitrário. Por último, as coordenadas são convertidas para o sistema de coordenadas de tela. A partir desse ponto elas continuam para o processo de rasterização da pipeline do OpenGL \cite{openglOnline}. 
+	\begin{figure}[hbp]
 		\centering
         \Caption{\label{fig:frustum} Modos de projeção de câmera. As letras correspondem a \textit{left, right, bottom, top, near e far}.}
-        \begin{subfigure}{0.64\textwidth}
+        \begin{subfigure}{0.46\textwidth}
         \UNIFORfig{}{
 			\fbox{\includegraphics[width=\linewidth]{figuras/persp.png}}
 		}{
 		    \caption{\Gls{view-frustum} em perspectiva}
 		}
         \end{subfigure}
-        \begin{subfigure}{0.64\textwidth}
+		\hfill
+        \begin{subfigure}{0.48\textwidth}
         \UNIFORfig{}{
 			\fbox{\includegraphics[width=\linewidth]{figuras/ortho.png}}
 		}{
@@ -210,35 +249,12 @@ Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de 
 		}
 	\end{figure}
 
-
-	\begin{equation} \label{eq-persp}
-		M_{persp}
-		=
-		\begin{bmatrix}
-			\cfrac{2n}{r-l} & 0 & \cfrac{r+l}{r-l} & 0 \\
-			0 & \cfrac{2n}{t-b} & \cfrac{t+b}{t-b} & 0 \\
-			0 & 0 & \cfrac{-(f+n)}{f-n} & \cfrac{-2fn}{f-n}\\
-			0 & 0 & -1 & 0 \\
-		\end{bmatrix}
-	\end{equation}
-
-	\begin{equation} \label{eq-ortho}
-		M_{orto}
-		=
-		\begin{bmatrix}
-			\cfrac{2}{r-l} & 0 & 0 & -\cfrac{r+l}{r-l} \\
-			0 & \cfrac{2}{t-b} & 0 & -\cfrac{t+b}{t-b} \\
-			0 & 0 & \cfrac{-2}{f-n} & -\cfrac{f+n}{f-n}\\
-			0 & 0 & 0 & 1 \\
-		\end{bmatrix}
-	\end{equation}
-
-
-
-
-
 \subsection{GLSL}
 \label{sec:glsl}
+
+Devido à necessidade crescente de substituir funcionalidades fixas por programabilidade em áreas que ficavam cada vez mais complexas, como processamento de vértices e fragmentos, foi desenvolvida uma solução que adicionou estágios programáveis para resolver esse problema. Essa solução foi a introdução da linguagem de sombreamento \acrshort{GLSL}, feita para ser executada nos dois processadores programáveis existentes no OpenGL: processador de vértices e processador de fragmentos (portanto os respectivos nomes \textit{vertex shader} e \textit{fragment shader}). Um shader pode então ser definido como um código escrito em uma linguagem de sombreamento (HLSL, GLSL, RSL e etc) com o propósito de ser executado por um dos processadores programáveis do OpenGL. Um programa de shader é então um conjunto de shaders compilados executáveis \cite{GLSLBook}.
+
+GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. Além disso, suporta laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders. Essa linguagem possibilitou aos desenvolvedores implementar um conjunto de diferentes técnicas para conseguir obter uma variedade enorme de efeitos visuais; não somente isso mas o fato de que essas técnicas são implementadas com aceleração via hardware pela GPU (com processamento paralelo) proporciona um aumento drástico de performance e libera carga da CPU para realizar outras tarefas \cite{GLSLBook}.
 
 \subsection{HLSL}
 \label{sec:hlsl}
@@ -272,8 +288,11 @@ Esse cenário pode ser suficiente para sobrecarregar um microprocessador comum e
 \subsection{Vertex Shader}
 
 A vertex shader is a GPU program that is executed once per vertex that is assigned to, and a pixel shader is a GPU program that is executed once per pixel.
+Vertex processing involves the operations that occur at each vertex, most notably transformation and lighting. Fragments are per-pixel data structures that are created by the rasterization of graphics primitives. A fragment contains all the data necessary to update a single location in the frame buffer. Fragment processing consists of the operations that occur on a per-fragment basis, most notably reading from texture memory and applying the texture value(s) at each fragment \cite{GLSLBook}.
 
 \subsection{Fragment Shader}
+
+
 
 
 
