@@ -1,7 +1,7 @@
 \apendice{Coordenadas Homogêneas}
 \label{ap:coordenadas-homogeneas}
 
-As coordenadas homogêneas foram criadas para solucionar um problema presente na geometria do espaço Euclidiano, onde duas linhas paralelas no mesmo plano nunca poderão se cruzar. Isso só é interessante até o ponto em que precisamos definir o comportamento geometrico no espaço de projeção. Por exemplo na Figura \ref{fig:projecao} os trilhos se aproximam até que convergem no horizonte (um ponto no infinito no espaço Euclidiano) distante do observador \cite{homogenous}.
+As coordenadas homogêneas foram criadas para solucionar um problema presente na geometria do espaço Euclidiano, onde duas linhas paralelas no mesmo plano nunca poderão se cruzar. Isso só é interessante até o ponto em que precisamos definir o comportamento geometrico no espaço de projeção. Por exemplo na Figura \ref{fig:projecao} os trilhos se aproximam até que convergem no horizonte (um ponto no infinito no espaço Euclidiano) distante do observador (AHN, 2012)\nocite{homogenous}.
 
 	\begin{figure}[h!]
 		\centering
@@ -13,9 +13,9 @@ As coordenadas homogêneas foram criadas para solucionar um problema presente na
 		}
 	\end{figure}
 
-Quando um ponto vai para o infinito ele é representado pelas coordenadas ($\infty$, $\infty$) e isso se torna uma informação inexpressiva. As linhas paralelas deveriam se cruzar no espaço de projeção mas não conseguem no espaço Euclidiano. Para resolver esse problema os matemáticos criaram as coordenadas homogêneas. O motivo de serem chamadas "homogêneas" se dá devido ao fato de que ao convertê-las para coordenadas cartesianas, percebe-se a relação de proporcionalidade explicitada na equação \ref{eq-homogenea5}, onde os diferentes pontos representam o mesmo ponto no espaço Euclidiano, ou seja, coordenadas homogêneas são invariantes à escala \cite{homogenous}.
+Quando um ponto vai para o infinito ele é representado pelas coordenadas ($\infty$, $\infty$) e isso se torna uma informação inexpressiva. As linhas paralelas deveriam se cruzar no espaço de projeção mas não conseguem no espaço Euclidiano. Para resolver esse problema os matemáticos criaram as coordenadas homogêneas. O motivo de serem chamadas "homogêneas" se dá devido ao fato de que ao convertê-las para coordenadas cartesianas, percebe-se a relação de proporcionalidade explicitada na equação \ref{eq-homogenea5}, onde os diferentes pontos representam o mesmo ponto no espaço Euclidiano, ou seja, coordenadas homogêneas são invariantes à escala (AHN, 2012).
 
-Coordenadas homogêneas são utilizadas para fazer a representação de coordenadas N-dimensionais utilizando N+1 números. Então para transformar um ponto de duas dimensões no sistema de coordenadas cartesianas (X, Y) basta simplesmente adicionar uma variável, portanto (x, y, w). A correlação matemática entre coordenadas cartesianas e coordenadas homogêneas é exibida abaixo na equação \ref{eq-homogenea}. Utilizando essa lógica fica claro que se um ponto (1, 2), se move em direção ao infinito, se tornando ($\infty$,$\infty$), ele passa a ser representado por (1, 2, 0) em coordenadas homogêneas, conforme a equação \ref{eq-homogenea2} \cite{homogenous}.
+Coordenadas homogêneas são utilizadas para fazer a representação de coordenadas N-dimensionais utilizando N+1 números. Então para transformar um ponto de duas dimensões no sistema de coordenadas cartesianas (X, Y) basta simplesmente adicionar uma variável, portanto (x, y, w). A correlação matemática entre coordenadas cartesianas e coordenadas homogêneas é exibida abaixo na equação \ref{eq-homogenea}. Utilizando essa lógica fica claro que se um ponto (1, 2), se move em direção ao infinito, se tornando ($\infty$,$\infty$), ele passa a ser representado por (1, 2, 0) em coordenadas homogêneas, conforme a equação \ref{eq-homogenea2} (AHN, 2012).
 
 \begin{equation} \label{eq-homogenea}
 	\begin{aligned}
@@ -30,7 +30,7 @@ Coordenadas homogêneas são utilizadas para fazer a representação de coordena
 	\end{aligned}
 \end{equation}
 
-Para provar matematicamente que duas retas paralelas se cruzarão, basta analisar a equação \ref{eq-homogenea3} considerando a geometria Euclidiana. Nesse caso não há solução pois $ C \neq D $, apenas se as duas linhas fossem idênticas (sobrepostas) seria possível afirmar que $ C = D $. Para que o sistema possua solução é preciso reescrevê-lo como na equação \ref{eq-homogenea4}, trocando x e y por suas respectivas coordenadas homogêneas. Então como $ (C-D)w = 0 \therefore w=0 $, prova-se que as duas linhas paralelas são capazes de se cruzarem em (x, y, 0) que é um ponto no infinito \cite{homogenous}.
+Para provar matematicamente que duas retas paralelas se cruzarão, basta analisar a equação \ref{eq-homogenea3} considerando a geometria Euclidiana. Nesse caso não há solução pois $ C \neq D $, apenas se as duas linhas fossem idênticas (sobrepostas) seria possível afirmar que $ C = D $. Para que o sistema possua solução é preciso reescrevê-lo como na equação \ref{eq-homogenea4}, trocando x e y por suas respectivas coordenadas homogêneas. Então como $ (C-D)w = 0 \therefore w=0 $, prova-se que as duas linhas paralelas são capazes de se cruzarem em (x, y, 0) que é um ponto no infinito (AHN, 2012).
 
 \begin{equation} \label{eq-homogenea3}
 	\begin{cases}
