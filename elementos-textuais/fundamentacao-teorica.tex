@@ -249,64 +249,34 @@ Os valores obtidos nessa operação são normalizados em uma região cúbica def
 		}
 	\end{figure}
 
-\subsection{GLSL}
+\subsection{OpenGL Shading Language}
 \label{sec:glsl}
 
-Devido à necessidade crescente de substituir funcionalidades fixas por programabilidade em áreas que ficavam cada vez mais complexas, como processamento de vértices e fragmentos, foi desenvolvida uma solução que adicionou estágios programáveis para resolver esse problema. Essa solução foi a introdução da linguagem de sombreamento \acrshort{GLSL}, feita para ser executada nos dois processadores programáveis existentes no OpenGL: o processador de vértices e o processador de fragmentos (portanto os respectivos nomes \textit{vertex shader} e \textit{fragment shader}). Um shader pode então ser definido como um código escrito em uma linguagem de sombreamento (HLSL, GLSL, RSL e etc) com o propósito de ser executado por um dos processadores programáveis do OpenGL. Um programa de shader é então um conjunto de shaders compilados executáveis \cite{GLSLBook}.
+Devido à necessidade crescente de substituir funcionalidades fixas por programabilidade em áreas que ficavam cada vez mais complexas, como processamento de vértices e fragmentos, foi desenvolvida uma solução que adicionou estágios programáveis para resolver esse problema. Essa solução foi a introdução da linguagem de sombreamento \acrshort{GLSL}, feita para ser executada nos dois processadores programáveis existentes no OpenGL: o processador de vértices e o processador de fragmentos (portanto os respectivos nomes \textit{vertex shader} e \textit{fragment shader}) \cite{GLSLBook}. 
 
-A linguagem de sombreamento GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. Além disso ela oferece suporte a laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders. Essa linguagem possibilitou aos desenvolvedores implementar um conjunto de diferentes técnicas para conseguir obter uma variedade enorme de efeitos visuais; não somente isso mas o fato de que essas técnicas são implementadas com aceleração via hardware pela GPU (com processamento paralelo) proporciona um aumento drástico de performance e libera carga da CPU para realizar outras tarefas \cite{GLSLBook}.
+Um shader pode então ser definido como um código escrito em uma linguagem de sombreamento (HLSL, GLSL, RSL e etc) com o propósito de ser executado por um dos processadores programáveis do OpenGL. Um programa de shader é então um conjunto de shaders compilados executáveis \cite{GLSLBook}. A Figura \ref{fig:outline} mostra a implementação do código-fonte \ref{cf:outline} para criar um efeito de linha de contorno em volta de um objeto 3D utilizando a linguagem GLSL.
 
-O processador de vértices é uma unidade programável que realiza operações nos valores de vértices recebidos e seus dados associados. Essas operações consistem em transformação de vértices, transformação e normalização das normais, geração e transformação das coordenadas de textura, iluminação e aplicação de cor. Shaders feitos para rodar nesse processador são chamados de shaders de vértice. Variáveis de atributo (variável global somente leitura alterada por vértice) são utilizadas para passar valores da aplicação para o processador de vértices. Já as variáveis uniformes (variável global somente leitura alterada por primitiva) são utilizadas para passar dados tanto para o processador de vértices como de fragmentos. Por último há as variáveis variantes cuja função é transportar informação do processador de vértices para o processador de fragmentos \cite{GLSLBook}.
-
-\pagebreak
-
-\input{figuras/listings-glsl.prf}
-
-\begin{lstlisting}[language=GLSL, caption={\label{cf:outline} Shader GLSL 3D simples para efeito de contorno}]
-/*	define o tipo de shader:
-*	spatial = shader de renderizacao 3D	*/
-shader_type spatial;
-
-/*	modos de renderizacao: 
-*	unshaded = nao e afetado pela luz,
-*	cull_front = nao renderiza as faces frontais,
-*	depth_draw_always = usado para transparencia	*/
-render_mode unshaded, cull_front, depth_draw_always; 
-
-/*	variaveis uniformes	*/
-*	thickness = espessura da linha,
-*	outline_color = cor da linha	*/
-uniform float thickness = 0.1;
-uniform vec4 outline_color : hint_color = vec4(1.0);
-
-/*	vertex shader:
-*	cada vertice e movido na direcao de seu 
-*	normal por um fator x de espessura	*/
-void vertex() {
-	VERTEX += NORMAL * thickness;
-}
-
-/*	fragment shader:
-*	aplica a outline_color em cada pixel	*/
-void fragment() {
-	ALBEDO = outline_color.rgb;
-	if(outline_color.a < 1.0) ALPHA = outline_color.a;
-}
-\end{lstlisting}
-
-	\begin{figure}[htp]
+	\begin{figure}[h!]
 		\centering
-		\Caption{\label{fig:outline} O código-fonte \ref{cf:outline} produz o seguinte efeito ao renderizar.}	
+		\Caption{\label{fig:outline} Demonstração de um shader simples de linha contorno.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=10cm]{figuras/outline.png}}
+			\fbox{\includegraphics[width=8cm]{figuras/outline.png}}
 		}{
 			\Fonte{Elaborado pelo autor}
 		}
 	\end{figure}
 
-\hfill
+A linguagem de sombreamento GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. Além disso ela oferece suporte a laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders \cite{GLSLBook}. 
 
-Conceitualmente, o processador de vértices atua em um vértice de cada vez, com a ressalva de que uma implementação pode ter múltiplos processadores operando em paralelo (o mesmo vale para o processador de fragmentos). Dessa forma, entende-se que o shader de vértice é executado uma vez para cada vértice. Vale salientar que há uma possibilidade de perda de performance caso um shader de vértice precise calcular mais variáveis variantes do que o que é necessário pelo shader de fragmentos. Mesmo assim, normalmente os desenvolvedores preferem utilizar um shader de vértice mais genérico em conjunto com um shader de fragmento, pois assim é possível utilizar apenas um subconjunto das variáveis contidas no shader de vértice e ainda sim reduzir custos de desenvolvimento e manutenção para uma grande quantidade de shaders. Por outro lado, o processador de fragmentos é responsável por realizar algumas operações como interpolação de valores, acesso e aplicação de texturas, névoa, soma de cor. Cabe destacar que uma mudança de posição (x, y) de fragmento não é possível nesse estágio \cite{GLSLBook}.
+Essa linguagem possibilitou aos desenvolvedores implementar um conjunto de diferentes técnicas para conseguir obter uma variedade enorme de efeitos visuais; não somente isso mas o fato de que essas técnicas são implementadas com aceleração via hardware pela GPU (com processamento paralelo) proporciona um aumento drástico de performance e libera carga da CPU para realizar outras tarefas \cite{GLSLBook}.
+
+O processador de vértices é uma unidade programável que realiza operações nos valores de vértices recebidos e seus dados associados. Essas operações consistem em transformação de vértices, transformação e normalização das normais, geração e transformação das coordenadas de textura, iluminação e aplicação de cor. Shaders feitos para rodar nesse processador são chamados de shaders de vértice \cite{GLSLBook}. 
+
+Variáveis de atributo (variável global somente leitura alterada por vértice) são utilizadas para passar valores da aplicação para o processador de vértices. Já as variáveis uniformes (variável global somente leitura alterada por primitiva) são utilizadas para passar dados tanto para o processador de vértices como de fragmentos. Por último há as variáveis variantes cuja função é transportar informação do processador de vértices para o processador de fragmentos \cite{GLSLBook}.
+
+Conceitualmente, o processador de vértices atua em um vértice de cada vez, com a ressalva de que uma implementação pode ter múltiplos processadores operando em paralelo (o mesmo vale para o processador de fragmentos). Assim, entende-se que o shader de vértice é executado uma vez para cada vértice, sendo que há uma possibilidade de perda de performance caso um shader de vértice precise calcular mais variáveis variantes do que o que é necessário pelo shader de fragmentos. Por outro lado, o processador de fragmentos é responsável por realizar algumas operações como interpolação de valores, acesso e aplicação de texturas, névoa e soma de cor. Além disso, uma mudança de posição (x, y) de fragmento não é possível nesse estágio \cite{GLSLBook}. 
+
+Cabe ressaltar que, em termos de performance, normalmente os desenvolvedores preferem utilizar um shader de vértice mais genérico em conjunto com um shader de fragmento, pois assim é possível utilizar apenas um subconjunto das variáveis contidas no shader de vértice e ainda sim reduzir tempo e custos de desenvolvimento e manutenção para uma grande quantidade de shaders \cite{GLSLBook}.
 
 \subsection{Direct3D (HLSL) \textit{versus} OpenGL (GLSL)}
 \label{sec:direct-versus-opengl}
@@ -315,12 +285,22 @@ Direct3D, assim como OpenGL, é uma API para desenvolvimento de aplicações gr�
 
 Levando em consideração a pouca diferença em capacidade de renderização existente entre essas duas interfaces, a escolha sobre qual usar depende muito da plataforma para qual se pretende desenvolver. Direct3D é específica para plataformas da Microsoft e é amplamente suportada por fornecedores de hardware gráfico, especialmente em computadores desktop. OpenGL possui a vantagem de ser open source e possui bastante aceitação no espaço de desenvolvimento mobile, principalmente devido ao desenvolvimento da OpenGL ES --- uma subseção do OpenGL projetada especialmente para sistemas embarcados como smartphones e consoles portáteis \cite{HLSLBook}.
 
-\subsection{HLSL}
+\subsection{High-Level Shader Language}
 \label{sec:hlsl}
 
-HLSL é uma linguagem de sombreamento que surgiu em 2002 (no lançamento do DirectX 9) e que também possui um estilo bastante semelhante ao da linguagem de programação C. Ao longo dos anos foram introduzidas várias melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação.
+A HLSL é uma linguagem de sombreamento que surgiu em 2002 (no lançamento do DirectX 9) e também assemelha-se à linguagem de programação C. Ao longo dos anos foram introduzidas várias melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação. Logo abaixo, foi implementado um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para demonstrar algumas diferenças e semelhanças entre as duas linguagens e seu resultado pode ser visto na Figura \ref{fig:outlineHLSL}.
 
-Uma GPU de propósito geral é uma unidade de processamento gráfico (GPU) que realiza cálculos genéricos que normalmente seria feitos pela CPU. São utilizadas para realizar tarefas custosas como cálculos de física, criptografia e computações científicas, pois é possível tirar proveito do paralelismo disponível nas placas gráficas. Da mesma forma que um núcleo pode ser utilizado para renderizar múltiplos pixels simultaneamente ele também é capaz de processar múltiplos fluxos de dados ao mesmo tempo (TECHTARGET, 2015)\nocite{GPGPU}.
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:outlineHLSL} O mesmo resultado de contorno obtido com HLSL.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=7cm]{figuras/outlineUnity.PNG}}
+		}{
+			\Fonte{Elaborado pelo autor}
+		}
+	\end{figure}
+
+Uma GPU de propósito geral é uma unidade de processamento gráfico (GPU) que realiza cálculos genéricos que normalmente seriam feitos pela CPU. São utilizadas para realizar tarefas custosas como cálculos de física, criptografia e computações científicas, pois é possível tirar proveito do paralelismo disponível nas placas gráficas. Da mesma forma que um núcleo pode ser utilizado para renderizar múltiplos pixels simultaneamente, ele também é capaz de processar múltiplos fluxos de dados ao mesmo tempo (TECHTARGET, 2015)\nocite{GPGPU}.
 
 Tesselação é mais um processo na pipeline gráfica responsável por adicionar detalhes a objetos diretamente pela GPU. De maneira geral, mais detalhes geometricos (mais vértices), resultam em uma renderização "mais bonita". Seu modo de funcionamento consiste em subdividir um objeto dinamicamente e sem o custo adicional de reprocessamento de geometria. Isso permite um sistema de nível de detalhe dinâmico e menos utilização do barramento de gráficos, o que melhora a performance \cite{HLSLBook}.
 
@@ -328,7 +308,7 @@ Tesselação é mais um processo na pipeline gráfica responsável por adicionar
 		\centering
 		\Caption{\label{fig:tess} Diferentes níveis de tesselação aplicados em uma malha produzem aumento no número de vértices.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/tess.png}}
+			\fbox{\includegraphics[width=7cm]{figuras/tess.png}}
 		}{
 			\Fonte{\url{https://upload.wikimedia.org/wikipedia/commons/f/fc/Tessellation_Level_Table.png}}
 		}
@@ -338,13 +318,16 @@ Tesselação é mais um processo na pipeline gráfica responsável por adicionar
 \section{Aprofundando Conceitos Técnicos de Shaders}
 \label{sec:aprofundando-conceitos-tecnicos-shaders}
 
+% Caso for adicionar mais texto sobre %
+% HLSL, adicionar nessa parte         %
+
 Ao estudar computação gráfica a dúvida mais comum ao se deparar com certos termos utilizados é "o que é um shader". Essa palavra pode causar uma certa estranheza no início mas sua definição não é nenhum bicho de sete cabeças. Shaders são apenas pequenos programas (assim como um reprodutor de mídia ou uma calculadora de um computador) que são executados diretamente pela \acrshort{GPU} ao invés da \acrshort{CPU}. Isso permite a redução da carga de trabalho gráfico da \acrshort{CPU} pelo redirecionamento das tarefas para a \acrshort{GPU} que possui hardware especializado para isso (LUTEN, 2014)\nocite{openGLBook}.
 
 	\begin{figure}[h!]
 		\centering
 		\Caption{\label{fig:exemplo-5} Demonstração de como é possível criar visuais únicos utilizando shaders.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=12cm]{figuras/figura-5}}
+			\fbox{\includegraphics[width=10cm]{figuras/figura-5}}
 		}{
 			\Fonte{Adaptado de \url{https://www.youtube.com/watch?time_continue=2&v=F0CWzpYY68A&feature=emb_logo}}
 		}
