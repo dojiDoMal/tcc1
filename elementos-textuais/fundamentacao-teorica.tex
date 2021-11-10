@@ -48,14 +48,14 @@ Como a indústria de jogos eletrônicos tinha mais recursos para explorar devido
 		}
 	\end{figure}
 	\nocite{figura3}
+
+É de referir que a indústria de jogos eletrônicos apresenta incriveis taxas de crescimento e que desde 2017 conquista cada vez mais espaço no mercado. O valor do mercado de jogos atingiu a importante marca de US\$ 135 bilhões em 2018. Mas esse sucesso não é exclusivo de hoje, pois as empresas do ramo, desde a década de 70, apresentam crescimento constante e acelerado de suas receitas. Por isso cada vez mais empresas surgem dentro desse mercado a cada ano \cite{comparacaoDesempenho2}. 
 	
 Paralelo ao cenário desses jogos (LUTEN, 2014)\nocite{openGLBook}, a Silicon Graphics (\acrshort{SGI}), uma companhia especializada em computação gráfica 3D e líder de mercado na época, trabalhava no lançamento open source da Open Graphics Library (\acrshort{OpenGL}), uma API (\acrlong{API}) padronizada multiplataforma de processamento de gráficos de computador em tempo real que rapidamente dominou o mercado, e que era uma derivação de outra biblioteca proprietária da mesma empresa, a IRIS GL (\acrlong{IRIS GL}). 
 
 Vendo uma oportunidade de mercado, a Microsoft logo agiu e comprou a empresa RenderMorphics, criadora da \acrshort{API} Reality Lab, que teve o nome alterado para Direct3D e foi distribuido como um SDK (\acrlong{SDK}) conhecido como DirectX (LUTEN, 2014)\nocite{openGLBook}, acabando por se tornar o concorrente direto da \acrshort{OpenGL}. Essa rivalidade no final das contas acabou sendo benéfica tanto para o mercado de jogos eletrônicos quanto para os seus consumidores, já que acelerou o desenvolvimento de novas tecnologias que exploravam ao máximo o potencial do hardware disponível.
 	
-Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma inovação ao mercado, a "primeira GPU" (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
-
-    \begin{figure}[h!]
+ 	\begin{figure}[h!]
 		\centering
         \Caption{\label{fig:1} Hardware da placa gráfica da NVIDIA.}
         \begin{subfigure}{0.50\textwidth}
@@ -79,7 +79,9 @@ Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma ino
 			\Fonte{https://upload.wikimedia.org/wikipedia/commons}
 		}
 	\end{figure}
-	
+
+Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma inovação ao mercado, a "primeira GPU" (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
+
 Até então shaders eram bem vistos e utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil uma vez que a sintaxe utilizada era semelhante à programação em Assembly. Percebendo esse problema, a Microsoft lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
 
 \subsection{Como o OpenGL funciona}
@@ -87,37 +89,39 @@ Até então shaders eram bem vistos e utilizados por melhorar a performance elim
 
 Grosso modo, a API do OpenGL desenha gráficos em uma memória especializada em quadros de imagem (frame buffer) e os lê novamente quando precisa. O seu design único oferece suporte tanto a geometrias 3D quanto a imagens simples. O modelo de funcionamento dessa API pode ser descrito como cliente-servidor, pois a aplicação (cliente) faz solicitações por meio de comandos que são interpretados e processados pela implementação OpenGL (servidor) \cite{GLSLBook}. Aqui cabe destacar que a sincronia entre cliente e servidor e suas informações/dados não ocorre quando um comando é executado mas sim quando ele é emitido.
 
-Os comandos são sempre processados na ordem em que são recebidos pelo servidor (execução fora de ordem não é permitida). Os dados passados para um comando OpenGL são então interpretados e copiados em memória caso seja necessário e as modificações subsequentes feitas pela aplicação não surtem efeito nos dados que estão armazenados internamente pelo OpenGL. Esses procedimentos são uma forma de garantir que um primitivo --- segundo Abdala (2019)\nocite{abdala}, uma representação discreta em grade de um elemento geométrico fundamental, e.g. ponto, linha, círculo, etc. --- seja desenhado apenas se o primitivo anterior houver sido completamente desenhado \cite{GLSLBook}.
+Os comandos são sempre processados na ordem em que são recebidos pelo servidor (execução fora de ordem não é permitida). Os dados passados para um comando OpenGL são então interpretados e copiados em memória caso seja necessário e as modificações subsequentes feitas pela aplicação não surtem efeito nos dados que estão armazenados internamente pelo OpenGL. Esses procedimentos são uma forma de garantir que um primitivo --- segundo Abdala (2019)\nocite{abdala}, uma representação discreta em grade de um elemento geométrico fundamental, e.g. ponto, linha, círculo, etc --- seja desenhado apenas se o primitivo anterior houver sido completamente desenhado \cite{GLSLBook}.
 
-OpenGL foi projetada para atuar como uma máquina de estados composta de parametros que definem o comportamento da pipeline de renderização e da forma que as primitivas são transformadas em pixels na tela. O estado é composto por uma estrutura de dados chamada contexto gráfico que é gerenciada pelo sistema de janelas do SO (\acrlong{SO}). O principio básico de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por um hardware com design específico chamado de acelerador gráfico, entretanto suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Aceleradores gráficos tipicamente possuem região de memória delimitada para manutenção do conteúdo exibido na tela, sendo que cada pixel é representado por uma quantidade de bytes na memória; uma tela em escala de cinza, por exemplo, pode fazer uso de um byte para representar a tonalidade de cinza de cada pixel \cite{GLSLBook}.
+OpenGL foi projetada para atuar como uma máquina de estados composta de parametros que definem o comportamento da pipeline de renderização e da forma que as primitivas são transformadas em pixels na tela. O estado é composto por uma estrutura de dados chamada contexto gráfico que é gerenciada pelo sistema de janelas do SO (\acrlong{SO}) \cite{GLSLBook}. 
+
+O principio básico de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por um hardware com design específico chamado de acelerador gráfico, entretanto suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Aceleradores gráficos tipicamente possuem região de memória delimitada para manutenção do conteúdo exibido na tela, sendo que cada pixel é representado por uma quantidade de bytes na memória; uma tela em escala de cinza, por exemplo, pode fazer uso de um byte para representar a tonalidade de cinza de cada pixel \cite{GLSLBook}.
 
 Essa região conhecida como memória de exibição é escaneada "x" vezes por segundo para eliminar a cintilação. Há ainda uma região específica para manipular dados que não são visíveis na tela chamada de memoria de não exibição. O responsável pela alocação de memória é o próprio sistema operacional que suporta o OpenGL. Em um sistema de janelas, a janela que corresponde a região da memória gráfica que é modificada durante a renderização é chamada de frame buffer. Já em um cenário sem janelas (i.e. tela cheia) o frame buffer corresponde a toda a tela \cite{GLSLBook}.
 
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:exemplo-6} O buffer de profundidade é mostrado em tons de cinza sendo que objetos próximos ficam com tonalidade mais escura enquanto objetos distantes assumem uma tonalidade mais clara.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=15cm]{figuras/figura-6}}
+	}{
+		\Fonte{https://larranaga.github.io/Blog/imagenes/z-buffer.png}
+	}
+\end{figure}
+\nocite{dptbuf}
+
 Para que uma janela consiga suportar a renderização ela precisa de uma combinação de alguns elementos: até quatro buffers para as cores, um buffer de profundidade (Figura 5), um \textit{stencil buffer} (Figura 6), um buffer de acumulação, um \textit{multisample buffer} e um ou mais buffers auxiliares. A maioria dos hardwares suporta o carregamento duplo, técnica que faz uso de um buffer frontal e um buffer posterior para que o processo de renderização seja realizado em plano de fundo e então quando terminar seu conteúdo é trocado com o do buffer frontal para exibir o resultado final e iniciar a nova renderização. Isso ajuda a conseguir animações suaves à taxas interativas \cite{GLSLBook}.
 
-    \begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-6} O buffer de profundidade é mostrado em tons de cinza sendo que objetos próximos ficam com tonalidade mais escura enquanto objetos distantes assumem uma tonalidade mais clara.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=15cm]{figuras/figura-6}}
-		}{
-			\Fonte{https://larranaga.github.io/Blog/imagenes/z-buffer.png}
-		}
-	\end{figure}
-	\nocite{dptbuf}
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:exemplo-7} O stencil buffer permite a customização da forma como objetos 3D são renderizados.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=15cm]{figuras/figura-7}}
+	}{
+		\Fonte{https://www.ronja-tutorials.com/assets/images/posts/022/Result.gif}
+	}
+\end{figure}
+\nocite{stcbuf}
 	
 No caso do suporte a visualização 3D estéreo, mais dois buffers serão utilizados em conjunto com os dois citados anteriormente para criar uma combinação com quatro buffers de cor que são divididos para cada olho. Se um objeto 3D precisa ser desenhado com remoção de superfície encoberta, o buffer de profundidade entra em ação comparando o valor da profundidade de cada pixel dos objetos em cena para determinar qual será visível ou obscurecido. E há ainda a opção do uso de um \textit{stencil buffer} para aplicar operações complexas utilizando máscaras com o objetivo de determinar onde cada pixel deve ser atualizado ou não \cite{GLSLBook}.
-
-    \begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-7} O stencil buffer permite a customização da forma como objetos 3D são renderizados.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=15cm]{figuras/figura-7}}
-		}{
-			\Fonte{https://www.ronja-tutorials.com/assets/images/posts/022/Result.gif}
-		}
-	\end{figure}
-	\nocite{stcbuf}
 
 O buffer de acumulação é capaz de reproduzir efeitos complexos como suavização em tela cheia de alta qualidade, profundidade de campo e desfoque de movimento. Ele funciona como um buffer de cor, porém com maior precisão, capaz de acumular imagens para produzir uma úncia imagem composta. Seguindo essa linha, o \textit{multisample buffer} é capaz de produzir várias amostras da renderização para realizar suavização sem precisar renderizar a cena mais de uma vez \cite{GLSLBook}. Por último, os buffers auxiliares (mais de um pode ser utilizado) servem para guardar dados genéricos.
 
@@ -126,20 +130,20 @@ O buffer de acumulação é capaz de reproduzir efeitos complexos como suavizaç
 
 Para que a máquina de estados do OpenGL possa operar corretamente, foi definida uma ordem específica em que as operações envolvidas no processo de renderização precisam ser realizadas, essa padronização é chamada de \textit{pipeline} gráfica \cite{GLSLBook} e pode ser vista na Figura 7. Todos os dados necessários para desenhar a geometria estão contidos em espaço em memória e podem ser lidos pelo OpenGL de três maneiras diferentes. 
 
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:pipeline} Pipeline gráfico do OpenGL.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=15cm]{figuras/pipeline.png}}
+	}{
+		\Fonte{\url{http://www.ic.uff.br/~anselmo/cursos/CGI/slidesGrad/CG_aula4(introducaoaOpenGL).pdf}}
+	}
+\end{figure}
+\nocite{pipeline}
+
 A primeira seria enviar um vértice de cada vez utilizando alguns comandos intermitentes para manipular atributos dos vértices. A segunda seria utilizar matrizes de vértices, o que oferece melhor performance devido a forma de organização dos dados, pois são utilizados ponteiros e mais dados podem ser processados de uma vez. Esses dois casos citados acima fazem uso do modo imediato pois as primitivas são renderizadas assim que são especificadas \cite{GLSLBook}. 
 
 O terceiro modo seria utilizar algum dos dois procedimentos citados acima implementando uma lista de exibição, que é uma estrutura de dados que guarda comandos para execução futura. Algumas vantagens desse método no que diz respeito a performance seria a possibilidade de otimizar os comandos contidos na lista, ou ainda guardar os comandos na memória do acelerador gráfico para uma melhor performance de desenho \cite{GLSLBook}. 
-
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:pipeline} Pipeline gráfico do OpenGL.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=15cm]{figuras/pipeline.png}}
-		}{
-			\Fonte{\url{http://www.ic.uff.br/~anselmo/cursos/CGI/slidesGrad/CG_aula4(introducaoaOpenGL).pdf}}
-		}
-	\end{figure}
-	\nocite{pipeline}
 	
 Como todas as primitivas geométricas podem ser descritas por vértices, as curvas e as superfícies podem ser descritas pelas funções polinomiais chamadas funções base. A função do avaliador polinomial nesse caso é derivar os vértices para conseguir representar superfícies e curvas. Isso é feito através do método de mapeamento polinomial, que produz as normais da superfície, as coordenadas da textura, as cores, e valores de coordenadas espaciais dos pontos de controle (VIEIRA, 2017)\nocite{pipelnRef}.
 
@@ -149,27 +153,27 @@ Logo em seguida ocorre a montagem das primitivas por meio do \textit{clipping} (
 
 Outra operação que ocorre nesse estágio é a projeção das coordenadas da perspectiva para coordenadas da janela. Além disso, há ainda uma etapa opcional de \textit{culling} onde os polígonos são testados para saber se será preciso descartar faces posteriores, anteriores ou ambas \cite{GLSLBook}. Paralelamente a esse processo, os dados de pixels contidos em uma matriz na memória do sistema são empacotados e escalados, inclinados e processados por um mapa de pixels. Os resultados, que serão então empacotados em um formato apropriado e retornados a uma matriz de memória do sistema, podem ser escritos na memória da textura ou emitidos à uma etapa de rasterização.
 
-Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada quadrado do fragmento corresponde a um pixel no \textit{frame buffer}, sendo que os valores da cor e da profundidade são atribuídos para cada um. Ao final são executadas mais algumas operações antes de armazenar os valores no \textit{frame buffer} como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Apesar dessa etapa possuir muitos processos, as operações são relativamente simples e podem ser executadas eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
+Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada fragmento passa por mais algumas operações como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; aplicação do valor de cor e profundidade; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Ao final são armazenados os valores no \textit{frame buffer}. Apesar de possuir muitos processos, é uma etapa relativamente simples e pode ser executada eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
 
-Em relação a etapa de texturização, uma das mais complexas, é interessante destacar que a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também fornece métodos para trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
+Sobre a etapa de texturização é interessante destacar que a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também pode trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
 
 É importante destacar que a API também fornece a possibilidade de utilizar texturas do tipo \textit{mipmap} --- várias representações da mesma imagem, porém cada uma tem metade da resolução da anterior --- em conjunto com o parâmetro de nível de detalhe que será detalhado mais adiante, mas que de forma simplificada permite a otimização do processo de renderização de objetos que estão distantes da câmera. 
 
 \subsubsection{Matrizes de transformação de coordenadas}
 \label{sec:matrizes-transformacao-coordenadas}
 
-Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais em imagens 2D que são exibidas na tela (Figura \ref{fig:spaces}). Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações do modelo do objeto 3D, como posição dos vértices e normais da superfície, para interpretá-las como coordenadas do espaço do objeto \cite{GLSLBook}. 
+\begin{figure}[htp]
+	\centering
+	\Caption{\label{fig:spaces} Processo de transformação entre os sistemas de coordenadas e seus espaços.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=12cm]{figuras/spaces.png}}
+	}{
+		\Fonte{\url{https://learnopengl.com/img/getting-started/coordinate_systems.png}}
+	}
+\end{figure}
+\nocite{spaces}
 
-	\begin{figure}[htp]
-		\centering
-		\Caption{\label{fig:spaces} Processo de transformação entre os sistemas de coordenadas e seus espaços.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=12cm]{figuras/spaces.png}}
-		}{
-			\Fonte{\url{https://learnopengl.com/img/getting-started/coordinate_systems.png}}
-		}
-	\end{figure}
-	\nocite{spaces}
+Esse é um tópico mais complexo, mas que também é importante para entender como a pipeline gráfica do OpenGL transforma descrições de objetos tridimensionais em imagens 2D que são exibidas na tela (Figura \ref{fig:spaces}). Algo semelhante a como uma câmera pode ser usada para criar uma representação em imagem de algo no mundo real. Entretanto nesse caso o primeiro passo consiste em pegar as informações do modelo do objeto 3D, como posição dos vértices e normais da superfície, para interpretá-las como coordenadas do espaço do objeto \cite{GLSLBook}. 
 
 Como cada objeto tem suas próprias características é necessário definir um sistema de coordenadas uniforme para que seja possível usar vários objetos em uma única cena. Para isso é utilizado o sistema de coordenadas global, e aqui a API vai um passo além e realiza mais uma conversão para o sistema de coordenadas de olho levando em consideração a posição da câmera na cena, seu ponto focal (para onde a câmera está olhando) e o vetor de direção para cima (e.g. a orientação da câmera) \cite{GLSLBook}. 
 
@@ -190,8 +194,6 @@ Como cada objeto tem suas próprias características é necessário definir um s
 		\end{bmatrix}
 	\end{equation}
 
-Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. O cálculo das normais é semelhante, a diferença é que é utilizada a matriz transposta da inversa da matriz \textit{modelView} para multiplicar um vetor de normais. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea (Apêndice --- A) usada para transformação para o espaço de projeção. Os três conjunto de elementos ($ m_{0} $, $ m_{1} $, $ m_{2} $), ($ m_{4} $, $ m_{5} $, $ m_{6} $) e ($ m_{8} $, $ m_{9} $, $ m_{10} $) são usados para rotação e escala e representam os três eixos ortogonais x, y e z (AHN, 2013)\nocite{openglOnline}.
-
 	\begin{figure}[h!]
 		\centering
 		\Caption{\label{fig:worldview} Conteúdo das quatro colunas da matriz \textit{modelView}.}	
@@ -201,6 +203,8 @@ Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrize
 			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
 		}
 	\end{figure}
+
+Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrizes de conversão de coordenadas de espaço de objeto para espaço global e de espaço global para espaço de olho. O cálculo das normais é semelhante, a diferença é que é utilizada a matriz transposta da inversa da matriz \textit{modelView} para multiplicar um vetor de normais. Como é possível ver na Figura \ref{fig:worldview} os três elementos mais à direita ($ m_{12} $, $ m_{13} $, $ m_{14} $) são para transformação de translação. O $ m_{15} $ é uma coordenada homogênea (Apêndice --- A) usada para transformação para o espaço de projeção. Os três conjunto de elementos ($ m_{0} $, $ m_{1} $, $ m_{2} $), ($ m_{4} $, $ m_{5} $, $ m_{6} $) e ($ m_{8} $, $ m_{9} $, $ m_{10} $) são usados para rotação e escala e representam os três eixos ortogonais x, y e z (AHN, 2013)\nocite{openglOnline}.
 
 Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de projeção para definir como os vértices serão projetados na tela, os valores dessa matriz dependem se modo de projeção utilizado é em perspectiva ou ortográfico (Figura \ref{fig:frustum}) e são mostrados nas equações \ref{eq-persp} e \ref{eq-ortho} respectivamente. 
 
@@ -226,7 +230,7 @@ Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de 
 	\end{equation}
 
 Os valores obtidos nessa operação são normalizados em uma região cúbica definida pelos pontos (-1, -1, -1) e (1, 1, 1) para espaço de coordenadas de dispositivo normalizado, isso significa que os valores passam a ser algum valor entre -1 e 1. Essa etapa é necessária para qua a área de visualização seja apropriadamente mapeada em uma janela de exibição de tamanho arbitrário. Por último, as coordenadas são convertidas para o sistema de coordenadas de tela. A partir desse ponto elas continuam para o processo de rasterização da pipeline do OpenGL (AHN, 2013)\nocite{openglOnline}. 
-	\begin{figure}[hbp]
+	\begin{figure}[h!]
 		\centering
         \Caption{\label{fig:frustum} Modos de projeção de câmera. As letras correspondem a \textit{left, right, bottom, top, near e far}.}
         \begin{subfigure}{0.45\textwidth}
@@ -256,15 +260,15 @@ Devido à necessidade crescente de substituir funcionalidades fixas por programa
 
 Um shader pode então ser definido como um código escrito em uma linguagem de sombreamento (HLSL, GLSL, RSL e etc) com o propósito de ser executado por um dos processadores programáveis do OpenGL. Um programa de shader é então um conjunto de shaders compilados executáveis \cite{GLSLBook}. A Figura \ref{fig:outline} mostra a implementação do código-fonte \ref{cf:outline} para criar um efeito de linha de contorno em volta de um objeto 3D utilizando a linguagem GLSL.
 
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:outline} Demonstração de um shader simples de linha contorno.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/outline.png}}
-		}{
-			\Fonte{Elaborado pelo autor}
-		}
-	\end{figure}
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:outline} Demonstração de um shader simples de linha contorno.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=8cm]{figuras/outline.png}}
+	}{
+		\Fonte{Elaborado pelo autor}
+	}
+\end{figure}
 
 A linguagem de sombreamento GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. O uso de números de ponto flutuante (\textit{float}) também é fundamental para conseguir altos níveis de precisão a troco de performance, por isso é possível especificar o nível de precisão desejado ao utilizá-los. Além disso ela oferece suporte a laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders \cite{GLSLBook}. 
 
@@ -288,7 +292,7 @@ Considerando a pouca diferença em capacidade de renderização existente entre 
 \subsection{High-Level Shader Language}
 \label{sec:hlsl}
 
-A HLSL é uma linguagem de shader criada em 2002 (acompanhou o DirectX 9) e também assemelha-se à linguagem de programação C. Ao longo dos anos foram adicionadas melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação. Na Figura \ref{fig:outlineHLSL} abaixo é mostrada a implementação um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para demonstrar algumas diferenças e semelhanças entre as duas linguagens.
+A HLSL é uma linguagem de shader criada em 2002 (acompanhou o DirectX 9) e também assemelha-se à linguagem de programação C. Ao longo dos anos foram adicionadas melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação. Na Figura \ref{fig:outlineHLSL} abaixo é mostrada a implementação de um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para demonstrar algumas diferenças e semelhanças entre as duas linguagens.
 
 	\begin{figure}[h!]
 		\centering
@@ -308,7 +312,7 @@ Tesselação é mais um processo na pipeline gráfica responsável por adicionar
 		\centering
 		\Caption{\label{fig:tess} Diferentes níveis de tesselação aplicados em uma malha produzem aumento no número de vértices.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=7cm]{figuras/tess.png}}
+			\fbox{\includegraphics[width=8cm]{figuras/tess.png}}
 		}{
 			\Fonte{\url{https://upload.wikimedia.org/wikipedia/commons/f/fc/Tessellation_Level_Table.png}}
 		}
@@ -350,28 +354,40 @@ Vertex processing involves the operations that occur at each vertex, most notabl
 
 \subsection{Fragment Shader}
 
-\section{Godot}
+\section{Motores de jogo e suas ferramentas}
+\label{sec:motores-jogo-ferramentas}
+
+Motores de jogo são softwares voltados para a criação de jogos eletrônicos. Seus sistemas permitem a integração de vários elementos como \textit{\Gls{scripts}}, malhas, animações e audios que juntos podem formar um jogo que pode ser distribuído para diferentes plataformas \cite{compStudyGE}. 
+
+Atualmente motores de jogo são utilizados não somente como ferramentas de desenvolvimento de jogos, mas também em comunidades científicas para estudos que envolvem simulações nas áreas de medicina, arquitetura (para design de ambientes), meteorologia, geologia (com simulação e estudo de topologias) e educação, principalmente através do uso de \Gls{realidade-virtual} e \Gls{realidade-aumentada} \cite{comparacaoDesempenho2}. 
+
+\subsection{Godot}
 \label{sec:unity}
 
-\section{Unity}
+\subsection{Unity}
 \label{sec:unity}
 
-\subsection{ShaderLab}
+Unity é um motor de jogo desenvolvido e mantido pela empresa Unity Technologies que permite a criação de jogos 2D e 3D. Apesentada em 2005, sua primeira versão era simples e compatível apenas com Mac OS, porém com sua evolução foi adicionado suporte a outras plataformas (PC, Linux, Android, iOS, PS4, etc) \cite{compStudyGE}. Esse foi um dos principais fatores que tornou essa engine tão popular. Já que por suportar mais plataformas, pode proporcionar acesso a um público mais amplo.
+
+Sua arquitetura consiste em um sistema modular baseado em componentes que são utilizados para compor os objetos nos jogos. Cada componente possui um conjunto de funcionalidades que afetam o comportamento do objeto, dessa forma não é necessário usar herança. Isso é uma vantagem visto que aumenta a flexibilidade e a eficiência da modificação dos objetos \cite{compStudyGE}.
+
+\subsubsection{ShaderLab}
 \label{sec:shaderlab}
 
-\section{Unreal}
+\subsection{Unreal}
 \label{sec:unity}
 
-\subsection{Nós de material}
+
+
+\subsubsection{Nós de material}
 \label{sec:shaderlab}
 
 \section{Otimização e performance}
 \label{sec:otimizacao-performance}
 
+Devido à sua natureza de operação que requer simulação em tempo real, os jogos eletrônicos são softwares que exigem bastante recursos de hardware. Ainda mais atualmente quando os desenvolvedores cada vez mais objetivam criar produtos que perfaçam 60 frames por segundo (FPS) ou mais. Dessa forma, para atingir o maior público possível, vale a pena usar ferramentas que possibilitem o uso mais otimizado possível desses recursos \cite{comparacaoDesempenho}.
 
-Nunc ac pretium dui. Mauris aliquam dapibus nulla ac mattis. Aenean non tortor volutpat, varius lectus vitae, accumsan nibh. Cras pretium vestibulum enim, id ullamcorper tortor ultrices non. Integer sodales viverra faucibus. Curabitur at dui lacinia, rhoncus lacus at, blandit metus. Integer scelerisque non enim quis ornare.
-
-\lipsum[13]
+Os jogos modernos exigem cada vez mais placas gráficas, processadores ou mais RAM poderosos, e é por isso que o mercado de videogames também está impulsionando os fabricantes de componentes, bem como computadores, laptops, consoles e smartphones \cite{comparacaoDesempenho2}.
 
 	\begin{table}[h!]	
 		\centering
