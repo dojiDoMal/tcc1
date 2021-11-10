@@ -80,7 +80,7 @@ Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma ino
 		}
 	\end{figure}
 	
-Até então shaders eram bem vistos e utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil uma vez que a sintaxe utilizada era semelhante à programação em Assembly. Percebendo esse problema, a Microsoft, em 2003, lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
+Até então shaders eram bem vistos e utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil uma vez que a sintaxe utilizada era semelhante à programação em Assembly. Percebendo esse problema, a Microsoft lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
 
 \subsection{Como o OpenGL funciona}
 \label{sec:como-opengl-funciona}
@@ -266,7 +266,7 @@ Um shader pode então ser definido como um código escrito em uma linguagem de s
 		}
 	\end{figure}
 
-A linguagem de sombreamento GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. Além disso ela oferece suporte a laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders \cite{GLSLBook}. 
+A linguagem de sombreamento GLSL faz uso de uma sintaxe bastante similar a linguagem de programação C. Seus tipos incluem vetores e matrizes por serem estruturas fundamentais para cálculos matemáticos com operações para gráficos 3D. O uso de números de ponto flutuante (\textit{float}) também é fundamental para conseguir altos níveis de precisão a troco de performance, por isso é possível especificar o nível de precisão desejado ao utilizá-los. Além disso ela oferece suporte a laços, chamadas a sub-rotinas, expressões condicionais e conta com funções embutidas próprias para o desenvolvimento de shaders \cite{GLSLBook}. 
 
 Essa linguagem possibilitou aos desenvolvedores implementar um conjunto de diferentes técnicas para conseguir obter uma variedade enorme de efeitos visuais; não somente isso mas o fato de que essas técnicas são implementadas com aceleração via hardware pela GPU (com processamento paralelo) proporciona um aumento drástico de performance e libera carga da CPU para realizar outras tarefas \cite{GLSLBook}.
 
@@ -274,21 +274,21 @@ O processador de vértices é uma unidade programável que realiza operações n
 
 Variáveis de atributo (variável global somente leitura alterada por vértice) são utilizadas para passar valores da aplicação para o processador de vértices. Já as variáveis uniformes (variável global somente leitura alterada por primitiva) são utilizadas para passar dados tanto para o processador de vértices como de fragmentos. Por último há as variáveis variantes cuja função é transportar informação do processador de vértices para o processador de fragmentos \cite{GLSLBook}.
 
-Conceitualmente, o processador de vértices atua em um vértice de cada vez, com a ressalva de que uma implementação pode ter múltiplos processadores operando em paralelo (o mesmo vale para o processador de fragmentos). Assim, entende-se que o shader de vértice é executado uma vez para cada vértice, sendo que há uma possibilidade de perda de performance caso um shader de vértice precise calcular mais variáveis variantes do que o que é necessário pelo shader de fragmentos. Por outro lado, o processador de fragmentos é responsável por realizar algumas operações como interpolação de valores, acesso e aplicação de texturas, névoa e soma de cor. Além disso, uma mudança de posição (x, y) de fragmento não é possível nesse estágio \cite{GLSLBook}. 
+O processador de vértices atua em um vértice por vez e uma implementação pode ter múltiplos processadores operando em paralelo (o mesmo vale para o processador de fragmentos). Logo, o shader de vértice é executado uma vez para cada vértice, sendo que há uma possibilidade de perda de performance caso um shader de vértice precise calcular mais variáveis variantes do que o que é necessário pelo shader de fragmentos. Por outro lado, o processador de fragmentos é responsável por realizar algumas operações como interpolação de valores, acesso e aplicação de texturas, névoa e soma de cor \cite{GLSLBook}. 
 
 Cabe ressaltar que, em termos de performance, normalmente os desenvolvedores preferem utilizar um shader de vértice mais genérico em conjunto com um shader de fragmento, pois assim é possível utilizar apenas um subconjunto das variáveis contidas no shader de vértice e ainda sim reduzir tempo e custos de desenvolvimento e manutenção para uma grande quantidade de shaders \cite{GLSLBook}.
 
 \subsection{Direct3D (HLSL) \textit{versus} OpenGL (GLSL)}
 \label{sec:direct-versus-opengl}
 
-Direct3D, assim como OpenGL, é uma API para desenvolvimento de aplicações gráficas nativas para plataformas proprietárias da Microsoft. Ela passou por uma enorme evolução durante os anos anos 90 e acabou superando sua concorrente direta OpenGL. Conceitualmente, sua pipeline gráfica também é bem semelhante à da OpenGL, entretanto uma diferença importante se dá em termos de design de gerenciamento dos estágios de shaders, onde OpenGL faz uso de um objeto (programa de shader) que contém múltiplos shaders para executar enquanto que Direct3D expõe um contexto de renderização diretamente para a criação de shaders. Quanto às linguagens (GLSL e HLSL), são muito parecidas e os desenvolvedores conseguem transcrever instruções facilmente de uma para a outra (MICROSOFT, 2020)\nocite{Direct3D}.
+Direct3D é uma API para desenvolvimento de aplicações gráficas nativas para plataformas proprietárias da Microsoft. Ela evoluiu muito durante os anos anos 90 e superou a OpenGL. Conceitualmente, a pipeline gráfica de ambas APIs são bem semelhantes, mas uma diferença importante se dá em termos de design de gerenciamento dos estágios de shaders, onde OpenGL faz uso de um objeto (programa de shader) que contém múltiplos shaders enquanto que Direct3D expõe um contexto de renderização diretamente para a criação de shaders. Quanto às linguagens (GLSL e HLSL), são muito parecidas e os desenvolvedores conseguem transcrever instruções facilmente de uma para a outra (MICROSOFT, 2020)\nocite{Direct3D}.
 
-Levando em consideração a pouca diferença em capacidade de renderização existente entre essas duas interfaces, a escolha sobre qual usar depende muito da plataforma para qual se pretende desenvolver. Direct3D é específica para plataformas da Microsoft e é amplamente suportada por fornecedores de hardware gráfico, especialmente em computadores desktop. OpenGL possui a vantagem de ser open source e possui bastante aceitação no espaço de desenvolvimento mobile, principalmente devido ao desenvolvimento da OpenGL ES --- uma subseção do OpenGL projetada especialmente para sistemas embarcados como smartphones e consoles portáteis \cite{HLSLBook}.
+Considerando a pouca diferença em capacidade de renderização existente entre essas duas interfaces, a escolha sobre qual usar depende muito da plataforma alvo de desenvolvimento. Direct3D é específica para plataformas da Microsoft e é amplamente suportada por fornecedores de hardware gráfico, especialmente em computadores desktop. OpenGL é open source e possui bastante aceitação no espaço de desenvolvimento mobile, principalmente devido ao desenvolvimento da OpenGL ES --- uma subseção do OpenGL projetada especialmente para sistemas embarcados como smartphones e consoles portáteis \cite{HLSLBook}.
 
 \subsection{High-Level Shader Language}
 \label{sec:hlsl}
 
-A HLSL é uma linguagem de sombreamento que surgiu em 2002 (no lançamento do DirectX 9) e também assemelha-se à linguagem de programação C. Ao longo dos anos foram introduzidas várias melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação. Logo abaixo, foi implementado um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para demonstrar algumas diferenças e semelhanças entre as duas linguagens e seu resultado pode ser visto na Figura \ref{fig:outlineHLSL}.
+A HLSL é uma linguagem de shader criada em 2002 (acompanhou o DirectX 9) e também assemelha-se à linguagem de programação C. Ao longo dos anos foram adicionadas melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API específica para uso de GPGPU (\acrlong{GPGPU}) e o suporte a tesselação. Na Figura \ref{fig:outlineHLSL} abaixo é mostrada a implementação um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para demonstrar algumas diferenças e semelhanças entre as duas linguagens.
 
 	\begin{figure}[h!]
 		\centering
@@ -364,6 +364,9 @@ Vertex processing involves the operations that occur at each vertex, most notabl
 
 \subsection{Nós de material}
 \label{sec:shaderlab}
+
+\section{Otimização e performance}
+\label{sec:otimizacao-performance}
 
 
 Nunc ac pretium dui. Mauris aliquam dapibus nulla ac mattis. Aenean non tortor volutpat, varius lectus vitae, accumsan nibh. Cras pretium vestibulum enim, id ullamcorper tortor ultrices non. Integer sodales viverra faucibus. Curabitur at dui lacinia, rhoncus lacus at, blandit metus. Integer scelerisque non enim quis ornare.
