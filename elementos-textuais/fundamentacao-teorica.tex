@@ -348,11 +348,13 @@ Esse cenário pode ser suficiente para sobrecarregar um microprocessador comum e
 
 
 \subsection{Vertex Shader}
+\label{vertex-shader}
 
 A vertex shader is a GPU program that is executed once per vertex that is assigned to, and a pixel shader is a GPU program that is executed once per pixel.
 Vertex processing involves the operations that occur at each vertex, most notably transformation and lighting. Fragments are per-pixel data structures that are created by the rasterization of graphics primitives. A fragment contains all the data necessary to update a single location in the frame buffer. Fragment processing consists of the operations that occur on a per-fragment basis, most notably reading from texture memory and applying the texture value(s) at each fragment \cite{GLSLBook}.
 
 \subsection{Fragment Shader}
+\label{sec:fragment-shader}
 
 \section{Motores de jogo e suas ferramentas}
 \label{sec:motores-jogo-ferramentas}
@@ -361,8 +363,44 @@ Motores de jogo são softwares voltados para a criação de jogos eletrônicos. 
 
 Atualmente motores de jogo são utilizados não somente como ferramentas de desenvolvimento de jogos, mas também em comunidades científicas para estudos que envolvem simulações nas áreas de medicina, arquitetura (para design de ambientes), meteorologia, geologia (com simulação e estudo de topologias) e educação, principalmente através do uso de \Gls{realidade-virtual} e \Gls{realidade-aumentada} \cite{comparacaoDesempenho2}. 
 
+% TODO: tentar fazer essa tabela, poderia colocar as target platforms talvez e as linguagens de programação %
+\begin{quadro}[h!]	
+	\centering
+	\Caption{\label{qua:engines} Componentes que compões as game engines}\UNIFORqua{}{
+		\begin{tabular}{|l|c|c|c|}
+			\hline
+			\# & Godot & Unity & Unreal \\
+			\hline
+			Motor de física & Bullet & PhysX  & PhysX \\
+			\hline
+			Programação & GDSCript / C\# & C\# & C++ / BluePrint \\
+			\hline
+			Audio & Bus System & Audio Mixer & Sound Cue \\				
+			\hline
+		\end{tabular}
+	}{
+		\Fonte{Elaborado pelo autor}
+	}
+\end{quadro}
+\hfill
+
+Ambas as engines Unity e Unreal contém um sistema de iluminação global que simula operação em tempo real. Boa parte dos cálculos de renderização de luz são feitos antes de exibir o primeiro frame e seus resultados são utilizados durante a execução do jogo. As duas engines oferecem suporte a sombreamento baseado na física (simulação da interação física entre as luzes e as superfícies). Além disso, destaca-se o suporte a algumas técnicas avançadas como suavização de bordas, reflexões em tempo real, oclusão de ambiente, profundidade de campo, entre outras \cite{compStudyGE}. 
+
+Em termos de qualidade de gráficos, Godot e Unity são considerados inferiores a Unreal, que é mais adequada para renderizar gráficos empolgantes e realistas. Sendo que Unreal Engine se destaca pelos seus notáveis efeitos de pós-processamento e por implementar um ótimo efeito de dispersão de subsuperfície (Figura \ref{fig:subsurface}) \cite{compStudyGE}.
+
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:subsurface} A luz que penetra na superfície de um objeto translúcido é espalhada pela interação com o material e sai da superfície em um ponto diferente.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=9cm]{figuras/subsurface}}
+	}{
+		\Fonte{\url{http://www.mrbluesummers.com/wp-content/uploads/2010/07/Sub-Surface-Scattering-Example.jpg}}
+	}
+\end{figure}
+\nocite{subsurface}
+
 \subsection{Godot}
-\label{sec:unity}
+\label{sec:godot}
 
 \subsection{Unity}
 \label{sec:unity}
@@ -371,16 +409,44 @@ Unity é um motor de jogo desenvolvido e mantido pela empresa Unity Technologies
 
 Sua arquitetura consiste em um sistema modular baseado em componentes que são utilizados para compor os objetos nos jogos. Cada componente possui um conjunto de funcionalidades que afetam o comportamento do objeto, dessa forma não é necessário usar herança. Isso é uma vantagem visto que aumenta a flexibilidade e a eficiência da modificação dos objetos \cite{compStudyGE}.
 
+Cabe ainda destacar que ela possui uma das melhores documentações. A maioria das funções são descritas em profundidade e com bastante uso de exemplos, o que é muito útil principalmente para usuários iniciantes. Além disso ela possui uma vasta quantidade de templates, uma interface limpa e fácil de configurar, uma comunidade ativa, e seu uso de C\# ao invés de C++ torna a programação mais simples e agradável \cite{compStudyGE}.
+
 \subsubsection{ShaderLab}
 \label{sec:shaderlab}
 
 \subsection{Unreal}
-\label{sec:unity}
+\label{sec:unreal}
 
+Unreal é mais um motor de jogo que está a mais tempo no mercado (desde 1998). Ela também permite a criação de jogos para múltiplas plataformas. Ela possui uma ferramenta específica para criação de scripts chamada \textit{BluePrint} que permite implementar lógica de programação usando blocos, porém também é possível criar scripts em C++ \cite{compStudyGE}.
 
+É uma engine, em comparação com a Unity, mais difícil de dominar apesar de possui uma interface amigável, porém com excesso de opções à primeira vista. Seu sistema de programação com \textit{BluePrints} traz uma vantagem para pessoas que não sabem ou não gostam de escrever código \cite{compStudyGE}.
 
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:blueprint} A programação da lógica do jogo pode ser feita utilizando o sistema visual de \textit{BluePrint}.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=14cm]{figuras/blueprint}}
+	}{
+		\Fonte{\url{https://docs.unrealengine.com/4.27/Images/ProgrammingAndScripting/Blueprints/QuickStart/BPQS_6_Step4.png}}
+	}
+\end{figure}
+\nocite{blueprint}
+ 
 \subsubsection{Nós de material}
-\label{sec:shaderlab}
+\label{sec:material-nodes}
+
+Novamente, a Unreal se destaca por implementar uma ferramenta visual de edição de materiais que reutiliza os nós das \textit{BluePrints} mencionadas anteriormente, porém dessa vez voltadas para a modificação das propriedades dos materiais, o que torna o processo de criação de shader bastante amigável e divertido por estimular visualmente a criatividade dos usuários \cite{compStudyGE}. 
+
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:materialUnreal} Uso de uma textura como base para definir a cor de um material.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=15cm]{figuras/materialUnreal}}
+	}{
+		\Fonte{\url{https://docs.unrealengine.com/4.27/Images/RenderingAndGraphics/Materials/PhysicallyBased/BaseColor_QS.webp}}
+	}
+\end{figure}
+\nocite{materialUnreal}
 
 \section{Otimização e performance}
 \label{sec:otimizacao-performance}
