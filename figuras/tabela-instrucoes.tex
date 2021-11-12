@@ -1,0 +1,129 @@
+\begin{quadro}[h!]
+	\centering
+	\Caption{\label{qua:instrucoes} Exemplo do número de instruções necessárias para operações específicas no OpenGL}\UNIFORqua{}{
+	\begin{tabular}{|c|p{2cm}|p{2cm}||c|p{2cm}|p{2cm}|}
+	\hline
+	Operação & Número de Instruções & Número de ciclos de renderização & Operação & Número de Instruções & Número de ciclos de renderização \\
+	\hline
+	\begin{tabular}[c]{@{}c@{}}
+		RGB2GRAY\\ RGB2YCbCr\\ YCbCr2RGB\\ RGB2HSV\\ HSV2RGB\\
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		5\\ 14\\ 14\\ 28\\ 29\\
+	\end{tabular}} &
+	\multicolumn{1}{c||}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1\\ 1\\ 1\\ 1\\
+	\end{tabular}} &
+	\begin{tabular}[c]{@{}c@{}}
+		Gaussian \\Sharpening \\Gradient \\Bilateral \\Laplacian \\Box ﬁlter\\
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		21\\ 13\\ 19\\ 62\\ 14\\18\\
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1\\ 2\\ 2\\ 1\\1\\
+	\end{tabular}} \\
+	\hline
+	\begin{tabular}[c]{@{}c@{}}
+		Bloom\\ Skin detection\\
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		15\\ 25
+	\end{tabular}} &
+	\multicolumn{1}{c||}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 2
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		Sobel \\Prewitt
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		24\\ 16
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		2\\ 2
+	\end{tabular}} \\
+	\hline
+	\begin{tabular}[c]{@{}c@{}}
+		Detail enhancement \\Edge enhancement
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		13\\ 25
+	\end{tabular}} &
+	\multicolumn{1}{c||}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 2
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		Contrast Stretching \\Median ﬁltering
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		13\\ 43
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1
+	\end{tabular}} \\ 
+	\begin{tabular}[c]{@{}c@{}}
+		Dilation \\Median
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		22\\ 43
+	\end{tabular}} &
+	\multicolumn{1}{c||}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		Erosion \\Zero-crossing
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		22\\ 22
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1
+	\end{tabular}} \\
+	\hline
+	\begin{tabular}[c]{@{}c@{}}
+		Sepia \\Radial Blur \\Edge overlay \\Gray
+	\end{tabular} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		21\\ 21\\ 25\\ 5
+	\end{tabular}} &
+	\multicolumn{1}{c||}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1\\ 2\\ 1
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		Color gradient\\Negative\\Gamma\\Edge
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		20\\ 2\\ 15\\ 24
+	\end{tabular}} &
+	\multicolumn{1}{c|}{
+	\begin{tabular}[c]{@{}c@{}}
+		1\\ 1\\ 1\\ 2
+	\end{tabular}} \\ \hline  
+	\end{tabular}
+	}{
+		\Fonte{\cite{optimizationMobile}}
+	}
+	\end{quadro}
