@@ -348,6 +348,7 @@ Considerando uma tela com resolução de 800x600, significa que 480.000 pixels p
 
 Esse cenário pode ser suficiente para sobrecarregar um microprocessador comum e fica pior quando leva-se em consideração as tecnologias que fazem uso seja de taxa de FPS maior, seja de resoluções maiores como 2K, e acima. Para resolver esse problema utiliza-se processamento paralelo. A GPU possui vários pequenos microprocessadores que funcionam concorrentemente, além disso ela possui funções matemáticas específicas aceleradas via hardware para realizar operações matriciais e trigonométricas rapidamente (VIVO; LOWE, 2015)\nocite{bookOfShaders}.
 
+A dificuldade relativa de programar shaders levou ao desenvolvimento de ferramentas visuais que auxiliam a criação desses programas através do uso nós funcionais conectados entre si que remetem a uma estrutura de árvore. Esse tipo de ferramenta está presente na Unreal Engine desde 2005. Ao mesmo tempo que possuem utilidade, é importante garantir que shaders gerados por tais ferramentas seja otimizados. Otimização é importantíssima para encorajar desenvolvedores a criar shaders maiores e mais complexos \cite{jensen2007shader}.
 
 \subsection{Vertex Shader}
 \label{vertex-shader}
@@ -383,18 +384,20 @@ Atualmente motores de jogo são utilizados não somente como ferramentas de dese
 % TODO: tentar fazer essa tabela, poderia colocar as target platforms talvez e as linguagens de programação %
 \begin{quadro}[h!]	
 	\centering
-	\Caption{\label{qua:engines} Componentes que compões as game engines}\UNIFORqua{}{
-		\begin{tabular}{|l|c|c|c|}
+	\Caption{\label{qua:engines} Principais componentes das game engines}\UNIFORqua{}{
+		\begin{tabular}{|l|c|m{3cm}|c|}
 			\hline
-			\# & Godot & Unity & Unreal \\
+			\phantom{engines} & Godot & \centering Unity & Unreal \\
 			\hline
-			Shading & GLSL & ShaderLab (HLSL) & Material Nodes \\
+			Shading & GLSL & \centering ShaderLab (HLSL) / Shader Graph & Material Nodes \\
 			\hline
-			Motor de física & Bullet & PhysX  & PhysX \\
+			Sistema de Partículas & Built-in & \centering Built-in / VFX Graph & UnrealCascade\\
 			\hline
-			Programação & GDSCript / C\# & C\# & C++ / BluePrint \\
+			Motor de física & Bullet & \centering PhysX  & PhysX \\
 			\hline
-			Audio & Bus System & Audio Mixer & Sound Cue \\				
+			Programação & GDSCript / C\# & \centering C\# & C++ / BluePrint \\
+			\hline
+			Audio & Bus System & \centering Audio Mixer & Sound Cue \\				
 			\hline
 		\end{tabular}
 	}{
@@ -430,6 +433,8 @@ Sua arquitetura consiste em um sistema modular baseado em componentes que são u
 
 Cabe ainda destacar que ela possui uma das melhores documentações. A maioria das funções são descritas em profundidade e com bastante uso de exemplos, o que é muito útil principalmente para usuários iniciantes. Além disso ela possui uma vasta quantidade de templates, uma interface limpa e fácil de configurar, uma comunidade ativa, e seu uso de C\# ao invés de C++ torna a programação mais simples e agradável \cite{compStudyGE}.
 
+Conforme verificado em estudo por Costa, Gomes, Duarte (2016)\nocite{estudoUnity}, dentre os motores de jogo a Unity é uma das ferramentas mais vantajosa do ponto de vista de produção por possuir um formato mais profissional e comercial, voltado para desenvolvimento multiplataforma. Além disso ela é capaz de performar melhor em composições de hardware mais simples.
+
 \subsubsection{ShaderLab}
 \label{sec:shaderlab}
 
@@ -450,6 +455,8 @@ Unreal é mais um motor de jogo que está a mais tempo no mercado (desde 1998). 
 \nocite{blueprint}
 
 É uma engine, em comparação com a Unity, mais difícil de dominar apesar de possui uma interface amigável, porém com excesso de opções à primeira vista. Seu sistema de programação com \textit{BluePrints} (Figura \ref{fig:blueprint}) traz uma vantagem para pessoas que não sabem ou não gostam de escrever código \cite{compStudyGE}.
+
+Merecem destaque seu sistema de renderização \Gls{multithread} (intitulado Gemini) com 64 bits de HDR (\acrlong{HDR}), oclusão de ambiente, iluminação por pixel, iluminação especular dinâmica e reflexões, seu sistema de customização de terrenos e ainda o sistema de malhas de navegação para integração com personagens controlados por inteligência artificial \cite{armstrong2013game}.
  
 \subsubsection{Nós de material}
 \label{sec:material-nodes}
@@ -474,6 +481,10 @@ Devido à sua natureza de operação que requer simulação em tempo real, os jo
 
 Com o crescimento do mercado de dispositivos móveis, a oportunidade de desenvolver e vender aplicações sofisticadas para esses dispositivos é ainda mais atrativa. Entretanto há também uma enorme quantidade de desafios ao lidar com esse tipo de tecnologia, entre eles: fonte de alimentação, quantidade de poder computacional, tamanho do display e tipos de entrada. Além disso, os processadores de smartphones não tratam números de ponto flutuante, o que reduz muito a precisão dos cálculos \cite{optimizationMobile}.
 
+Devido a melhoria no poder de processamento gráfico, o uso de técnicas como iluminação 3D, vegetação gerada proceduralmente e fotogrametria aumentou consideravelmente tornando o processo de renderização mais custoso. Métodos comuns para otimização de cenas que fazem uso dessas técnicas são alocação de memória, \Gls{multithread}, e nível de detalhe. Ou seja, realizar a renderização em uma thread separada da lógica do jogo ajuda bastante a melhorar a performance \cite{zhang2017vegetation}.
+
+Nível de detalhe é uma forma de determinar a distribuição dos recursos de renderização entre os objetos (de acordo com a posição e a importância atribuída aos vértices desses), diminuindo o número de dados desnecessários. Outrossim, são gerados modelos simplificados que reduzem a complexidade da cena e permitem uma renderização em tempo real mais eficiente \cite{zhang2017vegetation}.
+
 Como as GPUs normalmente possuem ótima capacidade de processamento de vértices, a etapa de sombreamento de vértices raramente gerará um gargalo. Entretanto quando muitos pixels precisam ser processados por um shader de fragmentos com muitas instruções é esperado que haja um gargalo. Pode-se dizer que o número de instruções é inversamente proporcional à performance (taxa de frames) \cite{optimizationMobile}.
 
 \input{figuras/tabela-instrucoes.tex}
@@ -492,7 +503,9 @@ Uma forma de otimização de shaders já descrita por Rost (2006) consiste na su
 
 Outra técnica útil para melhorar a performance ao lidar com várias luzes é o sombreamento diferido, que basicamente determina quais superfícies serão visíveis na cena final e aplica cálculos complexos de efeitos de shader apenas nos pixels que compõem essas superfícies. Dessa maneira, as operações são adiadas até que sejam estabelecidos os pixels que contribuirão para a imagem final. Essa técnica garante que não haja desperdício de ciclos de hardware com cálculos em pixels que sequer serão exibidos na tela \cite{GLSLBook}.
 
+Mais uma maneira de otimização descrita por Jensen \textit{et al}. (2007) seria garantir que o código de shader seja movido para sua parte menos custosa. Nesse caso existem três possíveis lugares: no programa de vértices, no programa de fragmentos, ou nas declarações constantes. A última é a mais otimizada pois os cálculos são realizados em tempo de compilação. A segunda forma mais otimizada seria utilizar o espaço do programa de vértices, mas se houver muito código nessa parte haverá um desbalanceamento.
 
+Caso seja necessário realizar transformações de coordenadas a melhor opção seria utilizar o espaço do programa de vértices (por exemplo mover transformação da direção da luz em espaço tangente para essa etapa). Ao ponderar-se esses detalhes para as ferramentas de criação de shaders visuais, percebe-se que há uma certa dificuldade em realizar otimizações manuais, já que o código é gerado automaticamente \cite{jensen2007shader}.
 
 	\begin{table}[h!]	
 		\centering
