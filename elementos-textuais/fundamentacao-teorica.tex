@@ -8,7 +8,7 @@ Neste capítulo serão apresentados os assuntos considerados fundamentais para o
 
 As representações visuais feitas através de imagens foram e são até hoje uma característica importante da formação da humanidade. Através do sentido da visão conseguimos absorver informações rapidamente, fazer associações durante o aprendizado e o estudo, ou ainda distinguir se algo é visualmente agradável o suficiente ou não para prender nossa atenção. O caso mais extremo seria a discussão da existência de algo que não se pode ver, como no século dezessete, quando a existência das bactérias era muito questionada, até que Antonie van Leeuwenhoek inventou o microscópio (LUTEN, 2014)\nocite{openGLBook}.
 
-No início do desenvolvimento dos primeiros computadores, quando seu acesso era destinado a um público mais restrito devido aos custos elevados e a logística complexa, a forma de representação visual para os humanos dos pulsos elétricos gerados pelo processamento de dados nos computadores era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente. Cabe ainda ressaltar que a partir de então ele continuou sendo usado até o advento das novas tecnologias de monitores e televisores de tela plana (LUTEN, 2014)\nocite{openGLBook}.
+No início do desenvolvimento dos primeiros computadores, quando seu acesso era destinado a um público restrito devido aos custos elevados e a logística complexa, a forma de representação visual para os humanos dos pulsos elétricos gerados pelo processamento de dados nos computadores era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente. A partir de então ele continuou sendo usado até o advento das novas tecnologias de monitores e televisores de tela plana (LUTEN, 2014)\nocite{openGLBook}.
 
 Apesar do avanço citado acima, o estabelecimento da computação gráfica como conhecemos hoje teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad, que permitia que o usuário desenhasse formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para o estudo e desenvolvimento da computação gráfica em tempo real e também das interfaces gráficas de usuário (\acrshort{GUI}).
 
@@ -82,7 +82,9 @@ Vendo uma oportunidade de mercado, a Microsoft logo agiu e comprou a empresa Ren
 
 Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma inovação ao mercado, a "primeira GPU" (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
 
-Até então shaders eram bem vistos e utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil uma vez que a sintaxe utilizada era semelhante à programação em Assembly. Percebendo esse problema, a Microsoft lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
+Uma GPU é um circuito eletrônico projetado para realizar manipulaçoes rápidas em memória para acelerar a criação de imagens em um buffer de quadros que envia a saída para uma tela. Em aplicações que exigem muitas operações vetoriais, o poder de computação paralelo da GPU consegue entregar maior performance que uma CPU convencional. Daí seu vasto uso em jogos eletrônicos, mas também em outras áreas, principalmente na ciência \cite{shea2013gpu}.
+
+Até então shaders eram bastante utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil devido a sintaxe utilizada ser semelhante à programação em Assembly. A Microsoft então lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
 
 \subsection{Como o OpenGL funciona}
 \label{sec:como-opengl-funciona}
@@ -158,6 +160,16 @@ Rasterização é a etapa de conversão de dados tanto geométricos como de pixe
 Sobre a etapa de texturização é interessante destacar que a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também pode trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
 
 É importante destacar que a API também fornece a possibilidade de utilizar texturas do tipo \textit{mipmap} --- várias representações da mesma imagem, porém cada uma tem metade da resolução da anterior --- em conjunto com o parâmetro de nível de detalhe que será detalhado mais adiante, mas que de forma simplificada permite a otimização do processo de renderização de objetos que estão distantes da câmera. 
+
+\begin{equation} \label{eq-pipeline}
+	\begin{aligned}
+		f((x,y), \mathbf{v})=p \circ r(g \circ h(\mathbf{v}), (x,y)) 
+	\end{aligned}
+\end{equation}
+
+Uma descrição matemática da pipeline de renderização está na Equação \ref{eq-pipeline} onde (x, y) é a posição na tela de cada pixel, \textbf{v} é um conjunto de primitivas, p é o shader de fragmentos, g é o shader de geometria, h é o shader de vértice e r é o estágio de rasterização onde as primitivas são convertidas em pixels com atributos de geometria interpolados \cite{wang2014auto}.
+
+Por fim, é importante mencionar que existem dois modos principais de renderização: o modo direto calcula as luzes e materiais para cada geometria visível e depois resolve qual está mais próxima da câmera para então decidir quais exibir. Já o modo diferido realiza várias passadas (profundidade, cor, normais) para as geometrias e só então realiza os cálculos, dessa forma apenas os fragmentos visíveis são considerados. O segundo modo é mais eficiente para lidar com muitas luzes, porém não oferece suporte a transparência e suavização \cite{vsmid2017comparison}.
 
 \subsubsection{Matrizes de transformação de coordenadas}
 \label{sec:matrizes-transformacao-coordenadas}
@@ -323,6 +335,8 @@ Tesselação é mais um processo na pipeline gráfica responsável por adicionar
 
 Esse processo é relativamente novo e ocorre na etapa do shader de geometria, que adiciona um passo de criação de geometria na pipeline gráfica após o shader de vértices. Isso permite que o programador implemente tesselação automática para geometrias complexas, ou realize operações gráficas dependentes de geometria como silhuetas e sombras \cite{bailey2007}.
 
+Nível de detalhe é um fator chave de otimização utilizado por game engines para alcançar renderização de alta qualiadade com melhor performance. Além disso é desejável evitar mudanças frequentes em shaders e chamadas de desenho utilizando um número reduzido de shaders. Isso minimiza a sobrecarga da CPU e ajuda a GPU a desenhar mais objetos em um frame com shaders com nível de detalhe \cite{yong2015rapid}.
+
 \section{Aprofundando Conceitos Técnicos de Shaders}
 \label{sec:aprofundando-conceitos-tecnicos-shaders}
 
@@ -354,6 +368,8 @@ Esse cenário pode ser suficiente para sobrecarregar um microprocessador comum e
 
 A dificuldade relativa de programar shaders levou ao desenvolvimento de ferramentas visuais que auxiliam a criação desses programas através do uso nós funcionais conectados entre si que remetem a uma estrutura de árvore. Esse tipo de ferramenta está presente na Unreal Engine desde 2005. Ao mesmo tempo que possuem utilidade, é importante garantir que shaders gerados por tais ferramentas seja otimizados. Otimização é importantíssima para encorajar desenvolvedores a criar shaders maiores e mais complexos \cite{jensen2007shader}.
 
+Conforme descrito em estudo por \citeauthoronline{wang2014auto} (2014) vários estudos sobre otimização de shaders já foram conduzidos, porém com efetividade apenas para para o estágio de fragmentos. De certa forma a qualidade dos shaders depende bastante da experiência dos programadores e pode ser um processo bem demorado para níveis de complixadade maiores. Normalmente a computação mais custosa ocorre no shader de fragmentos. 
+
 \subsection{Vertex Shader}
 \label{vertex-shader}
 
@@ -381,43 +397,24 @@ Nessa etapa o processador de fragmentos recebe as informações de cada pixel (s
 
 Dependendo da resolução definida, algo em torno de 2 milhões de pixels podem precisar ser processados e renderizados a cada frame (60 FPS). Isso facilmente gera uma carga computacional enorme. Felizmente, com a evolução da tecnologia, os desenvolvedores podem facilmente implementar programas que controlam a iluminação, o sombreamento e a cor de cada pixel (NVIDIA, 2019)\nocite{fragShader}.
 
+Como foi mostrado por \citeauthoronline{bilodeau} (2019), apesar de ser possível realizar computações de propósito geral no shader de fragmentos, vale a pena destacar a tecnologia dos shaders de computação e suas vantagens como maior controle sobre as \textit{threads}, acesso à memória compartilhada, dispensabilidade de renderização de polígonos. Além disso, utilizar oclusão de ambiente em alta definição é muito custosa e pode ser substituida por meia resolução em conjunto com desfoque para melhorar a performance.
+
 \section{Motores de jogo e suas ferramentas}
 \label{sec:motores-jogo-ferramentas}
 
 Criadores de jogos atualmente contam com motores de jogo para desenvolver as principais partes de software para seus jogos. Sua principal função é simplificar as tarefas dos desenvolvedores oferecendo abstrações convenientes para os sistemas operacionais e seus hardwares nos quais o jogo funcionará. Isso somado ao propósito de explorar ao máximo a capacidade das máquinas dos usuários para que seja proporcionada uma experiência mais imersiva possível \cite{simon2015unity}.
 
-Conforme definido por Barczak, Woźniak (2019) motores de jogo são softwares (proprietários ou de código aberto) voltados para facilitar a criação de jogos eletrônicos. Seus sistemas permitem a integração de vários elementos como \textit{\Gls{scripts}}, malhas, animações e audios que juntos podem formar um jogo eletrônico que pode ser distribuído para diferentes plataformas por indivíduos ou companhias. 
+\input{figuras/tabela-engine.tex}
 
-É possível pensar em game engines de duas formas diferentes: como uma estrutura de trabalho para criadores de jogos e como um conjunto de código para jogadores. Uma game engine consistem em um conjunto de ferramentas que ajudam desenvolvedores de jogos durante o processo de criação de jogos.
+Conforme definido por Barczak, Woźniak (2019) motores de jogo são softwares (proprietários ou de código aberto) voltados para facilitar a criação de jogos eletrônicos. Seus sistemas permitem a integração de vários elementos como \textit{\Gls{scripts}}, malhas, animações e audios que juntos podem formar um jogo eletrônico que pode ser distribuído para diferentes plataformas por indivíduos ou companhias. 
 
 Atualmente motores de jogo são utilizados não somente como ferramentas de desenvolvimento de jogos, mas também em comunidades científicas para estudos que envolvem simulações nas áreas de medicina, arquitetura (para design de ambientes), meteorologia, geologia (com simulação e estudo de topologias) e educação, principalmente através do uso de \Gls{realidade-virtual} e \Gls{realidade-aumentada} \cite{comparacaoDesempenho2}. 
 
+\input{figuras/tabela-features.tex}
+
+Cada engine conta com um motor de renderização com funcionalidades que facilitam o processamento das informações da cena (câmera, luzes, materiais e texturas). Esse motor é uma parte fundamental de uma game engine e consome a maior parte dos recursos (90\% dos cálculos dizem respeito a renderização). Como os jogadores esperam visuais melhores e os jogos precisam rodar em hardwares inferiores, há um conflito que faz com que os motores de renderização precisem ser otimizados e configuráveis durante o desenvolvimento \cite{vsmid2017comparison}.
+
 Ambas as engines Unity e Unreal contém um sistema de iluminação global que simula operação em tempo real. Boa parte dos cálculos de renderização de luz são feitos antes de exibir o primeiro frame e seus resultados são utilizados durante a execução do jogo. As duas engines oferecem suporte a sombreamento baseado na física (simulação da interação física entre as luzes e as superfícies). Além disso, destaca-se o suporte a algumas técnicas avançadas como suavização de bordas, reflexões em tempo real, oclusão de ambiente, profundidade de campo, entre outras \cite{compStudyGE}. 
-
-
-% TODO: tentar fazer essa tabela, poderia colocar as target platforms talvez e as linguagens de programação %
-\begin{quadro}[h!]	
-	\centering
-	\Caption{\label{qua:engines} Principais componentes das game engines}\UNIFORqua{}{
-		\begin{tabular}{|l|c|m{3cm}|c|}
-			\hline
-			\phantom{engines} & Godot & \centering Unity & Unreal \\
-			\hline
-			Shading & GLSL & \centering ShaderLab (HLSL) / Shader Graph & Material Nodes \\
-			\hline
-			Sistema de Partículas & Built-in & \centering Built-in / VFX Graph & UnrealCascade\\
-			\hline
-			Motor de física & Bullet & \centering PhysX  & PhysX \\
-			\hline
-			Programação & GDSCript / C\# & \centering C\# & C++ / BluePrint \\
-			\hline
-			Audio & Bus System & \centering Audio Mixer & Sound Cue \\				
-			\hline
-		\end{tabular}
-	}{
-		\Fonte{Elaborado pelo autor}
-	}
-\end{quadro}
 
 Em termos de qualidade de gráficos, Godot e Unity são considerados inferiores a Unreal, que é mais adequada para renderizar gráficos empolgantes e realistas. Sendo que Unreal Engine se destaca pelos seus notáveis efeitos de pós-processamento e por implementar um ótimo efeito de dispersão de subsuperfície (Figura \ref{fig:subsurface}) \cite{compStudyGE}.
 
@@ -432,8 +429,14 @@ Em termos de qualidade de gráficos, Godot e Unity são considerados inferiores 
 \end{figure}
 \nocite{subsurface}
 
+A escolha final das game engines requer a ponderação de alguns fatores como tipo de licensa, possibilidade de modificação do código, possível uso comercial, especificações de hardware, plataforma alvo, habilidade da equipe de desenvolvimento, ferramentas de suporte, estabilidade da engine e público alvo \cite{navarro2012}.
+
+Por serem ferramentas complexas, sua comparação é uma tarefa complicada. A maneira mais apropriada seria implementar o mesmo projeto com complexidade apropriada e de maneira similar em cada game engine utilizando critérios mensuráveis para avalização \cite{vsmid2017comparison}.  
+
 \subsection{Godot}
 \label{sec:godot}
+
+
 
 \subsection{Unity}
 \label{sec:unity}
@@ -474,6 +477,10 @@ Unreal é mais um motor de jogo que está a mais tempo no mercado (desde 1998). 
 É uma engine, em comparação com a Unity, mais difícil de dominar apesar de possui uma interface amigável, porém com excesso de opções à primeira vista. Seu sistema de programação com \textit{BluePrints} (Figura \ref{fig:blueprint}) traz uma vantagem para pessoas que não sabem ou não gostam de escrever código \cite{compStudyGE}.
 
 Merecem destaque seu sistema de renderização \Gls{multithread} (intitulado Gemini) com 64 bits de HDR (\acrlong{HDR}), oclusão de ambiente, iluminação por pixel, iluminação especular dinâmica e reflexões, seu sistema de customização de terrenos e ainda o sistema de malhas de navegação para integração com personagens controlados por inteligência artificial \cite{armstrong2013game}.
+
+Unreal apresenta uma melhor performance audiovisual de maneira geral. Além disso ela apresenta uma interface mais complexa em comparação com Unity e Godot que oferece todas as ferramentas necessárias em uma única janela. É portanto uma engine voltada para usuários mais experientes e hardwares mais robustos \cite{stelios2017}.
+
+Essa engine 
  
 \subsubsection{Nós de material}
 \label{sec:material-nodes}
@@ -491,6 +498,10 @@ Novamente, a Unreal se destaca por implementar uma ferramenta visual de edição
 \end{figure}
 \nocite{materialUnreal}
 
+Seu sistema de materiais é uma das melhores ferramentas. Para cada material é compilado um shader. Então é possível utilizar o mesmo material ou pequenas variações deste. Esse método proporciona aos artistas uma ferramenta poderosa para criação de materiais, porém o lado negativo é que no caso de shaders mais complexos o tempo de compilação pode aumentar bastante \cite{vsmid2017comparison}.
+
+Por baixo dos panos, essa engine implementa uma otimização de sombreamento chamada cascata de sombras. Ela renderiza múltiplos mapas de sombra baseado na distância da câmera para que objetos mais próximos tenham sombras mais definidas que objetos distantes. Há uma mistura suave entre esses mapas para que a mudança seja quase imperceptível. Isso melhora a performance e é muito eficiente especialmente para grandes cenas \cite{vsmid2017comparison}. 
+
 \section{Otimização e performance}
 \label{sec:otimizacao-performance}
 
@@ -502,6 +513,10 @@ Na GPU de dispositivos móveis o número de espaços de instrução é limitado 
 
 Segundo Singhal et al. (2011) algumas formas de otimizar shaders seriam por meio de compressão de texturas para diminuir a sobrecarga de transferência de memória (ou utilizar um formato de pixel de menor precisão), pré-computar coordenadas vizinhas de texturas no shader de vértice e substituir laços por códigos otimizados ou utilizar vetores para realizar operações (diminuir a quantidade de instruções).
 
+Considerando o trabalho de \citeauthoronline{nusrat2021commit} (2021), cabe aos desenvolvedores simplificar os gráficos para melhorar a performance. Simplificação de shaders e de modelos 3D são os tipos de melhorias mais comuns que podem afetar a experiência visual dos usuários. Por exemplo, ativar o corte de oclusão estático/dinâmico desativa a renderização de objetos cobertos e ativar o \Gls{light-baking} pré-calcula efeitos de luz durante a compilação.
+
+Nesse sentido, os desenvolvedores devem tentar entender o custo computacional dos shaders e modelos 3D antes de usá-los. Para isso, antes de adicioná-los, devem ser feitos testes pois ao inserir vários modelos e shaders pode ser difícil distinguir quais estão causando problemas de performance \cite{nusrat2021commit}.
+
 Devido a melhoria no poder de processamento gráfico, o uso de técnicas como iluminação 3D, vegetação gerada proceduralmente e fotogrametria aumentou consideravelmente tornando o processo de renderização mais custoso. Métodos comuns para otimização de cenas que fazem uso dessas técnicas são alocação de memória, \Gls{multithread}, e nível de detalhe. Ou seja, realizar a renderização em uma thread separada da lógica do jogo ajuda bastante a melhorar a performance \cite{zhang2017vegetation}.
 
 Nível de detalhe é uma forma de determinar a distribuição dos recursos de renderização entre os objetos (de acordo com a posição e a importância atribuída aos vértices desses), diminuindo o número de dados desnecessários. Outrossim, são gerados modelos simplificados que reduzem a complexidade da cena e permitem uma renderização em tempo real mais eficiente \cite{zhang2017vegetation}.
@@ -511,6 +526,8 @@ Como as GPUs normalmente possuem ótima capacidade de processamento de vértices
 O controle de precisão de ponto flutuante --- em OpenGL baixo (10 bits), médio (16 bits) e alto (32 bits) --- é uma ótima ferramenta para melhorar o desempenho, porém precisa ser usada de forma apropriada, pois um nível de baixa precisão apesar de melhorar a performance pode acabar gerando artefatos indesejados \cite{optimizationMobile}.
 
 \input{figuras/tabela-instrucoes.tex}
+
+Para \citeauthoronline{lewis2018evaluation} (2018), a quantidade de linhas de código de um shader segue um distribuição de lei de potência, com poucos shaders longos, e vários shaders simples (poucas linhas). Entretanto, até os shaders mais longos possuem em torno de 300 linhas. A maioria contém menos que 50 linhas. Isso mostra que normalmente shaders são bem menores que softwares.
 
 Além disso, como o número de vértices processados em operações de processamento de imagens é muito mais baixo que o de fragmentos (podem ser da ordem de milhões), é recomendado realizar cálculos por vértice ao invés de por fragmento por aquelas serem menos custosas. Por fim, cabe salientar que maiores velocidades de clock favorecem a performance \cite{optimizationMobile}.
 
@@ -528,58 +545,8 @@ Mais uma maneira de otimização descrita por Jensen \textit{et al}. (2007) seri
 
 Caso seja necessário realizar transformações de coordenadas a melhor opção seria utilizar o espaço do programa de vértices (por exemplo mover transformação da direção da luz em espaço tangente para essa etapa). Ao ponderar-se esses detalhes para as ferramentas de criação de shaders visuais, percebe-se que há uma certa dificuldade em realizar otimizações manuais, já que o código é gerado automaticamente \cite{jensen2007shader}.
 
-	\begin{table}[h!]	
-		\centering
-		\Caption{\label{tab:exemplo-3} Duis faucibus, enim quis tincidunt pellentesque, nisl leo varius nulla, vitae tempus dui mauris ac ante purus lorem}		
-		\UNIFORtab{}{
-			\begin{tabular}{cll}
-				\toprule
-				Ranking & Exon Coverage & Splice Site Support \\
-				\midrule \midrule
-				E1 & Complete coverage by a single transcript & Both splice sites\\
-				E2 & Complete coverage by more than a single transcript & Both splice sites\\
-				E3 & Partial coverage & Both splice sites\\
-				E4 & Partial coverage & One splice site\\
-				E5 & Complete or partial coverage & No splice sites\\
-				E6 & No coverage & No splice sites\\
-				\bottomrule
-			\end{tabular}
-		}{
-		\Fonte{Elaborado pelo autor}
-	}
-	\end{table}
+Segundo \citeauthoronline{arnau2014} (2014), uma possível técnica de otimização seria o uso de memoização para evitar a execução redundante de computações reutilizando resultados anteriores, o que resulta em aumento de velocidade de execução e economia de energia. De forma simplificada, os cálculos realizados são salvos em uma tabela para que no próximo cálculo os valores sejam reutilizados.
 
-	\begin{table}[h!]	
-		\centering
-		\Caption{\label{tab:exemplo-5} Etiam molestie, nulla a egestas aliquet, velit augue congue metus}		
-		\UNIFORtab{}{
-			\begin{tabular}{ccll}
-				\toprule
-				Quisque & pharetra & tempus & vulputate \\
-				\midrule \midrule
-				E1 & Complete coverage by a single transcript & Both splice sites\\
-				E2 & Complete coverage by more than a single transcript & Both splice sites\\
-				E3 & Partial coverage & Both splice sites & Both \\
-				E4 & Partial coverage & One splice site & Both \\
-				E5 & Complete or partial coverage & No splice sites & Both\\
-				E6 & No coverage & No splice sites\\
-				\bottomrule
-			\end{tabular}
-		}{
-		\Fonte{Elaborado pelo autor}
-	}
-	\end{table}
-	
-	%como usar as siglas e abreviações
-	%\acrlong{MIT}
-	\acrlong{MIT}
+Para medir a performance, é necessária uma forma de \Gls{benchmark} para comparar a performance com mais precisão e objetividade. Alguma áreas onde o Benchmark é importante são na iluminação global, detecção de colisão, animação, renderização e em áreas onde é preciso medir e comparar a performance \cite{lext2001ray}.
 
-\begin{alineascomponto}
-	\item Integer non lacinia magna. Aenean tempor lorem tellus, non sodales nisl commodo ut
-	\item Proin mattis placerat risus sit amet laoreet. Praesent sapien arcu, maximus ac fringilla efficitur, vulputate faucibus sem. Donec aliquet velit eros, sit amet elementum dolor pharetra eget
-	\item Integer eget mattis libero. Praesent ex velit, pulvinar at massa vel, fermentum dictum mauris. Ut feugiat accumsan augue, et ultrices ipsum euismod vitae
-	\begin{subalineascomponto}
-		\item Integer non lacinia magna. Aenean tempor lorem tellus, non sodales nisl commodo ut
-		\item Proin mattis placerat risus sit amet laoreet.
-	\end{subalineascomponto}
-\end{alineascomponto}
+Uma métrica muito comum para sistemas interativos de tempo real é a quantidade de quadros por segundo (taxa de quadros). Ela mede a frequência média de uma aplicação no hardware onde é executada. Assim pode-se obter diferentes valores para diferentes tipos de hardware. Essa é uma medida comum entre várias revistas de jogos de computadores para medir a performance \cite{rehfeld2014profile}.
