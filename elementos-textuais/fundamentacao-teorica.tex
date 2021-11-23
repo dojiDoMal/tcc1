@@ -3,14 +3,14 @@
 
 Neste capítulo serão apresentados os assuntos considerados fundamentais para o entendimento dos processos que estão envolvidos no uso das tecnologias abordadas no decorrer do trabalho. No início será discutida a criação dos shaders e seu uso ao longo do tempo, em seguida serão expostos itens de ordem técnica sobre os shaders e os motores de jogo. Ao final será tratada a integração dessas tecnologias com os processos de otimização.
 
-\section{História da Evolução da Programação de Shaders}
+\section{Evolução da Programação de Shaders}
 \label{sec:historia-evolucao-programacao-shaders}
 
-As representações visuais feitas através de imagens foram e são até hoje uma característica importante da formação da humanidade. Através do sentido da visão conseguimos absorver informações rapidamente, fazer associações durante o aprendizado e o estudo, ou ainda distinguir se algo é visualmente agradável o suficiente ou não para prender nossa atenção. O caso mais extremo seria a discussão da existência de algo que não se pode ver, como no século dezessete, quando a existência das bactérias era muito questionada, até que Antonie van Leeuwenhoek inventou o microscópio (LUTEN, 2014)\nocite{openGLBook}.
+As representações visuais feitas através de imagens foram e são até hoje uma característica importante da formação da humanidade. Através do sentido da visão conseguimos absorver informações rapidamente, fazer associações durante o aprendizado e o estudo, ou ainda distinguir se algo é visualmente agradável o suficiente ou não para prender nossa atenção (LUTEN, 2014)\nocite{openGLBook}.
 
-No início do desenvolvimento dos primeiros computadores, quando seu acesso era destinado a um público restrito devido aos custos elevados e a logística complexa, a forma de representação visual para os humanos dos pulsos elétricos gerados pelo processamento de dados nos computadores era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente. A partir de então ele continuou sendo usado até o advento das novas tecnologias de monitores e televisores de tela plana (LUTEN, 2014)\nocite{openGLBook}.
+Os primeiros computadores tiveram seu acesso destinado a um público restrito devido aos custos elevados e a logística complexa. A forma de representação visual para os humanos dos pulsos elétricos gerados pelo seu processamento de dados era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (ele que continuou sendo usada até o surgimento da tela plana) (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente (LUTEN, 2014)\nocite{openGLBook}.
 
-Apesar do avanço citado acima, o estabelecimento da computação gráfica como conhecemos hoje teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad, que permitia que o usuário desenhasse formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para o estudo e desenvolvimento da computação gráfica em tempo real e também das interfaces gráficas de usuário (\acrshort{GUI}).
+Ainda assim, o estabelecimento da computação gráfica teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad, que permitia ao usuário desenhar formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para desenvolvimento da computação gráfica em tempo real.
 
 	\begin{figure}[h!]
 		\centering
@@ -25,16 +25,7 @@ Apesar do avanço citado acima, o estabelecimento da computação gráfica como 
 	
 Com o avanço resultado da criação dos circuitos integrados, cujo uso nos microprocessadores proporcionou um espantoso crescimento da indústria, os computadores deixaram de ser um monopólio das grandes companhias e tornaram-se muito mais acessíveis a pessoas simples. Isso abriu várias possibilidades para o mercado de computadores pessoais, entre elas destaca-se o surgimento das primeiras placas gráficas produzidas pela IBM (\acrlong{IBM}).
 
-    \begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-2} Placa gráfica denominada Color Graphics Adapter produzida nos anos 80 pela IBM.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=15cm]{figuras/figura-2}}
-		}{
-			\Fonte{https://upload.wikimedia.org/wikipedia/commons/5/55/IBM\_Color\_Graphics\_Adapter.jpg}
-		}	
-	\end{figure}
-	\nocite{figura2}
+% \input{figuras/figura2.tex}    
 	
 Como a indústria de jogos eletrônicos tinha mais recursos para explorar devido às melhorias de hardware disponíveis, vários jogos começaram a se destacar no mercado. Entre eles os mais marcantes para a popularização do uso de tecnologia de computação gráfica tridimensional foram lançados pela empresa id Software na década de 90. O primeiro sendo Wolfenstein 3D --- que na realidade utilizava o modo 7 do Super NES (\acrlong{NES}) para emular a ambientação tridimensional --- que definiu o padrão para jogos no gênero de tiro em primeira pessoa em 3D e o segundo sendo Doom que fazia uso de renderização com perspectiva 3D em tempo real por meio de software desenvolvido pela própria id Software voltado a produção para computadores que utilizavam o sistema operacional da Microsoft (\acrshort{MS-DOS}).
 
@@ -125,7 +116,7 @@ Para que uma janela consiga suportar a renderização ela precisa de uma combina
 	
 No caso do suporte a visualização 3D estéreo, mais dois buffers serão utilizados em conjunto com os dois citados anteriormente para criar uma combinação com quatro buffers de cor que são divididos para cada olho. Se um objeto 3D precisa ser desenhado com remoção de superfície encoberta, o buffer de profundidade entra em ação comparando o valor da profundidade de cada pixel dos objetos em cena para determinar qual será visível ou obscurecido. E há ainda a opção do uso de um \textit{stencil buffer} para aplicar operações complexas utilizando máscaras com o objetivo de determinar onde cada pixel deve ser atualizado ou não \cite{GLSLBook}.
 
-O buffer de acumulação é capaz de reproduzir efeitos complexos como suavização em tela cheia de alta qualidade, profundidade de campo e desfoque de movimento. Ele funciona como um buffer de cor, porém com maior precisão, capaz de acumular imagens para produzir uma úncia imagem composta. Seguindo essa linha, o \textit{multisample buffer} é capaz de produzir várias amostras da renderização para realizar suavização sem precisar renderizar a cena mais de uma vez \cite{GLSLBook}. Por último, os buffers auxiliares servem para guardar dados genéricos.
+O buffer de acumulação é capaz de reproduzir efeitos complexos como suavização em tela cheia de alta qualidade, profundidade de campo e desfoque de movimento. Ele funciona como um buffer de cor, porém com maior precisão, capaz de acumular imagens para produzir uma úncia imagem composta. Seguindo essa linha, o \textit{multisample buffer} é capaz de produzir várias amostras da renderização para realizar suavização sem precisar renderizar a cena mais de uma vez \cite{GLSLBook}. Por último, os buffers auxiliares servem para guardar dados genéricos. 
 
 \subsubsection{Pipeline gráfica do OpenGL}
 \label{sec:pipeline-opengl}
@@ -340,10 +331,11 @@ Nível de detalhe é um fator chave de otimização utilizado por game engines p
 \section{Aprofundando Conceitos Técnicos de Shaders}
 \label{sec:aprofundando-conceitos-tecnicos-shaders}
 
-% Caso for adicionar mais texto sobre %
-% HLSL, adicionar nessa parte         %
+A introdução do HLSL trouxe uma linguagem semelhante a C com estruturas extrar para tratar vetores, matrizes e outros elementos relacionados a graficos. Com a melhoria da legíbilidade e da produtividade, o seu uso permite aos desenvolvedores focar no código e reutilizar otimizações de alto nível (como fazer uso de tipos correspondentes e funções embutidas). O compilador HLSL contém truques de otimização de baixo nível que podem ajudar \cite{riguer2002performance}.
 
 Ao estudar computação gráfica a dúvida mais comum ao se deparar com certos termos utilizados é "o que é um shader". Essa palavra pode causar uma certa estranheza no início mas sua definição não é nenhum bicho de sete cabeças. Shaders são apenas pequenos programas (assim como um reprodutor de mídia ou uma calculadora de um computador) que são executados diretamente pela \acrshort{GPU} ao invés da \acrshort{CPU}. Isso permite a redução da carga de trabalho gráfico da \acrshort{CPU} pelo redirecionamento das tarefas para a \acrshort{GPU} que possui hardware especializado para isso (LUTEN, 2014)\nocite{openGLBook}.
+
+Um shader é um procedimento que computa alguns aspectos visuais de um objeto, como cor e deslocamento de superfície, tonalidade e direção da luz e efeitos volumétricos. São utilizados para especificar tranformações de vértices e cores de pixels. Pode-se pensá-los como uma função $ f $ que recebe um conjunto de valores (como coordenadas de posição, normais e texturas) $ v_i $ e um conjunto de parâmetros $ u_i $ (informação de cores e luz) e retorna a cor $ C_{xy} $ de cada objeto em cada pixel $ xy $ da imagem final \cite{fabio2005user}. 
 
 Shaders programáveis são uma das ferramentas mais impressionantes desenvolvidas para computação gráfica nos últimos anos. Através de seu uso, programadores ganharam flexibilidade para aplicar efeitos vértice-por-vértice e pixel-por-pixel com o processamento paralelo em gráficos interativos entre as mais diversas áreas como ciência, arte, engenharia, entre outras \cite{bailey2007}.
 
@@ -399,8 +391,12 @@ Dependendo da resolução definida, algo em torno de 2 milhões de pixels podem 
 
 Como foi mostrado por \citeauthoronline{bilodeau} (2019), apesar de ser possível realizar computações de propósito geral no shader de fragmentos, vale a pena destacar a tecnologia dos shaders de computação e suas vantagens como maior controle sobre as \textit{threads}, acesso à memória compartilhada, dispensabilidade de renderização de polígonos. Além disso, utilizar oclusão de ambiente em alta definição é muito custosa e pode ser substituida por meia resolução em conjunto com desfoque para melhorar a performance.
 
+Shaders de fragmentos modernos são capazes de realizar centenas ou milhares de operações aritiméticas, incorporando funções trigonométricas custosas e vários acessos a mapas de textura para produzir a cor final de cada pixel. Consequentemente, seu custo de execução pode facilmente dominar a capacidade computacional por quadro \cite{lei2008acm}.
+
 \section{Motores de jogo e suas ferramentas}
 \label{sec:motores-jogo-ferramentas}
+
+Um conjunto de ferramentas para criar um jogo é geralmente chamado de motor de jogo. Elas variam desde uma IDE (\acrlong{IDE}) até um pacote de software com capacidade de simulação física, renderização, rede e inteligência artificial. Podem ser classificadas pelas dificuldade de uso, plataformas de destino ou gênero de jogo que podem criar \cite{compGameLang}. 
 
 Criadores de jogos atualmente contam com motores de jogo para desenvolver as principais partes de software para seus jogos. Sua principal função é simplificar as tarefas dos desenvolvedores oferecendo abstrações convenientes para os sistemas operacionais e seus hardwares nos quais o jogo funcionará. Isso somado ao propósito de explorar ao máximo a capacidade das máquinas dos usuários para que seja proporcionada uma experiência mais imersiva possível \cite{simon2015unity}.
 
@@ -455,8 +451,9 @@ Conforme verificado em estudo por Costa, Gomes, Duarte (2016)\nocite{estudoUnity
 
 A escolha da Unity pode-se justificar pelo fato de sua notável popularidade e seu crescimento constante, sendo que mais de 47\% dos desenvolvedores de jogos utilizam-na, com aproximadamente 45\% de participação no mercado de game engines e mais de 600 milhões de jogadores gastando mais de US\$ 110 bilhões \cite{simon2015unity}.
 
-\subsubsection{ShaderLab}
-\label{sec:shaderlab}
+Na Unity os shaders são escritos em uma linguagem descritiva chamada \textit{ShaderLab}. Entretanto, o código do shader em si é escrito em HLSL. Ela oferece suporte a alguns tipos de shaders: de superfície (facilita a interação com luz e sombra), de vértice e de fragmento e de funções fixas \cite{aino2020}.
+
+Há ainda alguns shader mais complexos que conseguem modificar a geometria base de malhas. São os shaders de geometria e tesselação, que pode ser utilizados para adaptar a qualidade visual ao nível de detalhe exigido por meio da otimização da malha em tempo real conforme sua distância da câmera \cite{aino2020}.
 
 \subsection{Unreal}
 \label{sec:unreal}
@@ -485,7 +482,9 @@ Essa engine
 \subsubsection{Nós de material}
 \label{sec:material-nodes}
 
-Novamente, a Unreal se destaca por implementar uma ferramenta visual de edição de materiais que reutiliza os nós das \textit{BluePrints} mencionadas anteriormente, porém dessa vez voltadas para a modificação das propriedades dos materiais, o que torna o processo de criação de shader bastante amigável e divertido por estimular visualmente a criatividade dos usuários \cite{compStudyGE}. 
+Unreal provê uma ferramenta de edição visual de grafos de nós para definição de expressões que computam parâmetros de entrada para modelos de materiais pré-definidos pela engine. Cada nó na expressão do grafo corresponde a um \textit{snippet} (pequeno pedaço de código) de shader que é composto com código modelo de material provido pela própria engine durante a compilação \cite{he2016rapid}.
+
+Novamente a Unreal se destaca, por implementar uma ferramenta visual de edição de materiais que reutiliza os nós das \textit{BluePrints} mencionadas anteriormente, porém dessa vez voltadas para a modificação das propriedades dos materiais, o que torna o processo de criação de shader bastante amigável e divertido por estimular visualmente a criatividade dos usuários \cite{compStudyGE}. 
 
 \begin{figure}[h!]
 	\centering
@@ -504,6 +503,20 @@ Por baixo dos panos, essa engine implementa uma otimização de sombreamento cha
 
 \section{Otimização e performance}
 \label{sec:otimizacao-performance}
+
+Embora as arquiteturas de shaders forneçam execuções rápidas, a avaliação de shaders gera um custo alto no processo de renderização. Para shaders grandes (como os usados em filmes) pode igualar e exceder os custos associados com remoção de superfícies ocultas e processamento de geometria \cite{fabio2005user}. 
+
+Isso torna-se um problema ainda maior em aplicações de tempo real que possuem restrições rígidas de taxa de quadros. Nesse caso, a simplificação geométrica é constantemente utilizada para fornecer um forma de compensação entre a qualidade da imagem percebida e a velocidade de execução em relação ao tamanho da malha do objeto \cite{fabio2005user}.
+
+Cabe ressaltar que para \citeauthoronline{riguer2002performance} (2002), a performance média de um sistema e tão boa quanto o desempenho no pior gargalo. Então a tarefa de otimização pode ser reduzida à encontrar o pior gargalo e removê-lo (ou amenizá-lo). Esse é um processo iterativo que deve ser repetido até que o desempenho esteja em um limite aceitável.
+
+Um gargalo de largura de banda de memória pode ocorrer quando há uso intenso de dados de vértices dinâmicos, uma solução seria reduzir a transferência de dados dinâmicos ou diminuir o tamanho de vértice. Já um gargalo de componente gráfico pode ser causado pelo próprio sistema \cite{riguer2002performance}.
+
+Continuando, quando há cálculos por vértice ou uso de luzes em excesso pode ocorrer um gargalo de processamento de vértices. Por outro lado, o uso de shaders de fragmento complexos também pode gerar um gargalo. Além disso, o excesso de pixels renderizados por segundo pode gerar um gargalo de taxa de preenchimento \cite{riguer2002performance}.
+
+Outrossim, o uso de texturas de alta definição e de filtros complexos pode acarretar em um gargalo de carregamento de textura. Por fim, o uso excessivo de recursos de transparência, profundidade e amostragem pode causar um gargalo no processo de rasterização. Na maioria das vezes o que se percebe é uma combinação de vários gargalos atuando em conjunto \cite{riguer2002performance}. 
+
+Enquanto é considerada uma prática comum usar geometria dinâmica, não é bom abusar. Uma quantidade muito maior de polígonos pode ser obtida com geometria estática. Transformar geometria dinâmica em estática e aproveitar shaders de vértice para mover animações para a GPU pode ajudar a balancear a carga de trabalho \cite{riguer2002performance}. 
 
 Devido à sua natureza de operação que requer simulação em tempo real, os jogos eletrônicos são softwares que exigem bastante recursos de hardware. Ainda mais atualmente quando os desenvolvedores cada vez mais objetivam criar produtos que perfaçam 60 frames por segundo (FPS) ou mais. Dessa forma, para atingir o maior público possível, vale a pena usar ferramentas que possibilitem o uso mais otimizado possível desses recursos \cite{comparacaoDesempenho}.
 
@@ -545,7 +558,13 @@ Mais uma maneira de otimização descrita por Jensen \textit{et al}. (2007) seri
 
 Caso seja necessário realizar transformações de coordenadas a melhor opção seria utilizar o espaço do programa de vértices (por exemplo mover transformação da direção da luz em espaço tangente para essa etapa). Ao ponderar-se esses detalhes para as ferramentas de criação de shaders visuais, percebe-se que há uma certa dificuldade em realizar otimizações manuais, já que o código é gerado automaticamente \cite{jensen2007shader}.
 
+Um dos erros mais comuns é usar texturas muito grandes desnecessariamente, o que prejudica bastante a performance, sendo que alguns objetos nunca atingem um tamanho grande na tela. O ideal seria tentar utilizar texturas com dimensões que não são potências de dois para diminuir o consumo de memória. Além disso, deve-se evitar a troca excessiva de texturas \cite{riguer2002performance}.
+
 Segundo \citeauthoronline{arnau2014} (2014), uma possível técnica de otimização seria o uso de memoização para evitar a execução redundante de computações reutilizando resultados anteriores, o que resulta em aumento de velocidade de execução e economia de energia. De forma simplificada, os cálculos realizados são salvos em uma tabela para que no próximo cálculo os valores sejam reutilizados.
+
+\citeauthoronline{he2016rapid} (2016) define o processo de otimização em várias etapas: identificação de componentes de shaders que podem ser transformados em texturas, uso de pré-processamento \textit{offline} para os buffers de parâmetros, seleção da melhor frequência espacial ou espaço de coordenadas para as funções e escolha de técnicas multi-resolução ou formas de reuso.
+
+Esse é um desafio e tanto para game engines modernas, que podem conter vários shaders únicos, implementando uma vasta coleção de materiais e múltiplos níveis de detalhe --- por exemplo, o jogo Bungie’s Destiny usa mais de 17 mil materiais compilados para 180 mil shaders --- que podem exigir diferentes procedimentos de otimização \cite{he2016rapid}.
 
 Para medir a performance, é necessária uma forma de \Gls{benchmark} para comparar a performance com mais precisão e objetividade. Alguma áreas onde o Benchmark é importante são na iluminação global, detecção de colisão, animação, renderização e em áreas onde é preciso medir e comparar a performance \cite{lext2001ray}.
 
