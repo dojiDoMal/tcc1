@@ -10,20 +10,20 @@ As representações visuais feitas através de imagens foram e são até hoje um
 
 Os primeiros computadores tiveram seu acesso destinado a um público restrito devido aos custos elevados e a logística complexa. A forma de representação visual para os humanos dos pulsos elétricos gerados pelo seu processamento de dados era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (ele que continuou sendo usada até o surgimento da tela plana) (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente (LUTEN, 2014)\nocite{openGLBook}.
 
-Ainda assim, o estabelecimento da computação gráfica teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad, que permitia ao usuário desenhar formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para desenvolvimento da computação gráfica em tempo real.
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:exemplo-1} Demonstração do programa de computador Sketchpad}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=5cm]{figuras/figura-1}}
+	}{
+		\Fonte{http://i0.wp.com/www.designleap.org/wp-content/uploads/2014/06/Sketchpad-Ivan-Sutherland-1963.jpg}
+	}	
+\end{figure}
+\nocite{figura1}
 
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:exemplo-1} Demonstração do programa de computador Sketchpad}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/figura-1}}
-		}{
-			\Fonte{http://i0.wp.com/www.designleap.org/wp-content/uploads/2014/06/Sketchpad-Ivan-Sutherland-1963.jpg?resize=572\%2C572}
-		}	
-	\end{figure}
-	\nocite{figura1}
+Ainda assim, o estabelecimento da computação gráfica teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad (Figura \ref{fig:exemplo-1}), que permitia ao usuário desenhar formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para desenvolvimento da computação gráfica em tempo real.
 	
-Com o avanço resultado da criação dos circuitos integrados, cujo uso nos microprocessadores proporcionou um espantoso crescimento da indústria, os computadores deixaram de ser um monopólio das grandes companhias e tornaram-se muito mais acessíveis a pessoas simples. Isso abriu várias possibilidades para o mercado de computadores pessoais, entre elas destaca-se o surgimento das primeiras placas gráficas produzidas pela IBM (\acrlong{IBM}).
+Com a criação dos circuitos integrados, cujo uso nos microprocessadores proporcionou um espantoso crescimento da indústria, os computadores deixaram de ser um monopólio das grandes companhias e tornaram-se muito mais acessíveis a pessoas simples. Isso abriu várias possibilidades para o mercado de computadores pessoais, entre elas destaca-se o surgimento das primeiras placas gráficas produzidas pela IBM (\acrlong{IBM}).
 
 % \input{figuras/figura2.tex}    
 	
@@ -31,25 +31,23 @@ Como a indústria de jogos eletrônicos tinha mais recursos para explorar devido
 
     \begin{figure}[h!]
 		\centering
-		\Caption{\label{fig:exemplo-3} No lado esquerdo percebe-se que Doom fazia uso de 3D real enquanto no lado direito Wolfenstein posicionava imagens 2D em diferentes camadas para simular a profundidade tridimensional.}	
+		\Caption{\label{fig:exemplo-3} A esquerda Doom fazia uso de 3D real enquanto a direita Wolfenstein posicionava imagens 2D em diferentes camadas para simular a profundidade.}	
 		\UNIFORfig{}{
-			\fbox{\includegraphics[width=13cm]{figuras/figura-3}}
+			\fbox{\includegraphics[width=11cm]{figuras/figura-3}}
 		}{
 			\Fonte{https://www.retrorefurbs.com/wolfenstein-vs-doom-the-battle-of-the-first-person-shooters/}
 		}
 	\end{figure}
 	\nocite{figura3}
-
-É de referir que a indústria de jogos eletrônicos apresenta incriveis taxas de crescimento e que desde 2017 conquista cada vez mais espaço no mercado. O valor do mercado de jogos atingiu a importante marca de US\$ 135 bilhões em 2018. Mas esse sucesso não é exclusivo de hoje, pois as empresas do ramo, desde a década de 70, apresentam crescimento constante e acelerado de suas receitas. Por isso cada vez mais empresas surgem dentro desse mercado a cada ano \cite{comparacaoDesempenho2}. 
 	
-Paralelo ao cenário desses jogos (LUTEN, 2014)\nocite{openGLBook}, a Silicon Graphics (\acrshort{SGI}), uma companhia especializada em computação gráfica 3D e líder de mercado na época, trabalhava no lançamento da Open Graphics Library (\acrshort{OpenGL}), uma API (\acrlong{API}) open source padronizada multiplataforma de processamento de gráficos de computador em tempo real que rapidamente dominou o mercado, e que era uma derivação de outra biblioteca proprietária da mesma empresa, a IRIS GL (\acrlong{IRIS GL}). 
+Paralelo ao cenário desses jogos (LUTEN, 2014)\nocite{openGLBook}, a Silicon Graphics (\acrshort{SGI}) --- companhia especializada em computação gráfica 3D --- trabalhava no lançamento da Open Graphics Library (\acrshort{OpenGL}), uma API (\acrlong{API}) open source padronizada multiplataforma de processamento de gráficos de computador em tempo real que era uma derivação de outra biblioteca proprietária da mesma empresa, a IRIS GL (\acrlong{IRIS GL}) e que rapidamente dominou o mercado. 
 
-Vendo uma oportunidade de mercado, a Microsoft logo agiu e comprou a empresa RenderMorphics, criadora da \acrshort{API} Reality Lab, que teve o nome alterado para Direct3D e foi distribuido como um SDK (\acrlong{SDK}) conhecido como DirectX (LUTEN, 2014)\nocite{openGLBook}, acabando por se tornar o concorrente direto da \acrshort{OpenGL}. Essa rivalidade no final das contas acabou sendo benéfica tanto para o mercado de jogos eletrônicos quanto para os seus consumidores, já que acelerou o desenvolvimento de novas tecnologias que exploravam ao máximo o potencial do hardware disponível.
+A Microsoft, para competir, comprou a empresa RenderMorphics, criadora da \acrshort{API} Reality Lab, que teve o nome alterado para Direct3D e foi distribuido como um SDK (\acrlong{SDK}) conhecido como DirectX (LUTEN, 2014)\nocite{openGLBook}, que acabou sendo o concorrente direto da \acrshort{OpenGL}. Essa rivalidade acabou sendo benéfica tanto para o mercado de jogos eletrônicos quanto para os seus consumidores, já que acelerou o desenvolvimento de tecnologias que exploravam ao máximo o potencial do hardware disponível.
 	
  	\begin{figure}[h!]
 		\centering
         \Caption{\label{fig:1} Hardware da placa gráfica da NVIDIA.}
-        \begin{subfigure}{0.50\textwidth}
+        \begin{subfigure}{0.45\textwidth}
         \UNIFORfig{}{
 			\fbox{\includegraphics[width=\linewidth]{figuras/fig-a}}
 		}{
@@ -58,7 +56,7 @@ Vendo uma oportunidade de mercado, a Microsoft logo agiu e comprou a empresa Ren
 		\nocite{figura4a}
         \end{subfigure}%
         
-        \begin{subfigure}{0.30\textwidth}
+        \begin{subfigure}{0.25\textwidth}
         \UNIFORfig{}{
 			\fbox{\includegraphics[width=\linewidth]{figuras/fig-b}}
 		}{
@@ -71,7 +69,7 @@ Vendo uma oportunidade de mercado, a Microsoft logo agiu e comprou a empresa Ren
 		}
 	\end{figure}
 
-Mais adiante, em 1999, a empresa NVIDIA foi responsável for trazer mais uma inovação ao mercado, a "primeira GPU" (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
+Em 1999, a empresa NVIDIA foi responsável for trazer uma inovação ao mercado, a "primeira GPU"  (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
 
 Uma GPU é um circuito eletrônico projetado para realizar manipulaçoes rápidas em memória para acelerar a criação de imagens em um buffer de quadros que envia a saída para uma tela. Em aplicações que exigem muitas operações vetoriais, o poder de computação paralelo da GPU consegue entregar maior performance que uma CPU convencional. Daí seu vasto uso em jogos eletrônicos, mas também em outras áreas, principalmente na ciência \cite{shea2013gpu}.
 
@@ -86,7 +84,7 @@ Os comandos são sempre processados na ordem em que são recebidos pelo servidor
 
 OpenGL foi projetada para atuar como uma máquina de estados composta de parametros que definem o comportamento da pipeline de renderização e da forma que as primitivas são transformadas em pixels na tela. O estado é composto por uma estrutura de dados chamada contexto gráfico que é gerenciada pelo sistema de janelas do SO (\acrlong{SO}) \cite{GLSLBook}. 
 
-O principio básico de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por um hardware com design específico chamado de acelerador gráfico, entretanto suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Aceleradores gráficos tipicamente possuem região de memória delimitada para manutenção do conteúdo exibido na tela, sendo que cada pixel é representado por uma quantidade de bytes na memória; uma tela em escala de cinza, por exemplo, pode fazer uso de um byte para representar a tonalidade de cinza de cada pixel \cite{GLSLBook}.
+O principio básico de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por hardware com design específico chamado de acelerador gráfico, entretanto suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Aceleradores gráficos possuem região de memória delimitada para manutenção do conteúdo exibido na tela, sendo que cada pixel é representado por uma quantidade de bytes na memória \cite{GLSLBook}.
 
 Essa região conhecida como memória de exibição é escaneada "x" vezes por segundo para eliminar a cintilação. Há ainda uma região específica para manipular dados que não são visíveis na tela chamada de memoria de não exibição. O responsável pela alocação de memória é o próprio sistema operacional que suporta o OpenGL. Em um sistema de janelas, a janela que corresponde a região da memória gráfica que é modificada durante a renderização é chamada de frame buffer. Já em um cenário sem janelas (i.e. tela cheia) o frame buffer corresponde a toda a tela \cite{GLSLBook}.
 
@@ -101,13 +99,13 @@ Essa região conhecida como memória de exibição é escaneada "x" vezes por se
 \end{figure}
 \nocite{dptbuf}
 
-Para que uma janela consiga suportar a renderização ela precisa de uma combinação de alguns elementos: até quatro buffers para as cores, um buffer de profundidade (Figura 5), um \textit{stencil buffer} (Figura 6), um buffer de acumulação, um \textit{multisample buffer} e um ou mais buffers auxiliares. A maioria dos hardwares suporta o carregamento duplo, técnica que faz uso de um buffer frontal e um buffer posterior para que o processo de renderização seja realizado em plano de fundo e então quando terminar seu conteúdo é trocado com o do buffer frontal para exibir o resultado final e iniciar a nova renderização. Isso ajuda a conseguir animações suaves à taxas interativas \cite{GLSLBook}.
+Para que uma janela consiga suportar a renderização ela precisa de uma combinação de alguns elementos: até quatro buffers para as cores, um buffer de profundidade (Figura \ref{fig:exemplo-6}), um \textit{stencil buffer} (Figura \ref{fig:exemplo-7}), um buffer de acumulação, um \textit{multisample buffer} e um ou mais buffers auxiliares. A maioria dos hardwares suporta o carregamento duplo, técnica que faz uso de um buffer frontal e um buffer posterior para que o processo de renderização seja realizado em plano de fundo e então quando terminar seu conteúdo é trocado com o do buffer frontal para exibir o resultado final e iniciar a nova renderização. Isso ajuda a conseguir animações suaves à taxas interativas \cite{GLSLBook}.
 
 \begin{figure}[h!]
 	\centering
 	\Caption{\label{fig:exemplo-7} O stencil buffer permite a customização da forma como objetos 3D são renderizados.}	
 	\UNIFORfig{}{
-		\fbox{\includegraphics[width=15cm]{figuras/figura-7}}
+		\fbox{\includegraphics[width=13cm]{figuras/figura-7}}
 	}{
 		\Fonte{https://www.ronja-tutorials.com/assets/images/posts/022/Result.gif}
 	}
@@ -127,7 +125,7 @@ Para que a máquina de estados do OpenGL possa operar corretamente, foi definida
 	\centering
 	\Caption{\label{fig:pipeline} Pipeline gráfico do OpenGL.}	
 	\UNIFORfig{}{
-		\fbox{\includegraphics[width=13cm]{figuras/pipeline.png}}
+		\fbox{\includegraphics[width=12cm]{figuras/pipeline.png}}
 	}{
 		\Fonte{\url{http://www.ic.uff.br/~anselmo/cursos/CGI/slidesGrad/CG_aula4(introducaoaOpenGL).pdf}}
 	}
@@ -142,13 +140,13 @@ Como todas as primitivas geométricas podem ser descritas por vértices, as curv
 
 A próxima etapa é o estágio das operações por vértice que converte os vértices em primitivas. Alguns dados do vértice são transformados em matrizes de pontos flutuantes. Nesta etapa ocorre a projeção de coordenadas do espaço do mundo para o espaço da tela. Inclui algumas etapas como geração e transformação de coordenadas de textura, e também cálculos de luz para produção dos valores de cor (VIEIRA, 2017). Por isso é normal que essa etapa exija mais recursos computacionais. 
 
-Logo em seguida ocorre a montagem das primitivas por meio do \textit{clipping} (eliminação de parte da geometria desnecessária para a renderização), que é um processo onde se a primitiva está totalmente dentro do plano de visualização ela é repassada para o devido processamento. Caso ela esteja totalmente fora do plano de visualização ela é rejeitada e não é processada. Se a primitiva estiver parcialmente visível no plano, ela é dividida para que somente a porção visível siga para processamento.
+Logo em seguida ocorre a montagem das primitivas por meio do \textit{clipping} (eliminação de parte da geometria desnecessária para a renderização), que testa se a primitiva está totalmente dentro do plano de visualização, caso sim ela é repassada para o devido processamento. Caso ela esteja totalmente fora do plano de visualização ela é rejeitada. Se a primitiva estiver parcialmente visível no plano, ela é dividida para que somente a porção visível siga para processamento.
 
-Outra operação que ocorre nesse estágio é a projeção das coordenadas da perspectiva para coordenadas da janela. Além disso, há ainda uma etapa opcional de \textit{culling} onde os polígonos são testados para saber se será preciso descartar faces posteriores, anteriores ou ambas \cite{GLSLBook}. Paralelamente a esse processo, os dados de pixels contidos em uma matriz na memória do sistema são empacotados e escalados, inclinados e processados por um mapa de pixels. Os resultados, que serão então empacotados em um formato apropriado e retornados a uma matriz de memória do sistema, podem ser escritos na memória da textura ou emitidos à uma etapa de rasterização.
+Outra operação desse estágio é a projeção das coordenadas da perspectiva para coordenadas da janela. Além disso, há uma etapa opcional de \textit{culling} onde os polígonos são testados para saber quais faces serão descartadas \cite{GLSLBook}. Paralelamente a esse processo, os dados de pixels contidos em uma matriz na memória do sistema são empacotados e processados por um mapa de pixels. Os resultados, que serão então empacotados em um formato apropriado e retornados a uma matriz de memória do sistema, podem ser escritos na memória da textura ou emitidos à etapa de rasterização.
 
-Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada fragmento passa por mais algumas operações como: \textit{texturing}, onde um elemento da textura é gerado e aplicado da memória da textura para cada fragmento; aplicação do valor de cor e profundidade; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Ao final são armazenados os valores no \textit{frame buffer}. Apesar de possuir muitos processos, é uma etapa relativamente simples e pode ser executada eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
+Rasterização é a etapa de conversão de dados tanto geométricos como de pixel em fragmentos. Cada fragmento passa por mais algumas operações como: texturização; aplicação do valor de cor e profundidade; cálculos de névoa; testes de profundidade, transparência e remoção de faces ocultas (VIEIRA, 2017). Ao final são armazenados os valores no \textit{frame buffer}. Apesar de possuir muitos processos, é uma etapa relativamente simples e pode ser executada eficientemente para milhões de pixels por segundo com o hardware disponível atualmente.
 
-Sobre a etapa de texturização é interessante destacar que a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também pode trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
+Na etapa de texturização a API tem capacidade de trabalhar com quatro tipos de texturas. Texturas de uma dimensão (vetor de pixels), texturas 2D (matriz $ mxn $ de pixels), texturas 3D (matriz com uma dimensão a mais para guardar informações adicionais e.g. profundidade), e mapas cúbicos (normalmente usado para simular reflexões de ambiente). A API também pode trabalhar com formatos de imagem compactados, esses usam significativamente menos memória e melhoram a performance \cite{GLSLBook}.
 
 É importante destacar que a API também fornece a possibilidade de utilizar texturas do tipo \textit{mipmap} --- várias representações da mesma imagem, porém cada uma tem metade da resolução da anterior --- em conjunto com o parâmetro de nível de detalhe que será detalhado mais adiante, mas que de forma simplificada permite a otimização do processo de renderização de objetos que estão distantes da câmera. 
 
@@ -160,7 +158,7 @@ Sobre a etapa de texturização é interessante destacar que a API tem capacidad
 
 Uma descrição matemática da pipeline de renderização está na Equação \ref{eq-pipeline} onde (x, y) é a posição na tela de cada pixel, \textbf{v} é um conjunto de primitivas, p é o shader de fragmentos, g é o shader de geometria, h é o shader de vértice e r é o estágio de rasterização onde as primitivas são convertidas em pixels com atributos de geometria interpolados \cite{wang2014auto}.
 
-Por fim, é importante mencionar que existem dois modos principais de renderização: o modo direto calcula as luzes e materiais para cada geometria visível e depois resolve qual está mais próxima da câmera para então decidir quais exibir. Já o modo diferido realiza várias passadas (profundidade, cor, normais) para as geometrias e só então realiza os cálculos, dessa forma apenas os fragmentos visíveis são considerados. O segundo modo é mais eficiente para lidar com muitas luzes, porém não oferece suporte a transparência e suavização \cite{vsmid2017comparison}.
+Por fim, é importante mencionar que existem dois modos principais de renderização: o modo direto calcula as luzes e materiais para cada geometria visível e depois resolve qual está mais próxima da câmera para então decidir quais exibir. Já o modo diferido realiza várias passadas para as geometrias e só então realiza os cálculos, dessa forma apenas os fragmentos visíveis são considerados. O segundo modo é mais eficiente para lidar com muitas luzes, porém não oferece suporte a transparência e suavização \cite{vsmid2017comparison}.
 
 \subsubsection{Matrizes de transformação de coordenadas}
 \label{sec:matrizes-transformacao-coordenadas}
@@ -211,6 +209,29 @@ Na equação 2.1, a matriz \textit{modelView} é uma multiplicação das matrize
 
 Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de projeção para definir como os vértices serão projetados na tela, os valores dessa matriz dependem se modo de projeção utilizado é em perspectiva ou ortográfico (Figura \ref{fig:frustum}) e são mostrados nas equações \ref{eq-persp} e \ref{eq-ortho} respectivamente. 
 
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:frustum} Modos de projeção de câmera. As letras correspondem a \textit{left, right, bottom, top, near e far}.}
+	\begin{subfigure}{0.45\textwidth}
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=\linewidth]{figuras/persp.png}}
+	}{
+		\caption{\Gls{view-frustum} em perspectiva}
+	}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.47\textwidth}
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=\linewidth]{figuras/ortho.png}}
+	}{
+		\caption{\Gls{view-frustum} ortográfico}
+	}
+	\end{subfigure}
+	{
+		\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+	}
+\end{figure}
+
 	\begin{equation} \label{eq-persp}
 		\resizebox{.35\hsize}{!}{$ M_{persp}
 		=
@@ -233,28 +254,6 @@ Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de 
 	\end{equation}
 
 Os valores obtidos nessa operação são normalizados em uma região cúbica definida pelos pontos (-1, -1, -1) e (1, 1, 1) para espaço de coordenadas de dispositivo normalizado, isso significa que os valores passam a ser algum valor entre -1 e 1. Essa etapa é necessária para qua a área de visualização seja apropriadamente mapeada em uma janela de exibição de tamanho arbitrário. Por último, as coordenadas são convertidas para o sistema de coordenadas de tela. A partir desse ponto elas continuam para o processo de rasterização da pipeline do OpenGL (AHN, 2013)\nocite{openglOnline}. 
-	\begin{figure}[h!]
-		\centering
-        \Caption{\label{fig:frustum} Modos de projeção de câmera. As letras correspondem a \textit{left, right, bottom, top, near e far}.}
-        \begin{subfigure}{0.45\textwidth}
-        \UNIFORfig{}{
-			\fbox{\includegraphics[width=\linewidth]{figuras/persp.png}}
-		}{
-		    \caption{\Gls{view-frustum} em perspectiva}
-		}
-        \end{subfigure}
-		\hfill
-        \begin{subfigure}{0.47\textwidth}
-        \UNIFORfig{}{
-			\fbox{\includegraphics[width=\linewidth]{figuras/ortho.png}}
-		}{
-		    \caption{\Gls{view-frustum} ortográfico}
-		}
-        \end{subfigure}
-		{
-			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
-		}
-	\end{figure}
 
 \subsection{OpenGL Shading Language}
 \label{sec:glsl}
@@ -290,12 +289,16 @@ Cabe ressaltar que, em termos de performance, normalmente os desenvolvedores pre
 
 Direct3D é uma API para desenvolvimento de aplicações gráficas nativas para plataformas proprietárias da Microsoft. Ela evoluiu muito durante os anos anos 90 e superou a OpenGL. Conceitualmente, a pipeline gráfica de ambas APIs são bem semelhantes, mas uma diferença importante se dá em termos de design de gerenciamento dos estágios de shaders, onde OpenGL faz uso de um objeto (programa de shader) que contém múltiplos shaders enquanto que Direct3D expõe um contexto de renderização diretamente para a criação de shaders. Quanto às linguagens (GLSL e HLSL), são muito parecidas e os desenvolvedores conseguem transcrever instruções facilmente de uma para a outra (MICROSOFT, 2020)\nocite{Direct3D}.
 
+Essa interface faz parte da biblioteca de APIs do DirectX e é usada em consoles Xbox e sistemas Windows. DirectX também inclui algumas outras bibliotecas (e.g. Direct2D e DirectSound). Com o passar do tempo o foco voltou-se para APIs de acesso de baixo nível aos hardwares gráficos como é o caso do DirectX 12. Entretanto sua versão anterior ainda é mais utilizada devido a questões de compatibilidade \cite{hasu2018modern}.
+
 Considerando a pouca diferença em capacidade de renderização existente entre essas duas interfaces, a escolha sobre qual usar depende muito da plataforma alvo de desenvolvimento. Direct3D é específica para plataformas da Microsoft e é amplamente suportada por fornecedores de hardware gráfico, especialmente em computadores desktop. OpenGL é open source e possui bastante aceitação no espaço de desenvolvimento mobile, principalmente devido ao desenvolvimento da OpenGL ES --- uma subseção do OpenGL projetada especialmente para sistemas embarcados como smartphones e consoles portáteis \cite{HLSLBook}.
 
 Uma das principais diferenças é o ambiente de execução. O compilador HLSL traduz o código para linguagem de máquina que é processada pelo driver do DirectX. Enquanto que no caso do OpenGL os fornecedores de hardware, por serem responsáveis pela implementação do compilador, possuem muito mais liberdade para realizar otimizações em shaders. Para mitigar essa diferença a Microsoft fornece uma solução (DirectX Effects Framework) para desenvolvedores elaborarem programas de shaders iguais para hardwares com menor e maior capacidade de processamento \cite{GLSLBook}.
 
 \subsection{High-Level Shader Language}
 \label{sec:hlsl}
+
+Essa é uma linguagem de shader criada em 2002 (acompanhou o DirectX 9) que também assemelha-se à linguagem C. Ao longo dos anos foram adicionadas melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API para uso de GPGPU (\acrlong{GPGPU}) e suporte a tesselação. Na Figura \ref{fig:outlineHLSL} é mostrada a implementação de um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para realçar as diferenças e semelhanças entre as duas linguagens.
 
 \begin{figure}[h!]
 	\centering
@@ -307,26 +310,43 @@ Uma das principais diferenças é o ambiente de execução. O compilador HLSL tr
 	}
 \end{figure}
 
-Essa é uma linguagem de shader criada em 2002 (acompanhou o DirectX 9) que também assemelha-se à linguagem C. Ao longo dos anos foram adicionadas melhorias como suporte a \textit{\Gls{multithread}}, adição de uma API para uso de GPGPU (\acrlong{GPGPU}) e suporte a tesselação. Na Figura \ref{fig:outlineHLSL} é mostrada a implementação de um shader de contorno (ver código-fonte \ref{cf:outlineHLSL}) similar ao anterior para realçar as diferenças e semelhanças entre as duas linguagens.
-
 Uma GPU de propósito geral é uma unidade de processamento gráfico que realiza cálculos genéricos que normalmente seriam feitos pela CPU. São utilizadas para realizar tarefas custosas como cálculos de física, criptografia e computações científicas, pois é possível tirar proveito do paralelismo. Da mesma forma que um núcleo pode ser utilizado para renderizar múltiplos pixels simultaneamente, ele também é capaz de processar múltiplos fluxos de dados ao mesmo tempo (TECHTARGET, 2015)\nocite{GPGPU}.
+
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:tess} Maiores níveis de tesselação produzem aumento no número de vértices.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=6cm]{figuras/tess.png}}
+	}{
+		\Fonte{\url{https://upload.wikimedia.org/wikipedia/commons/f/fc/Tessellation_Level_Table.png}}
+	}
+\end{figure}
+\nocite{tesselation}
 
 Tesselação é mais um processo na pipeline gráfica responsável por adicionar detalhes a objetos diretamente pela GPU. De maneira geral, mais detalhes geometricos (mais vértices), resultam em uma renderização "mais bonita". Seu modo de funcionamento consiste em subdividir um objeto dinamicamente e sem o custo adicional de reprocessamento de geometria. Isso permite um sistema de nível de detalhe dinâmico e menos utilização do barramento de gráficos, o que melhora a performance \cite{HLSLBook}.
 
-	\begin{figure}[h!]
-		\centering
-		\Caption{\label{fig:tess} Diferentes níveis de tesselação aplicados em uma malha produzem aumento no número de vértices.}	
-		\UNIFORfig{}{
-			\fbox{\includegraphics[width=8cm]{figuras/tess.png}}
-		}{
-			\Fonte{\url{https://upload.wikimedia.org/wikipedia/commons/f/fc/Tessellation_Level_Table.png}}
-		}
-	\end{figure}
-	\nocite{tesselation}
-
 Esse processo é relativamente novo e ocorre na etapa do shader de geometria, que adiciona um passo de criação de geometria na pipeline gráfica após o shader de vértices. Isso permite que o programador implemente tesselação automática para geometrias complexas, ou realize operações gráficas dependentes de geometria como silhuetas e sombras \cite{bailey2007}.
 
+Um shader de geometria pode ter vários usos, por exemplo adicionar ou gerar mais primitivas (pontos, linhas, triângulos ou quadriláteros). Porém eles aceitam apenas uma quantidade limitada de topologias. Sua saída consiste em pontos, linhas ou triângulos e segue continuamente na pipeline. Basicamente, são utilizados os produtos dos shaders de vértice e tesselação para montagem de primitvas \cite{hasu2018modern}.  
+
+Shaders de tesselação interpolam geometria para acrescentar detalhes geométricos que permitem aos desenvolvedores realizar subdivisões adaptáveis, utilizar modelos mais "grosseiros" que serão refinados pela GPU, aplicar mapas de deslocamento detalhados sem fornecer detalhes de geometria, adaptar qualidade visual exigindo nível de detalhe e criar silhuetas suaves. Resumindo, tesselação é um processo que divide uma superfície em uma malha suavizada de triângulos e pode aumentar a qualidade da imagem final \cite{hasu2018modern}.
+
+Eles possuem acesso a todas as informações na pipeline. São portanto capazes de escolher parâmetros de tesselação dinamicamente dependendo da informação lida. A principal diferença em relação aos shaders de vértice é que enquanto esses modificam os vértices individualmente sem referência às primitivas, o shader de tesselação amplifica uma única primitiva \cite{hasu2018modern}.
+
 Nível de detalhe é um fator chave de otimização utilizado por game engines para alcançar renderização de alta qualiadade com melhor performance. Além disso é desejável evitar mudanças frequentes em shaders e chamadas de desenho utilizando um número reduzido de shaders. Isso minimiza a sobrecarga da CPU e ajuda a GPU a desenhar mais objetos em um frame com shaders com nível de detalhe \cite{yong2015rapid}.
+
+Em relação ao sistema de coordenadas, Direct3D faz uso do sistema de mão esquerda enquanto OpenGL utiliza o sistema de mão direita (Figura \ref{fig:direita}). Porém as aplicações são livres para utilizar seu próprio sistema de coordenadas. Um exemplo é o software de modelagem 3D Blender wque usa o sistema de mão direita, enquanto ambas Unity e Unreal utilizam o sistema de mão esquerda \cite{hasu2018modern}.
+
+	\begin{figure}[h!]
+		\centering
+		\Caption{\label{fig:direita} Regra da mão direita.}	
+		\UNIFORfig{}{
+			\fbox{\includegraphics[width=6cm]{figuras/maoDireita.png}}
+		}{
+			\Fonte{\url{https://docplayer.com.br/200330-Mecanica-geral-basica.html}}
+		}
+	\end{figure}
+	\nocite{direita}
 
 \section{Aprofundando Conceitos Técnicos de Shaders}
 \label{sec:aprofundando-conceitos-tecnicos-shaders}
@@ -362,6 +382,10 @@ A dificuldade relativa de programar shaders levou ao desenvolvimento de ferramen
 
 Conforme descrito em estudo por \citeauthoronline{wang2014auto} (2014) vários estudos sobre otimização de shaders já foram conduzidos, porém com efetividade apenas para para o estágio de fragmentos. De certa forma a qualidade dos shaders depende bastante da experiência dos programadores e pode ser um processo bem demorado para níveis de complixadade maiores. Normalmente a computação mais custosa ocorre no shader de fragmentos. 
 
+Placas gráficas atuais oferecem suporte a quatro níveis de paralelismo: de dispositivo, de núcleo, de tarefa e de dados. O primeiro significa que vários processadores ou placas podem operar no mesmo sistema. O segundo significa que os múltiplos núcleos são independentes. O terceiro quer dizer que cada núcleo pode ter várias tarefas. Por fim, paralelismo de dados significa que múltiplas instruções podem agir em vários elementos de dados de uma vez \cite{hasu2018modern}.
+
+Também é importante mencionar que os shaders de computação são um estágio fora da pipeline de renderização que são utilizados para cálcular informações arbitrárias. Então são bem distintos quando comparados aos outros tipos de shaders. São ótimos para implementar algoritmos que fazem uso da GPGPU. Podem também ser utilizados para acelerar partes da renderização. Suas entradas e saídas são genéricas e a única definição é do espaço de execução que é abstrato. Os dados processados são agrupados em grupos de trabalho (menor unidade de processamento) de tamanho definido pelo programador que são executados aleatoriamente e em paralelo \cite{hasu2018modern}.  
+
 \subsection{Vertex Shader}
 \label{vertex-shader}
 
@@ -380,12 +404,18 @@ Um shader de vértice é um programa executado uma vez para cada vértice cujo �
 
 O processador de vértices realiza as principais transformações de coordenadas descritas na Seção \ref{sec:matrizes-transformacao-coordenadas}. Como nessa etapa há bastante informação sobre a geometria e o processador é capaz de realizar inúmeras operações, essa é uma ótima etapa para inserir código. Quando essas coordenadas deixam o estágio de processamento, elas são cortadas e mapeadas para o sistema de coordenadas de tela, prontas para serem rasterizadas \cite{bailey2007}.
 
+O shader de vértices prepara o ambiente de shader para o processamento de vértices, a tesselação e os shaders de geometria e também para a rasterização e para o shader de fragmentos. Aqui também podem ocorrer mudanças de coordenadas. Os dados recebidos são enviados para o estágio de processamento de vértices da pipeline. Isso inclui dados que as aplicações enviam aos shaders \cite{hasu2018modern}.
+
+Podem ser passados coordenadas de vértice para o shader de fragmentos utilizando geometria de espaço de objeto ou de olho. Por exemplo, para tesselação, o shader de vértices pode passar primitivas conectadas com os dados que controlam a subdivisão que deve ser realizada, enquanto a saída do shader de tesselação consiste em uma coleção de vértices para a nova geometria. No fim o principal objetivo dos shaders de vértice é pré-processar os vértices e gerenciar os atributos que seguirão para a pipeline \cite{hasu2018modern}.
+
 \subsection{Fragment Shader}
 \label{sec:fragment-shader}
 
 Um shader de fragmento é um programa executado uma vez para cada pixel. Fragmentos são estruturas de dados (contidas em cada pixel) que são criadas pela rasterização das primitivas. Um fragmento contém todos os dados necessários para atualizar seu espaço no \textit{frame buffer}. O processamento desses fragmentos consistem em operações feitas em cada pixel, sendo que as mais notáveis são a leitura da memória de textura e a aplicação do valor de textura para cada fragmento \cite{GLSLBook}. 
 
 Nessa etapa o processador de fragmentos recebe as informações de cada pixel (seus valores de vermelho, verde, azul, transparência e coordenadas de textura). Cada pixel também possui informação recebida do processador de vértices e interpolada na rasterização. Esse processador também pode acessar informações globais como a posição das luzes e seu trabalho final é processar essas informações e produzir a cor final de cada pixel (ou descartá-lo). Sua grande utilidade consiste na possibilidade de customização da aparência dos pixels de acordo com as necessidades do programador \cite{bailey2007}. 
+
+Esse é o shader responsável por produzir a cor final para cada pixel a partir de variáveis de estado e valores interpolados através de polígonos. Também são responsáveis por computar a cor e a intensidade da luz de cada fragmento. Além disso, são capazes de lidar com tipos diferentes de propriedades de vértices (os principais são coordenadas de textura e profundidade de pixels) \cite{hasu2018modern}. 
 
 Dependendo da resolução definida, algo em torno de 2 milhões de pixels podem precisar ser processados e renderizados a cada frame (60 FPS). Isso facilmente gera uma carga computacional enorme. Felizmente, com a evolução da tecnologia, os desenvolvedores podem facilmente implementar programas que controlam a iluminação, o sombreamento e a cor de cada pixel (NVIDIA, 2019)\nocite{fragShader}.
 
@@ -432,7 +462,24 @@ Por serem ferramentas complexas, sua comparação é uma tarefa complicada. A ma
 \subsection{Godot}
 \label{sec:godot}
 
+Godot é uma engine recente que atualmente encontra-se na versão 3 (a versão 4 ainda está em desenvolvimento) com diferenças consideráveis de arquitetura em realção as outras duas engines. Nesse caso cada sistema central é gerenciado por um servidor de forma assíncrona. Esses servidores operam em um alto nível de abstração. Apesar de soar complexo, sua interface é bem amigável. O sistema de árvore de cenas permite organizar o conteúdo do jogo da forma que humanos estão acostumados a visualizar o mundo ao redor \cite{godotEngine}.
 
+Todos os jgos criados nessa engines são baseados no uso de nós e cenas. Nós podem ser considerados como átomos de funcionalidade de jogo e são utilizados em conjunto para formar cenas que podem ser combinadas para formar outras cenas mais complexas. Nós são parte fundamental dos jogos e consistem um bloco funcional com nome, propriedades e uma função especial. \cite{godotEngine}.
+
+\begin{figure}[h!]
+	\centering
+	\Caption{\label{fig:gdtree} Estrutura hierárquica da cena na Godot Engine.}	
+	\UNIFORfig{}{
+		\fbox{\includegraphics[width=7cm]{figuras/gdtree}}
+	}{
+		\Fonte{\url{https://subscription.packtpub.com/book/game-development/9781788831505/1/ch01lvl1sec07/about-nodes-and-scenes}}
+	}
+\end{figure}
+\nocite{gdtree}
+
+Uma funcionalidade que merece destaque é a de sinais, que são uma implementação do padrão de projeto de observador. O conceito básico é de que um objeto notifica outros objetos que possuem interesse em suas ações. O desenvolvedor não precisa se preocupar quando ou onde as ações serão solicitadas. Então o objeto emite o sinal e seus observadores são notificados \cite{godotEngine}.
+
+Para programar, essa engine possui a própria linguagem chamada GDScript (mas também há suporte para C\# e programação visual), que foi criada especificamente para a engine e possui uma sintaxe similar a Phyton. Cada objeto possui um tipo constituído de hierarquias de classe, variáveis são chamadas de membros e funções são chamadas de métodos \cite{godotEngine}.
 
 \subsection{Unity}
 \label{sec:unity}
@@ -443,6 +490,10 @@ Ela faz uso do DirectX como pipeline de renderização padrão, mas além disso 
 
 A pipeline de renderização de pré-passagem é direcionada para as restrições no uso de diferentes shaders no processo diferido. As informações de luz são guardadas em um buffer para melhorar a performance dos cálculos. Por último é realizado o processo de renderização de vértices iluminados (cada objeto é renderizado com a iluminação de todas as fontes de luz calculada nos vértices) que é o mais rápido \cite{simon2015unity}. 
 
+Apesar de sua pipeline ser considerada uma caixa preta (desenvolvedores não possuem muito controle sobre seu funcionamento) por \citeauthoronline{hasu2018modern} (2018), há diferentes alternativas baseadas em renderização diferida, direta e legado (iluminação diferida ou por vértice). Cabe mencionar também a pipeline de renderização programável que é uma forma alternativa de permitir que desenvolvedores configurem a renderização.
+
+Há também a pipeline de renderização de alta definição (\acrshort{HDRP}) voltada para computadores e consoles de última geração, que oferece iluminação coerente e unificada e melhores ferramentas de debug. Já a pipeline peso-leve \acrshort{LWRP} é voltada para dispositivos móveis e realidade virtual que apresenta algumas otimizações de performance \cite{hasu2018modern}.
+
 Sua arquitetura consiste em um sistema modular baseado em componentes que são utilizados para compor os objetos nos jogos. Cada componente possui um conjunto de funcionalidades que afetam o comportamento do objeto, dessa forma não é necessário usar herança. Isso é uma vantagem visto que aumenta a flexibilidade e a eficiência da modificação dos objetos \cite{compStudyGE}.
 
 Cabe ainda destacar que ela possui uma das melhores documentações. A maioria das funções são descritas em profundidade e com bastante uso de exemplos, o que é muito útil principalmente para usuários iniciantes. Além disso ela possui uma vasta quantidade de templates, uma interface limpa e fácil de configurar, uma comunidade ativa, e seu uso de C\# ao invés de C++ torna a programação mais simples e agradável \cite{compStudyGE}.
@@ -451,7 +502,9 @@ Conforme verificado em estudo por Costa, Gomes, Duarte (2016)\nocite{estudoUnity
 
 A escolha da Unity pode-se justificar pelo fato de sua notável popularidade e seu crescimento constante, sendo que mais de 47\% dos desenvolvedores de jogos utilizam-na, com aproximadamente 45\% de participação no mercado de game engines e mais de 600 milhões de jogadores gastando mais de US\$ 110 bilhões \cite{simon2015unity}.
 
-Na Unity os shaders são escritos em uma linguagem descritiva chamada \textit{ShaderLab}. Entretanto, o código do shader em si é escrito em HLSL. Ela oferece suporte a alguns tipos de shaders: de superfície (facilita a interação com luz e sombra), de vértice e de fragmento e de funções fixas \cite{aino2020}.
+Na Unity os shaders são escritos em uma linguagem chamada \textit{ShaderLab}. Entretanto, o código do shader em si é escrito em HLSL. Ela oferece suporte a alguns tipos de shaders: de superfície (facilita a interação com luz e sombra), de vértice e de fragmento e de funções fixas \cite{aino2020}.
+
+Apesar dos shaders serem escritos na linguagem declarativa \textit{ShaderLab}, o código do programas é escrito como um \textit{snippet} HLSLPROGRAM que é transformado em código HLSL. Cada tipo de shader é então definido usando a instrução \texttt{pragma}. Também há suporte para escrita manual de código GLSL, porém isso é recomendado apenas para testes ou casos específicos pois a Unity se encarrega de compilar e otimizar o HLSL para GLSL caso seja necessário para a plataforma alvo \cite{hasu2018modern}. 
 
 Há ainda alguns shader mais complexos que conseguem modificar a geometria base de malhas. São os shaders de geometria e tesselação, que pode ser utilizados para adaptar a qualidade visual ao nível de detalhe exigido por meio da otimização da malha em tempo real conforme sua distância da câmera \cite{aino2020}.
 
@@ -476,8 +529,6 @@ Unreal é mais um motor de jogo que está a mais tempo no mercado (desde 1998). 
 Merecem destaque seu sistema de renderização \Gls{multithread} (intitulado Gemini) com 64 bits de HDR (\acrlong{HDR}), oclusão de ambiente, iluminação por pixel, iluminação especular dinâmica e reflexões, seu sistema de customização de terrenos e ainda o sistema de malhas de navegação para integração com personagens controlados por inteligência artificial \cite{armstrong2013game}.
 
 Unreal apresenta uma melhor performance audiovisual de maneira geral. Além disso ela apresenta uma interface mais complexa em comparação com Unity e Godot que oferece todas as ferramentas necessárias em uma única janela. É portanto uma engine voltada para usuários mais experientes e hardwares mais robustos \cite{stelios2017}.
-
-Essa engine 
  
 \subsubsection{Nós de material}
 \label{sec:material-nodes}
