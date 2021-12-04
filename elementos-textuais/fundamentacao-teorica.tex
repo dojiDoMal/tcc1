@@ -1,48 +1,35 @@
 \chapter{Referencial Teórico}
 \label{cap:referencial-teorico}
 
-Neste capítulo serão apresentados os assuntos considerados fundamentais para o entendimento dos processos que estão envolvidos no uso das tecnologias abordadas no decorrer do trabalho. No início será discutida a criação dos shaders e seu uso ao longo do tempo, em seguida serão expostos itens de ordem técnica sobre os shaders e os motores de jogo. Ao final será tratada a integração dessas tecnologias com os processos de otimização.
+Neste capítulo serão apresentados os assuntos fundamentais para o entendimento dos processos envolvidos no uso das tecnologias abordadas no decorrer do trabalho. No início será discutida a criação dos shaders e seu uso ao longo do tempo, em seguida serão expostos itens de ordem técnica sobre os shaders e os motores de jogo. Ao final será tratada a integração dessas tecnologias com os processos de otimização.
 
 \section{Evolução da Programação de Shaders}
 \label{sec:historia-evolucao-programacao-shaders}
 
-As representações visuais feitas através de imagens foram e são até hoje uma característica importante da formação da humanidade. Através do sentido da visão conseguimos absorver informações rapidamente, fazer associações durante o aprendizado e o estudo, ou ainda distinguir se algo é visualmente agradável o suficiente ou não para prender nossa atenção (LUTEN, 2014)\nocite{openGLBook}.
+As representações visuais feitas através de imagens são até hoje uma característica importante da formação da humanidade. Através do sentido da visão conseguimos absorver informações rapidamente, fazer associações durante o aprendizado e o estudo, ou ainda distinguir se algo é visualmente agradável o suficiente ou não para prender nossa atenção (LUTEN, 2014)\nocite{openGLBook}.
 
-Os primeiros computadores tiveram seu acesso destinado a um público restrito devido aos custos elevados e a logística complexa. A forma de representação visual para os humanos dos pulsos elétricos gerados pelo seu processamento de dados era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados (um processo que podia demorar várias horas para terminar). Esse cenário só começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (ele que continuou sendo usada até o surgimento da tela plana) (\acrshort{CRT}), em 1951, pelo MIT (\acrlong{MIT}) para visualizar a saída de um programa de computador instantaneamente (LUTEN, 2014)\nocite{openGLBook}.
+O acesso aos primeiros computadores era restrito devido aos custos elevados e a logística complexa. A representação visual dos pulsos elétricos gerados pelo seu processamento de dados era feita através de várias lâmpadas conectadas em placas ou de cartões de papel perfurados. Esse cenário começou a mudar depois da aplicação da tecnologia do tubo de raios catódicos (\acrshort{CRT}), em 1951, pelo \acrlong{MIT} (MIT) para visualizar a saída de um programa instantaneamente (LUTEN, 2014)\nocite{openGLBook}.
 
-\begin{figure}[h!]
-	\centering
-	\Caption{\label{fig:exemplo-1} Demonstração do programa de computador Sketchpad}	
-	\UNIFORfig{}{
-		\fbox{\includegraphics[width=5cm]{figuras/figura-1}}
-	}{
-		\Fonte{http://i0.wp.com/www.designleap.org/wp-content/uploads/2014/06/Sketchpad-Ivan-Sutherland-1963.jpg}
-	}	
-\end{figure}
-\nocite{figura1}
-
-Ainda assim, o estabelecimento da computação gráfica teve início apenas 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad (Figura \ref{fig:exemplo-1}), que permitia ao usuário desenhar formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} que permitia a visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para desenvolvimento da computação gráfica em tempo real.
+O estabelecimento da computação gráfica teve início 10 anos depois. A partir da criação de um programa de computador por Ivan Sutherland chamado Sketchpad, que permitia desenhar formas geométricas utilizando uma caneta óptica em um \acrshort{CRT} com visualização em tempo real (LUTEN, 2014)\nocite{openGLBook}. Isso causou uma mudança de padrão na forma como as pessoas entendiam e utilizavam os computadores e foi o ponto de partida para desenvolvimento da computação gráfica em tempo real.
 	
-Com a criação dos circuitos integrados, cujo uso nos microprocessadores proporcionou um espantoso crescimento da indústria, os computadores deixaram de ser um monopólio das grandes companhias e tornaram-se muito mais acessíveis a pessoas simples. Isso abriu várias possibilidades para o mercado de computadores pessoais, entre elas destaca-se o surgimento das primeiras placas gráficas produzidas pela IBM (\acrlong{IBM}).
-
-% \input{figuras/figura2.tex}    
+Com a criação dos circuitos integrados a indústria de microprocessadores sofreu um crescimento enorme. Os computadores deixaram de ser um monopólio das grandes companhias e tornaram-se mais acessíveis a pessoas simples. Isso abriu várias possibilidades para o mercado de computadores pessoais, entre elas destaca-se o surgimento das primeiras placas gráficas produzidas pela IBM (\acrlong{IBM}).   
 	
-Como a indústria de jogos eletrônicos tinha mais recursos para explorar devido às melhorias de hardware disponíveis, vários jogos começaram a se destacar no mercado. Entre eles os mais marcantes para a popularização do uso de tecnologia de computação gráfica tridimensional foram lançados pela empresa id Software na década de 90. O primeiro sendo Wolfenstein 3D --- que na realidade utilizava o modo 7 do Super NES (\acrlong{NES}) para emular a ambientação tridimensional --- que definiu o padrão para jogos no gênero de tiro em primeira pessoa em 3D e o segundo sendo Doom que fazia uso de renderização com perspectiva 3D em tempo real por meio de software desenvolvido pela própria id Software voltado a produção para computadores que utilizavam o sistema operacional da Microsoft (\acrshort{MS-DOS}).
-
-    \begin{figure}[h!]
+Com as melhorias de hardware disponíveis, a indústria de jogos eletrônicos tinha mais recursos para explorar. Os casos mais marcantes, mostrados na Figura \ref{fig:exemplo-3}, se deram pela empresa id Software na década de 90. O primeiro sendo Wolfenstein 3D --- que na realidade utilizava o modo 7 do Super NES (\acrlong{NES}) para emular a ambientação tridimensional --- e o segundo sendo Doom que fazia uso de renderização com perspectiva 3D em tempo real por meio de software desenvolvido pela própria id Software.
+	
+    \begin{figure}[h]
 		\centering
 		\Caption{\label{fig:exemplo-3} A esquerda Doom fazia uso de 3D real enquanto a direita Wolfenstein posicionava imagens 2D em diferentes camadas para simular a profundidade.}	
 		\UNIFORfig{}{
 			\fbox{\includegraphics[width=11cm]{figuras/figura-3}}
 		}{
-			\Fonte{https://www.retrorefurbs.com/wolfenstein-vs-doom-the-battle-of-the-first-person-shooters/}
+			\Fonte{Retro Refurbs (2021)}
 		}
 	\end{figure}
 	\nocite{figura3}
 	
-Paralelo ao cenário desses jogos (LUTEN, 2014)\nocite{openGLBook}, a Silicon Graphics (\acrshort{SGI}) --- companhia especializada em computação gráfica 3D --- trabalhava no lançamento da Open Graphics Library (\acrshort{OpenGL}), uma API (\acrlong{API}) open source padronizada multiplataforma de processamento de gráficos de computador em tempo real que era uma derivação de outra biblioteca proprietária da mesma empresa, a IRIS GL (\acrlong{IRIS GL}) e que rapidamente dominou o mercado. 
+Paralelamente, a Silicon Graphics (\acrshort{SGI}) --- companhia especializada em computação gráfica 3D --- trabalhava no lançamento da Open Graphics Library (\acrshort{OpenGL}), uma API (\acrlong{API}) open source padronizada multiplataforma de processamento de gráficos de computador em tempo real derivada de outra biblioteca proprietária da mesma empresa, a IRIS GL (\acrlong{IRIS GL}) e que rapidamente dominou o mercado (LUTEN, 2014)\nocite{openGLBook}. 
 
-A Microsoft, para competir, comprou a empresa RenderMorphics, criadora da \acrshort{API} Reality Lab, que teve o nome alterado para Direct3D e foi distribuido como um SDK (\acrlong{SDK}) conhecido como DirectX (LUTEN, 2014)\nocite{openGLBook}, que acabou sendo o concorrente direto da \acrshort{OpenGL}. Essa rivalidade acabou sendo benéfica tanto para o mercado de jogos eletrônicos quanto para os seus consumidores, já que acelerou o desenvolvimento de tecnologias que exploravam ao máximo o potencial do hardware disponível.
+A Microsoft, para competir, comprou a empresa RenderMorphics, criadora da \acrshort{API} Reality Lab, que teve o nome alterado para Direct3D e foi distribuido como um SDK (\acrlong{SDK}) conhecido como DirectX, que acabou sendo o concorrente direto da \acrshort{OpenGL} (LUTEN, 2014)\nocite{openGLBook}. Essa rivalidade acabou sendo benéfica tanto para o mercado de jogos eletrônicos quanto para os seus consumidores, já que acelerou o desenvolvimento de tecnologias que exploravam ao máximo o potencial do hardware disponível.
 	
  	\begin{figure}[h!]
 		\centering
@@ -65,28 +52,28 @@ A Microsoft, para competir, comprou a empresa RenderMorphics, criadora da \acrsh
 		\nocite{figura4b}
         \end{subfigure}
 		{
-			\Fonte{https://upload.wikimedia.org/wikipedia/commons}
+			\Fonte{Wikimedia (2021)}
 		}
 	\end{figure}
 
-Em 1999, a empresa NVIDIA foi responsável for trazer uma inovação ao mercado, a "primeira GPU"  (\acrlong{GPU}) foi como ficou conhecida a placa gráfica GeForce 256 (Figura 4), que fazia uso de uma tecnologia chamada T\&L (\acrlong{T+L}) que basicamente movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU}. Isso permitia uma maior velocidade em operações matemáticas de ponto flutuante. Então nos próximos anos o que se viu foi um crescimento exponencial de performance de \acrshort{GPU} para renderização em tempo real.
+Em 1999, a empresa NVIDIA lançou a placa gráfica GeForce 256 (Figura \ref{fig:1}), que possuia a tecnologia T\&L (\acrlong{T+L}) que movia os cálculos de transformação e iluminação de vértices da CPU (\acrlong{CPU}) para a \acrshort{GPU} (\acrlong{GPU}), aumentando a velocidade em operações matemáticas de ponto flutuante. Nos anos seguintes houve um crescimento exponencial de performance de \acrshort{GPU}.
 
 Uma GPU é um circuito eletrônico projetado para realizar manipulaçoes rápidas em memória para acelerar a criação de imagens em um buffer de quadros que envia a saída para uma tela. Em aplicações que exigem muitas operações vetoriais, o poder de computação paralelo da GPU consegue entregar maior performance que uma CPU convencional. Daí seu vasto uso em jogos eletrônicos, mas também em outras áreas, principalmente na ciência \cite{shea2013gpu}.
 
-Até então shaders eram bastante utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil devido a sintaxe utilizada ser semelhante à programação em Assembly. A Microsoft então lançou a versão 9.0 do Direct3D que trazia consigo a implementação da HLSL (\acrlong{HLSL}) que como o nome sugere permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) para competir no mercado (LUTEN, 2014)\nocite{openGLBook}. 
+Até então shaders eram bastante utilizados por melhorar a performance eliminando carga de trabalho excessiva da \acrshort{CPU}, porém sua programação era difícil devido a sintaxe utilizada ser semelhante à programação em Assembly. A Microsoft então lançou a versão 9.0 do Direct3D que trazia \acrlong{HLSL} (HLSL) que permitia a programação de shaders em alto nível e possuia uma sintaxe bastante parecida com C. Enquanto isso, OpenGL também trouxe a sua própria linguagem de alto nível chamada GLSL (\acrlong{GLSL}) (LUTEN, 2014)\nocite{openGLBook}. 
 
 \subsection{Como o OpenGL funciona}
 \label{sec:como-opengl-funciona}
 
-Grosso modo, a API do OpenGL desenha gráficos em uma memória especializada em quadros de imagem (frame buffer) e os lê novamente quando precisa. O seu design único oferece suporte tanto a geometrias 3D quanto a imagens simples. O modelo de funcionamento dessa API pode ser descrito como cliente-servidor, pois a aplicação (cliente) faz solicitações por meio de comandos que são interpretados e processados pela implementação OpenGL (servidor) \cite{GLSLBook}. É importante destacar que a sincronia entre cliente e servidor e suas informações/dados não ocorre quando um comando é executado mas sim quando ele é emitido.
+A API do OpenGL desenha gráficos em uma memória especializada em quadros de imagem (frame buffer). Ela oferece suporte tanto a geometrias 3D quanto a imagens simples. O modelo de funcionamento dessa API pode ser descrito como cliente-servidor, pois a aplicação (cliente) faz solicitações por meio de comandos que são interpretados e processados pela implementação OpenGL (servidor) \cite{GLSLBook}. É importante destacar que a sincronia entre cliente e servidor e suas informações/dados não ocorre quando um comando é executado mas sim quando ele é emitido.
 
-Os comandos são sempre processados na ordem em que são recebidos pelo servidor (execução fora de ordem não é permitida). Os dados passados para um comando OpenGL são então interpretados e copiados em memória caso seja necessário e as modificações subsequentes feitas pela aplicação não surtem efeito nos dados que estão armazenados internamente pelo OpenGL. Esses procedimentos são uma forma de garantir que um primitivo --- segundo Abdala (2019)\nocite{abdala}, uma representação discreta em grade de um elemento geométrico fundamental, e.g. ponto, linha, círculo, etc --- seja desenhado apenas se o primitivo anterior houver sido completamente desenhado \cite{GLSLBook}.
+Os comandos são sempre processados na ordem em que são recebidos pelo servidor (execução fora de ordem não é permitida). Os dados passados para um comando OpenGL são interpretados e copiados em memória caso seja necessário e as modificações subsequentes feitas pela aplicação não surtem efeito nos dados que estão armazenados internamente pelo OpenGL. Esses procedimentos são uma forma de garantir que um primitivo --- segundo Abdala (2019)\nocite{abdala}, uma representação discreta em grade de um elemento geométrico fundamental, e.g. ponto, linha, círculo, etc --- seja desenhado apenas se o primitivo anterior houver sido completamente desenhado \cite{GLSLBook}.
 
 OpenGL foi projetada para atuar como uma máquina de estados composta de parametros que definem o comportamento da pipeline de renderização e da forma que as primitivas são transformadas em pixels na tela. O estado é composto por uma estrutura de dados chamada contexto gráfico que é gerenciada pelo sistema de janelas do SO (\acrlong{SO}) \cite{GLSLBook}. 
 
-O principio básico de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por hardware com design específico chamado de acelerador gráfico, entretanto suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Aceleradores gráficos possuem região de memória delimitada para manutenção do conteúdo exibido na tela, sendo que cada pixel é representado por uma quantidade de bytes na memória \cite{GLSLBook}.
+O principio de funcionamento dessa API é transformar dados vindos de uma aplicação em algo visível na tela, esse processo é chamado de renderização e normalmente é acelerado por hardware com design específico chamado de acelerador gráfico, porém suas operações podem ser parcial ou totalmente implementadas por software executado pela CPU. Em um sistema de janelas, a janela que corresponde a região da memória gráfica que é modificada durante a renderização é chamada de frame buffer. Já em um cenário sem janelas (i.e. tela cheia) o frame buffer corresponde a toda a tela \cite{GLSLBook}.
 
-Essa região conhecida como memória de exibição é escaneada "x" vezes por segundo para eliminar a cintilação. Há ainda uma região específica para manipular dados que não são visíveis na tela chamada de memoria de não exibição. O responsável pela alocação de memória é o próprio sistema operacional que suporta o OpenGL. Em um sistema de janelas, a janela que corresponde a região da memória gráfica que é modificada durante a renderização é chamada de frame buffer. Já em um cenário sem janelas (i.e. tela cheia) o frame buffer corresponde a toda a tela \cite{GLSLBook}.
+Para que uma janela suporte a renderização ela precisa de alguns elementos: até quatro buffers para as cores, um buffer de profundidade (Figura \ref{fig:exemplo-6}), um \textit{stencil buffer} (Figura \ref{fig:exemplo-7}), um buffer de acumulação, um \textit{multisample buffer} e um ou mais buffers auxiliares. A maioria dos hardwares suporta o carregamento duplo, técnica que faz uso de um buffer frontal e um buffer posterior para que o processo de renderização seja realizado em plano de fundo e então quando terminar seu conteúdo é trocado com o do buffer frontal para exibir o resultado final e iniciar a nova renderização. Isso ajuda a conseguir animações suaves à taxas interativas \cite{GLSLBook}.
 
 \begin{figure}[h!]
 	\centering
@@ -94,12 +81,10 @@ Essa região conhecida como memória de exibição é escaneada "x" vezes por se
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=15cm]{figuras/figura-6}}
 	}{
-		\Fonte{https://larranaga.github.io/Blog/imagenes/z-buffer.png}
+		\Fonte{Larra (2021)}
 	}
 \end{figure}
 \nocite{dptbuf}
-
-Para que uma janela consiga suportar a renderização ela precisa de uma combinação de alguns elementos: até quatro buffers para as cores, um buffer de profundidade (Figura \ref{fig:exemplo-6}), um \textit{stencil buffer} (Figura \ref{fig:exemplo-7}), um buffer de acumulação, um \textit{multisample buffer} e um ou mais buffers auxiliares. A maioria dos hardwares suporta o carregamento duplo, técnica que faz uso de um buffer frontal e um buffer posterior para que o processo de renderização seja realizado em plano de fundo e então quando terminar seu conteúdo é trocado com o do buffer frontal para exibir o resultado final e iniciar a nova renderização. Isso ajuda a conseguir animações suaves à taxas interativas \cite{GLSLBook}.
 
 \begin{figure}[h!]
 	\centering
@@ -127,7 +112,7 @@ Para que a máquina de estados do OpenGL possa operar corretamente, foi definida
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=12cm]{figuras/pipeline.png}}
 	}{
-		\Fonte{\url{http://www.ic.uff.br/~anselmo/cursos/CGI/slidesGrad/CG_aula4(introducaoaOpenGL).pdf}}
+		\Fonte{Anselmo (2021)}
 	}
 \end{figure}
 \nocite{pipeline}
@@ -169,7 +154,7 @@ Por fim, é importante mencionar que existem dois modos principais de renderiza�
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=12cm]{figuras/spaces.png}}
 	}{
-		\Fonte{\url{https://learnopengl.com/img/getting-started/coordinate_systems.png}}
+		\Fonte{Learn OpenGL (2021)}
 	}
 \end{figure}
 \nocite{spaces}
@@ -201,7 +186,7 @@ Como cada objeto tem suas próprias características é necessário definir um s
 		\UNIFORfig{}{
 			\fbox{\includegraphics[width=6cm]{figuras/modelView.png}}
 		}{
-			\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+			\Fonte{Ahn (2021)}
 		}
 	\end{figure}
 
@@ -228,7 +213,7 @@ Após essa conversão, as coordenadas obtidas são multiplicadas pela matriz de 
 	}
 	\end{subfigure}
 	{
-		\Fonte{\url{http://www.songho.ca/opengl/gl_transform.html}}
+		\Fonte{Ahn (2021)}
 	}
 \end{figure}
 
@@ -318,7 +303,7 @@ Uma GPU de propósito geral é uma unidade de processamento gráfico que realiza
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=6cm]{figuras/tess.png}}
 	}{
-		\Fonte{\url{https://upload.wikimedia.org/wikipedia/commons/f/fc/Tessellation_Level_Table.png}}
+		\Fonte{Wikimedia (2021)}
 	}
 \end{figure}
 \nocite{tesselation}
@@ -343,13 +328,13 @@ Em relação ao sistema de coordenadas, Direct3D faz uso do sistema de mão esqu
 		\UNIFORfig{}{
 			\fbox{\includegraphics[width=6cm]{figuras/maoDireita.png}}
 		}{
-			\Fonte{\url{https://docplayer.com.br/200330-Mecanica-geral-basica.html}}
+			\Fonte{Luiz (2021)}
 		}
 	\end{figure}
 	\nocite{direita}
 
-\section{Aprofundando Conceitos Técnicos de Shaders}
-\label{sec:aprofundando-conceitos-tecnicos-shaders}
+\section{Conceitos Técnicos de Shaders}
+\label{sec:conceitos-tecnicos-shaders}
 
 A introdução do HLSL trouxe uma linguagem semelhante a C com estruturas extrar para tratar vetores, matrizes e outros elementos relacionados a graficos. Com a melhoria da legíbilidade e da produtividade, o seu uso permite aos desenvolvedores focar no código e reutilizar otimizações de alto nível (como fazer uso de tipos correspondentes e funções embutidas). O compilador HLSL contém truques de otimização de baixo nível que podem ajudar \cite{riguer2002performance}.
 
@@ -365,7 +350,7 @@ Shaders programáveis são uma das ferramentas mais impressionantes desenvolvida
 		\UNIFORfig{}{
 			\fbox{\includegraphics[width=9cm]{figuras/figura-5}}
 		}{
-			\Fonte{Adaptado de \url{https://www.youtube.com/watch?time_continue=2&v=F0CWzpYY68A&feature=emb_logo}}
+			\Fonte{Adaptado de Hologram Planet (2021)}
 		}
 	\end{figure}
 	\nocite{figura5}
@@ -397,7 +382,7 @@ Um shader de vértice é um programa executado uma vez para cada vértice cujo �
 		\UNIFORfig{}{
 			\fbox{\includegraphics[width=13cm]{figuras/shaderStages}}
 		}{
-			\Fonte{\url{https://miro.medium.com/max/700/1*_z7Vbb0msvXsUFq3sSMZAg.png}}
+			\Fonte{Medium (2021)}
 		}
 	\end{figure}
 	\nocite{shaderStages}
@@ -450,7 +435,7 @@ Em termos de qualidade de gráficos, Godot e Unity são considerados inferiores 
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=9cm]{figuras/subsurface}}
 	}{
-		\Fonte{\url{http://www.mrbluesummers.com/wp-content/uploads/2010/07/Sub-Surface-Scattering-Example.jpg}}
+		\Fonte{Mr Blue Summers (2021)}
 	}
 \end{figure}
 \nocite{subsurface}
@@ -472,7 +457,7 @@ Todos os jgos criados nessa engines são baseados no uso de nós e cenas. Nós p
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=7cm]{figuras/gdtree}}
 	}{
-		\Fonte{\url{https://subscription.packtpub.com/book/game-development/9781788831505/1/ch01lvl1sec07/about-nodes-and-scenes}}
+		\Fonte{Packtpub (2021)}
 	}
 \end{figure}
 \nocite{gdtree}
@@ -519,7 +504,7 @@ Unreal é mais um motor de jogo que está a mais tempo no mercado (desde 1998). 
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=14cm]{figuras/blueprint}}
 	}{
-		\Fonte{\url{https://docs.unrealengine.com/4.27/Images/ProgrammingAndScripting/Blueprints/QuickStart/BPQS_6_Step4.png}}
+		\Fonte{Unreal Engine (2021)}
 	}
 \end{figure}
 \nocite{blueprint}
@@ -543,7 +528,7 @@ Novamente a Unreal se destaca, por implementar uma ferramenta visual de edição
 	\UNIFORfig{}{
 		\fbox{\includegraphics[width=13cm]{figuras/materialUnreal}}
 	}{
-		\Fonte{\url{https://docs.unrealengine.com/4.27/Images/RenderingAndGraphics/Materials/PhysicallyBased/BaseColor_QS.webp}}
+		\Fonte{Unreal Engine (2021)}
 	}
 \end{figure}
 \nocite{materialUnreal}
