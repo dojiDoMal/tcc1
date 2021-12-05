@@ -509,7 +509,7 @@
 }
 
 \newcommand{\preambulotccgraduacao}{
-	Trabalho de Conclusão de Curso apresentado ao Curso de Graduação em \imprimirgraduacaoem\ do \imprimircentro\ da \imprimiries, como requisito parcial à obtenção do grau de \imprimirhabilitacao\ em \imprimirgraduacaoem. \\
+	Trabalho de Conclusão de Curso apresentado como exigência parcial para a obtenção do grau de bacharel em \imprimirgraduacaoem\, sob a orientação de conteúdo do professor André Lunardi de Souza e orientação metodológica da professora Adriana Pereira do Nascimento. \\
 }
 
 \newcommand{\preambulotccespecializacao}{
@@ -615,17 +615,18 @@
 		\begin{minipage}{0.8\textwidth}\raggedright
 			FUNDAÇÃO EDSON QUEIROZ \\
 			\MakeUppercase{\imprimiries} - UNIFOR \\
-			\MakeUppercase{\imprimircentro} \\
-			\MakeUppercase{Curso de #1 em #2} \\
+			\MakeUppercase{\imprimircentro} - CCT \\
+			\MakeUppercase{Curso de #2} \\
 		\end{minipage}
       
 		\vspace{6cm}
 
-		\MakeUppercase{\imprimirautor}
+		\MakeUppercase{\imprimirtitulo}
 
 		\vspace{5cm}
 
-		\MakeUppercase{\imprimirtitulo}
+		\MakeUppercase{\imprimirautor} \\
+		MATRÍCULA: 1710512
 
 		\vfill
 		\normalsize\MakeUppercase\imprimirlocal\par
@@ -673,7 +674,7 @@
 		\begin{SingleSpace}
 			\imprimirpreambulo
 			\newline
-			\artigoorientador: \ignorespaces\imprimirorientador \\
+			%\artigoorientador: \ignorespaces\imprimirorientador \\
 			\abntex@ifnotempty{\imprimircoorientador}{
 				\newline
 				\artigocoorientador: \ignorespaces\imprimircoorientador
