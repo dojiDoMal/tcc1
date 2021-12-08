@@ -1,14 +1,43 @@
 \chapter{Resultados}
 \label{chap:resultados}
 
-\lipsum[2]
+A seguir são apresentados os resultados do estudo conduzido para cada um dos motores de jogo, aplicando as recomendações mencionadas na documentação de cada um e utilizando o cenário base de testes. Como cada motor utiliza o seu próprio formato de arquivo para manipular os \textit{assets}, para que fosse possível replicar o mesmo cenário nos três motores foi necessário utilizar um cenário pré-modelado, onde os objetos 3D foram posicionados fixamente.
 
-\section{Resultados do Experimento A}
-\label{sec:resultados-do-experimento-a}
+\section{Discussão dos resultados na Unity}
+\label{sec:resultado-unity}
 
-\lipsum[3]
+Na Unity foi criado um novo projeto com template 3D. Em seguida foram importados os modelos dos objetos para compor a cena. Ao importar os objetos foram removidas as importações de materiais e animações, pois estes não serão utilizados. A cena final é composta por uma câmera com posição fixa e contém aproximadamente 3 milhões e 300 mil triângulos (5 milhões e 500 mil vértices) resultando em 7211 \textit{batches} (chamadas de desenho).
 
-\section{Resultados do Experimento B}
-\label{sec:resultados-do-experimento-b}
+Para a criação dos materiais, foram utilizados os padrões da engine que consistem no shader de superfície padrão, exceto para a implementação de um shader de musgo que afeta as pedras e para o shader de água. Ambos foram escritos utilizando a linguagem \textit{ShaderLab} e constam nos Anexos \ref{an:shader-musgo-unity} e \ref{an:shader-agua-unity} respectivamente.
 
-\lipsum[4]
+Por padrão, a Unity importa um rig genérico para modelos de não personagens. Isso faz com que um componente Animator seja adicionado se o modelo for instanciado no tempo de execução. Se o modelo não for animado por meio do sistema de animação, isso adiciona sobrecarga desnecessária ao sistema de animação, porque todos os animadores ativos devem ser marcados uma vez por quadro (UNITY TECHNOLOGIES, 2021)\nocite{unityTech2021}.
+
+Desativar o rig em modelos não animados para evitar esta adição automática de um componente Animator e possível adição inadvertida de animadores indesejados a uma cena é uma boa prática para objetos não animados e foi utilizada nessa cena (UNITY TECHNOLOGIES, 2021). 
+
+É importante ressaltar que ao criar um material na Unity ele já possui um shader padrão embutido, facilitando bastante a implementação de shaders básicos (como cores ou texturas). Ou seja, para implementar shaders simples não é necessário realizar nenhum tipo de programação.
+
+Foram utilizadas as configurações pré-definidas da Unity (tamanho máximo de 2048x2048, compressão normal e algoritmo de redimensionamento Mitchell) para importação das texturas que compõem os materiais. A única mudança realizada foi a remoção do filtro bilinear.
+
+As etapas de otimização seguem as recomendações descritas na documentação da Unity para melhorias de performance. A cada etapa foram medidas as estatísticas fornecidas pela engine para comparar os procedimentos.
+
+A primeira etapa de otimização seguindo a recomendação da documentação da Unity consiste em utilizar tamanhos menores de textura. Para aplicações mobile, 2048x2048 ou 1024x1024 é um tamanho suficiente de atlas de textura, e 512x512 é um tamanho suficiente para texturas individuais aplicadas em modelos 3D. Em contrapartida isso pode gerar uma perda de qualidade visual.
+
+A próxima etapa de otimização consiste em desabilitar o sinalizador de leitura e gravação dos modelos 3D, pois ele é habilitado por padrão para todos os modelos importados. A Unity exige que este sinalizador seja habilitado se um projeto estiver modificando uma malha em tempo de execução via \textit{script}, ou se a malha for usada como base para um componente MeshCollider (o que não é o caso nessa cena padrão). Se o modelo não for usado em um MeshCollider e não for manipulado por scripts, é recomendado desativar este sinalizador para salvar metade da memória do modelo.
+
+Se o formato de compressão da textura selecionado não é adequado para a plataforma de destino, o Unity descompacta a textura quando ela é carregada, consumindo tempo de CPU e uma quantidade excessiva de memória. Esse é um problema mais comum em dispositivos Android, que geralmente oferecem suporte a formatos de compactação de textura amplamente diferentes, dependendo do chipset.
+
+Mais uma etapa de otimização consiste em usar a compressão de malha quando for possível.  Habilitar a compactação de malha reduz o número de bits usados para representar os números de ponto flutuante para diferentes canais de dados de um modelo. Isso pode levar a uma pequena perda de precisão e os efeitos dessa imprecisão devem ser verificados pelos artistas antes do uso em um projeto final. É possível usar três diferentes níveis de compressão (Low, Medium, High).
+
+Outra etapa recomendada pela Unity é o uso da funcionalidade \textit{Graphics jobs}, uma opção que determina se serão utilizadas \textit{worker threads} (são \textit{threads} que performam uma única tarefa, como \textit{culling} ou \textit{mesh skinning}). Em plataformas onde essa funcionalidade está disponível, ela pode melhorar consideravelmente a performance.
+
+Uma técnica interessante consiste em reduzir a distância de projeção da câmera usando a propriedade \textit{Far Clip Plane}. Esta propriedade é a distância além da qual os objetos não são mais renderizados pela câmera. Para disfarçar o fato de que objetos distantes não são mais visíveis, é possível usar a névoa. Após reduzir a distância de 1000 para 77 foi possível obter o dobro de taxa de quadros (60 FPS).
+
+Caso a névoa seja um aspecto indesejado no jogo, uma alternativa na próxima etapa consiste em ativar a oclusão para desativar a renderização de objetos que estão ocultos por outros objetos. A seleção de oclusão do Unity não é adequada para todas as cenas, pode levar a sobrecarga de CPU adicional e pode ser complexa para configurar, mas pode melhorar muito o desempenho em algumas cenas.
+
+Focando na próxima etapa, é possível fazer uso da instanciação de GPU para desenhar (ou renderizar) várias cópias da mesma malha de uma vez, usando um número menor de chamadas. Isso é útil para desenhar objetos como edifícios, árvores, grama ou outras coisas que aparecem repetidamente em uma cena.
+
+Esse é um método útil para renderizar malhas idênticas e cada instância pode ter parâmetros diferentes (por exemplo, cor ou escala) para adicionar variação e reduzir a aparência de repetição. Isso pode ainda reduzir o número de chamadas de desenho e melhorar significativamente o desempenho de renderização (UNITY TECHNOLOGIES, 2021)\nocite{unity2Tech2021}.
+
+Há ainda uma etapa de definição do nível de cascatas de sombra. Basicamente, quanto mais cascatas forem utilizadas, menos as sombras são afetadas pelo \textit{aliasing} de perspectiva. Aumentar o número aumenta a sobrecarga de renderização. No entanto, essa sobrecarga ainda é menor do que seria no caso de um mapa de alta resolução em toda a sombra.
+
+Outro processo descrito consiste em utilizar os shaders móveis otimizados embutidos na Unity; deve-se experimentar usá-los e ver se isso melhora o desempenho sem afetar a aparência do jogo. Esses shaders foram projetados para uso em plataformas móveis, mas são adequados para qualquer projeto. É perfeitamente normal usar shaders "móveis" em plataformas não móveis para aumentar o desempenho se eles fornecerem a fidelidade visual necessária para o projeto.

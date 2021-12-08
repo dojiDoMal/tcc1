@@ -9,10 +9,13 @@ shader_type spatial;
 render_mode unshaded, cull_front, depth_draw_always; 
 
 uniform float thickness = 0.1; // espessura do contorno
-uniform vec4 outline_color : hint_color = vec4(1.0); // cor do contorno
+
+// cor do contorno
+uniform vec4 outline_color : hint_color = vec4(1.0); 
 
 void vertex() {
-    /* desloca cada vertice na direcao de sua normal vezes o fator de espessura */
+    // desloca cada vertice na direcao de sua normal vezes
+	// o fator de espessura 
 	VERTEX += NORMAL * thickness; 
 }
 
