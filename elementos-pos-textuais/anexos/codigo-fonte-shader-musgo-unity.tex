@@ -1,31 +1,77 @@
-\anexo{Código-fonte do shader de contorno em GLSL}
-\label{an:codigo-fonte-contorno-glsl}
+\anexo{Código-fonte do shader de musgo}
+\label{an:codigo-fonte-musgo-unity}
 
 \input{figuras/listings-glsl.prf}
 
-\begin{lstlisting}[language=GLSL, caption={\label{cf:outline} Shader GLSL 3D simples para efeito de contorno}]
-shader_type spatial;
+\begin{lstlisting}[language=GLSL, caption={\label{cf:musgo} Shader de efeito de musgo na Unity}]
+Shader "Custom/Musgo" {
+	Properties {
+		_Color ("Color", Color) = (1,1,1,1)
+		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_Metallic ("Metallic", 2D) = "white" {}
+		_Normal ("Normal", 2D) = "white" {}
+		_Height ("Height", 2D) = "white" {}
+		_Occlusion ("Occlusion", 2D) = "white" {}
+		_MusgoTex ("Musgo Albedo (RGB)", 2D) = "white" {}
+		_MusgoDirection ("Musgo Direction", Vector) = (0, 
+			1, 0, 0)
+		_MusgoAmount ("Musgo Amount", Range(0,1)) = 0.1
+		_Tint("Tint", Color) = (0,1,0,1)
+	}
+	SubShader {
+		Tags { "RenderType"="Opaque" }
+		CGPROGRAM
+		#pragma surface surf Standard fullforwardshadows
+		#pragma target 3.0
 
-render_mode unshaded, cull_front, depth_draw_always; 
+		sampler2D _MainTex;
+		sampler2D _MusgoTex;
+		sampler2D _Metallic;
+		sampler2D _Normal;
+		sampler2D _Height;
+		sampler2D _Occlusion;
 
-uniform float thickness = 0.1; // espessura do contorno
+		struct Input {
+			float2 uv_MainTex;
+			float3 worldNormal;
+			INTERNAL_DATA
+		};
 
-// cor do contorno
-uniform vec4 outline_color : hint_color = vec4(1.0); 
+		fixed4 _Color;
+		float4 _MusgoDirection;
+		float _MusgoAmount;
+		float4 _Tint;
 
-void vertex() {
-    // desloca cada vertice na direcao de sua normal vezes
-	// o fator de espessura 
-	VERTEX += NORMAL * thickness; 
-}
-
-void fragment() {
-    /* aplica a cor em cada pixel */
-	ALBEDO = outline_color.rgb;
-	if(outline_color.a < 1.0) ALPHA = outline_color.a;
-}
+		void surf (Input IN, inout SurfaceOutputStandard o) 
+		{
+			fixed3 normal = UnpackNormal(tex2D (_Normal, 
+				IN.uv_MainTex));
+			o.Normal = normal.rgb;
+			float3 worldNormal = WorldNormalVector(IN, 
+				o.Normal);
+			float MusgoCoverage = (dot(worldNormal, 
+				_MusgoDirection) + 1) / 2;
+			MusgoCoverage = 1 - MusgoCoverage;
+			float MusgoStrength = MusgoCoverage 
+				< _MusgoAmount;
+			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * 
+				_Color;
+			fixed4 MusgoColor = tex2D (_MusgoTex, 
+				IN.uv_MainTex) * _Color * _Tint;
+			fixed4 metallic = tex2D (_Metallic, 
+				IN.uv_MainTex);
+			fixed4 occlusion = tex2D (_Occlusion, 
+				IN.uv_MainTex);
+			o.Albedo = c * (1 - MusgoStrength) + MusgoColor 
+				* MusgoStrength;
+			o.Metallic = metallic.r;
+			o.Occlusion = occlusion.r;
+			o.Alpha = c.a;
+		} ENDCG
+	} FallBack "Diffuse"
+}	
 \end{lstlisting}
 
-\nocite{outlineGLSL}
+\nocite{wronski2021}
 
 \index{AAA}

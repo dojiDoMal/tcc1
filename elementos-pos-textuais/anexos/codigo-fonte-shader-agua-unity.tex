@@ -1,31 +1,366 @@
-\anexo{Código-fonte do shader de contorno em GLSL}
-\label{an:codigo-fonte-contorno-glsl}
+\anexo{Código-fonte do shader de água}
+\label{an:codigo-fonte-agua-unity}
 
 \input{figuras/listings-glsl.prf}
 
-\begin{lstlisting}[language=GLSL, caption={\label{cf:outline} Shader GLSL 3D simples para efeito de contorno}]
-shader_type spatial;
+\begin{lstlisting}[language=GLSL, caption={\label{cf:agua} Shader de efeito de água na Unity}]
+Shader "Water" {
+	Properties{
+		[Header(Features)]
+		[Toggle(USE_DISPLACEMENT)] 
+		_UseDisplacement("Displacement", Float) = 0
+		[Toggle(USE_MEAN_SKY_RADIANCE)] 
+		_UseMeanSky("Mean sky radiance", Float) = 0
+		[Toggle(USE_FILTERING)] 
+		_UseFiltering("Filtering", Float) = 0
+		[Toggle(USE_FOAM)]
+		_UseFoam("Foam", Float) = 0
+		[Toggle(BLINN_PHONG)] 
+		_UsePhong("Blinn Phong", Float) = 0
+		[Header(Basic settings)]
+		_AmbientDensity("Ambient Intensity",  
+			Range(0, 1)) = 0.15
+		_DiffuseDensity("Diffuse Intensity",  
+			Range(0, 1)) = 0.1
+		_SurfaceColor("Surface Color", 
+			Color) = (0.0078, 0.5176, 0.7)
+		_ShoreColor("Shore Tint Color", 
+			Color) = (0.0078, 0.5176, 0.7)
+		_DepthColor("Deep Color", 
+			Color) = (0.0039, 0.00196, 0.145)
+		[NoScaleOffset]
+		_SkyTexture("Sky Texture", Cube) = "white" {}
+		[NoScaleOffset]
+		_NormalTexture("Normal Texture", 2D) = "white" {}
+		_NormalIntensity("Normal Intensity",  
+			Range(0, 1)) = 0.5
+		_TextureTiling("Texture Tiling", 
+			Float) = 1
+		_WindDirection("Wind Direction", Vector) = (3,5,0)
+		[Header(Displacement settings)]
+		[NoScaleOffset]
+		_HeightTexture("Height Texture", 
+			2D) = "white" {}
+		_HeightIntensity("Height Intensity",  
+			Range(0, 1)) = 0.5
+		_WaveTiling("Wave Tiling", Float) = 1
+		_WaveAmplitudeFactor("Wave Amplitude Factor",
+			Float) = 1.0
+		_WaveSteepness("Wave Steepness", Range(0, 1)) = 0.5
+		_WaveAmplitude("Waves Amplitude", 
+			Vector) = (0.05, 0.1, 0.2, 0.3)
+		_WavesIntensity("Waves Intensity", 
+			Vector) = (3, 2, 2, 10)
+		_WavesNoise("Waves Noise", 
+			Vector) = (0.05, 0.15, 0.03, 0.05)
+		[Header(Refraction settings)]
+		_WaterClarity("Water Clarity",  Range(0, 3)) = 0.75
+		_WaterTransparency("Water Transparency",  
+			Range(0, 30)) = 10.0
+		_HorizontalExtinction("Horizontal Extinction", 
+			Vector) = (3.0, 10.0, 12.0)
+		_RefractionValues("Refraction/Reflection", 
+			Vector) = (0.3, 0.01, 1.0)
+		_RefractionScale("Refraction Scale",  
+			Range(0, 0.03)) = 0.005
+		[Header(Reflection settings)]
+		_Shininess("Shininess",  Range(0, 3)) = 0.5
+		_SpecularValues("Specular Intensity", 
+			Vector) = (12, 768, 0.15)
+		_Distortion("Distortion", Range(0, 0.15)) = 0.05
+		_RadianceFactor("Radiance Factor", 
+			Range(0, 1.0)) = 1.0
+		[HideInInspector]_ReflectionTexture(
+			"Reflection Texture", 2D) = "white" {}
+		[Header(Foam settings)]
+		[NoScaleOffset]_FoamTexture("Foam Texture", 
+			2D) = "white" {}
+		[NoScaleOffset]_ShoreTexture("Shore Texture", 
+			2D) = "white" {}
+		_FoamTiling("Foam Tiling", 
+			Vector) = (2.0, 0.5, 0.0)
+		_FoamRanges("Foam Ranges", 
+			Vector) = (2.0, 3.0, 100.0)
+		_FoamNoise("Foam Noise", Vector) = 
+			(0.1, 0.3, 0.1, 0.3)
+		_FoamSpeed("Foam Speed", Float) = 10
+		_FoamIntensity("Foam Intensity", Range(0, 1)) = 0.5
+		_ShoreFade("Shore Fade",  Range(0.1, 3)) = 0.3
+	} 
+	SubShader{
+		Tags{ "IgnoreProjector" = "True"
+		"Queue" = "Transparent"
+		"RenderType" = "Transparent"
+		"LightMode" = "ForwardBase" }
+		GrabPass{ "_RefractionTexture" }
+		Pass{
+		Name "Base"
+		Blend SrcAlpha OneMinusSrcAlpha
+		Cull False
+		ZWrite True
 
-render_mode unshaded, cull_front, depth_draw_always; 
+		CGPROGRAM
+		#pragma vertex vert
+		#pragma fragment frag
+		#include "UnityCG.cginc"
+		#include "conversion.cginc"
+		#include "snoise.cginc"
+		#include "bicubic.cginc"
+		#include "normals.cginc"
+		#include "displacement.cginc"
+		#include "meansky.cginc"
+		#include "radiance.cginc"
+		#include "depth.cginc"
+		#include "foam.cginc"
+		#pragma multi_compile_fog
+		#pragma shader_feature USE_DISPLACEMENT
+		#pragma shader_feature USE_MEAN_SKY_RADIANCE
+		#pragma shader_feature USE_FILTERING
+		#pragma shader_feature USE_FOAM
+		#pragma shader_feature BLINN_PHONG
+		#pragma exclude_renderers d3d11_9x 
+		#pragma target 3.0
 
-uniform float thickness = 0.1; // espessura do contorno
+		uniform sampler2D _CameraDepthTexture;
+		uniform sampler2D _HeightTexture;
+		uniform sampler2D _NormalTexture;
+		uniform sampler2D _FoamTexture;
+		uniform sampler2D _ShoreTexture;
+		uniform sampler2D _ReflectionTexture; 
+		uniform float4 _ReflectionTexture_TexelSize;
+		uniform samplerCUBE _SkyTexture;
+		uniform sampler2D _RefractionTexture;
+		uniform float4x4 _ViewProjectInverse;
+		uniform float4 _TimeEditor;
+		uniform float _AmbientDensity;
+		uniform float _DiffuseDensity;
+		uniform float _HeightIntensity;
+		uniform float _NormalIntensity;
+		uniform float _TextureTiling;
+		uniform float4 _LightColor0;
+		uniform float3 _SurfaceColor;
+		uniform float3 _ShoreColor;
+		uniform float3 _DepthColor;
+		uniform float2 _WindDirection;
+		uniform float _WaveTiling;
+		uniform float _WaveSteepness;
+		uniform float _WaveAmplitudeFactor;
+		uniform float4 _WaveAmplitude;
+		uniform float4 _WavesIntensity;
+		uniform float4 _WavesNoise;
+		uniform float _WaterClarity;
+		uniform float _WaterTransparency;
+		uniform float3 _HorizontalExtinction;
+		uniform float _Shininess;
+		uniform float3 _SpecularValues;
+		uniform float2 _RefractionValues;
+		uniform float _RefractionScale;
+		uniform float _RadianceFactor;
+		uniform float _Distortion;
+		uniform float3 _FoamRanges;
+		uniform float4 _FoamNoise;
+		uniform float2 _FoamTiling;
+		uniform float _FoamSpeed;
+		uniform float _FoamIntensity;
+		uniform float _ShoreFade;
 
-// cor do contorno
-uniform vec4 outline_color : hint_color = vec4(1.0); 
+		struct VertexInput {
+			float4 vertex : POSITION;
+		};
+		struct VertexOutput {
+			float4 pos : SV_POSITION;
+			float2 uv : TEXCOORD0;
+			float3 normal : TEXCOORD1;  
+			float3 tangent : TEXCOORD2;
+			float3 bitangent : TEXCOORD3;
+			float3 worldPos : TEXCOORD4;
+			float4 projPos : TEXCOORD5;
+			float timer : TEXCOORD6;
+			float4 wind : TEXCOORD7; 
+			UNITY_FOG_COORDS(8)
+		};
 
-void vertex() {
-    // desloca cada vertice na direcao de sua normal vezes
-	// o fator de espessura 
-	VERTEX += NORMAL * thickness; 
-}
+		VertexOutput vert(VertexInput v) {
+			VertexOutput o = (VertexOutput)0;
+			float2 windDir = _WindDirection;
+			float windSpeed = length(_WindDirection);
+			windDir /= windSpeed;
+			float timer = (_Time + _TimeEditor) * 
+				windSpeed * 10;
+			float4 modelPos = v.vertex;
+			float3 worldPos = mul(unity_ObjectToWorld, 
+				float4(modelPos.xyz, 1));
+			half3 normal = half3(0, 1, 0);
+#ifdef USE_DISPLACEMENT
+			float cameraDistance = length(
+				_WorldSpaceCameraPos.xyz - worldPos);
+			float2 noise = GetNoise(worldPos.xz, timer * 
+				windDir * 0.5);
+			half3 tangent;
+			float4 waveSettings = float4(windDir, 
+				_WaveSteepness, _WaveTiling);
+			float4 waveAmplitudes = _WaveAmplitude * 
+				_WaveAmplitudeFactor;
+			worldPos = ComputeDisplacement(worldPos, 
+				cameraDistance, noise, timer, waveSettings, 
+				waveAmplitudes, _WavesIntensity, 
+				_WavesNoise, normal, tangent);
+			float heightIntensity = _HeightIntensity * (1.0 
+				- cameraDistance / 100.0) * _WaveAmplitude;
+			float2 texCoord = worldPos.xz * 0.05 *
+				_TextureTiling;
+			if (heightIntensity > 0.02) {
+				float height = ComputeNoiseHeight(
+					_HeightTexture, _WavesIntensity, 
+					_WavesNoise, texCoord, noise, timer);
+				worldPos.y += height * heightIntensity;
+			}
+			modelPos = mul(unity_WorldToObject, 
+				float4(worldPos, 1));
+			o.tangent = tangent;
+			o.bitangent = cross(normal, tangent);
+#endif
+			float2 uv = worldPos.xz;
+			o.timer = timer;
+			o.wind.xy = windDir;
+			o.wind.zw = windDir * timer;
+			o.uv = uv  * 0.05 * _TextureTiling;
+			o.pos = UnityObjectToClipPos(modelPos);
+			o.worldPos = worldPos;
+			o.projPos = ComputeScreenPos(o.pos);
+			o.normal = normal;
+			UNITY_TRANSFER_FOG(o, o.pos);
+			return o;
+		}
 
-void fragment() {
-    /* aplica a cor em cada pixel */
-	ALBEDO = outline_color.rgb;
-	if(outline_color.a < 1.0) ALPHA = outline_color.a;
-}
+		float4 frag(VertexOutput fs_in, float facing : 
+			VFACE) : COLOR {
+			float timer = fs_in.timer;
+			float2 windDir = fs_in.wind.xy;
+			float2 timedWindDir = fs_in.wind.zw;
+			float2 ndcPos = float2(fs_in.projPos.xy / 
+				fs_in.projPos.w);
+			float3 eyeDir = normalize(
+				_WorldSpaceCameraPos.xyz - fs_in.worldPos);
+			float3 surfacePosition = fs_in.worldPos;
+			half3 lightColor = _LightColor0.rgb;
+#ifdef USE_DISPLACEMENT
+			half3 normal = ComputeNormal(_NormalTexture, 
+				surfacePosition.xz, fs_in.uv, fs_in.normal, 
+				fs_in.tangent, fs_in.bitangent, _WavesNoise
+				, _WavesIntensity, timedWindDir);
+#else
+			half3 normal = ComputeNormal(_NormalTexture, 
+				surfacePosition.xz, fs_in.uv, fs_in.normal, 
+				0, 0, _WavesNoise, _WavesIntensity, 
+				timedWindDir
+			);
+#endif
+			normal = normalize(lerp(fs_in.normal, 
+				normalize(normal), _NormalIntensity));
+			float depth = tex2Dproj(_CameraDepthTexture, 
+				UNITY_PROJ_COORD(fs_in.projPos.xyww));
+			float3 depthPosition = NdcToWorldPos(
+				_ViewProjectInverse, float3(ndcPos, depth)
+			);
+			float waterDepth = surfacePosition.y - 
+				depthPosition.y; 
+			float viewWaterDepth = length(surfacePosition - 
+				depthPosition); 
+			float2 dudv = ndcPos;
+			{
+				float refractionScale = _RefractionScale * 
+					min(waterDepth, 1.0f);
+				float2 delta = float2(
+					sin(timer + 3.0f * abs(depthPosition.y)
+						),
+					sin(timer + 5.0f * abs(depthPosition.y)
+						));
+				dudv += windDir * delta * refractionScale;
+			}
+			half3 pureRefractionColor = tex2D(
+				_RefractionTexture, dudv).rgb;
+			{
+				INVERSE_FOG_COLOR(fs_in.fogCoord, 
+					pureRefractionColor);
+			}
+			float2 waterTransparency = float2(
+				_WaterClarity, _WaterTransparency);
+			float2 waterDepthValues = float2(
+				waterDepth, viewWaterDepth);
+			float shoreRange = max(
+				_FoamRanges.x, _FoamRanges.y) * 2.0;
+			half3 refractionColor = DepthRefraction(
+				waterTransparency, waterDepthValues, 
+				 shoreRange, _HorizontalExtinction,
+				pureRefractionColor, _ShoreColor, 
+				_SurfaceColor, _DepthColor);
+			float3 lightDir = normalize(
+				_WorldSpaceLightPos0);
+			half fresnel = FresnelValue(
+				_RefractionValues, normal, eyeDir);
+			half3 specularColor = ReflectedRadiance(
+				_Shininess, _SpecularValues, lightColor, 
+				lightDir, eyeDir, normal, fresnel);
+#ifdef USE_MEAN_SKY_RADIANCE
+			half3 reflectColor = fresnel * MeanSkyRadiance(
+				_SkyTexture, eyeDir, normal) * 
+				_RadianceFactor;
+#else
+			half3 reflectColor = 0;
+#endif // #ifndef USE_MEAN_SKY_RADIANCE
+			dudv = ndcPos + _Distortion * normal.xz;
+#ifdef USE_FILTERING
+			reflectColor += tex2DBicubic(
+				_ReflectionTexture, 
+				_ReflectionTexture_TexelSize.z, 
+				dudv).rgb;
+#else
+			reflectColor += tex2D(_ReflectionTexture, 
+				dudv).rgb;
+#endif // #ifdef USE_FILTERING
+#ifdef USE_FOAM
+			float maxAmplitude = max(max(_WaveAmplitude.x, 
+				_WaveAmplitude.y), _WaveAmplitude.z);
+			half foam = FoamValue(_ShoreTexture, 
+				_FoamTexture, _FoamTiling,
+				_FoamNoise, _FoamSpeed * windDir, 
+				_FoamRanges, maxAmplitude,
+				surfacePosition, depthPosition, eyeDir, 
+				waterDepth, timedWindDir, timer);
+			foam *= _FoamIntensity;
+#else
+			half foam = 0;
+#endif // #ifdef USE_FOAM
+			half  shoreFade = saturate(waterDepth * 
+				_ShoreFade);
+			half3 ambientColor = 
+				UNITY_LIGHTMODEL_AMBIENT.rgb * 
+				_AmbientDensity + saturate(
+					dot(normal, lightDir)) * 
+					_DiffuseDensity;
+			pureRefractionColor = lerp(pureRefractionColor, 
+				reflectColor, fresnel * saturate(waterDepth 
+				/ (_FoamRanges.x * 0.4)));
+			pureRefractionColor = lerp(pureRefractionColor, 
+				_ShoreColor, 0.30 * shoreFade);
+			half3 color = lerp(refractionColor, 
+				reflectColor, fresnel);
+			color = saturate(ambientColor + color + max(
+				specularColor, foam * lightColor));
+			color = lerp(pureRefractionColor + 
+			specularColor * shoreFade, color, shoreFade);
+			UNITY_APPLY_FOG(fs_in.fogCoord, color);
+#ifdef DEBUG_NORMALS
+			color.rgb = 0.5 + 2 * ambientColor + 
+				specularColor + clamp(dot(normal, 
+				lightDir), 0, 1) * 0.5;
+#endif
+			return float4(color, 1.0);
+		}ENDCG}
+	}FallBack "Diffuse"}
 \end{lstlisting}
 
-\nocite{outlineGLSL}
+\nocite{alin2021}
 
 \index{AAA}

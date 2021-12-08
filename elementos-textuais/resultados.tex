@@ -3,12 +3,43 @@
 
 A seguir são apresentados os resultados do estudo conduzido para cada um dos motores de jogo, aplicando as recomendações mencionadas na documentação de cada um e utilizando o cenário base de testes. Como cada motor utiliza o seu próprio formato de arquivo para manipular os \textit{assets}, para que fosse possível replicar o mesmo cenário nos três motores foi necessário utilizar um cenário pré-modelado, onde os objetos 3D foram posicionados fixamente.
 
+\section{Discussão dos resultados na Unreal}
+\label{sec:resultado-unreal}
+
+Na Unreal, um ponto positivo vai para a existência de materiais de ambiente (Grama, tijolos, pedras e até água) já prontos para serem utilizados, e inclusive com otimizações de performance como nível de detalhe e tesselação, dentro da pasta de conteúdo inicial do template de projeto padrão. Isso ajuda a reduzir bastante o trabalho dos desenvolvedores ao implementar shaders em seus jogos.
+
+A primeira recomendação na documentação da Unreal sugere desativar a projeção de sombra, que é uma opção que vem habilitada por padrão. As sombras fazem com que os objetos pareçam estar ancorados no mundo e dão ao observador uma sensação de profundidade e espaço. 
+
+Sombras estáticas não são custosas no que diz respeito à renderização, mas sombras dinâmicas podem ser um dos maiores problemas de desempenho. Em média, as luzes de projeção de sombras dinâmicas móveis são as mais custosas (EPIC GAMES, 2021).
+
+Para a realização desta etapa, foi desativa a projeção de sombra individualmente para cada malha e em seguida, com a projeção das malhas reativada, foi desativado apenas na fonte de luz direcional.
+
+Por padrão, o Unreal Engine usa um renderizador diferido, pois ele fornece maior versatilidade e concede acesso a mais recursos de renderização. A renderização diferida não é apenas mais rápida, mas também oferece melhores opções de anti-aliasing, o que gera melhores aspectos visuais.
+
+A renderização direta fornece uma linha de base com passagens de renderização mais rápidas. A segunda etapa então consistiu em mudar, nas configurações do projeto, o modo de renderização de diferido para direto.
+
+A próxima etapa consistiu em ajustar a oclusão de HZB (\acrlong{HZB}) que tem um custo constante alto, mas um custo por objeto menor. A oclusão HZB funciona da mesma forma que a oclusão padrão, exceto que é mais conservadora na maneira que seleciona objetos, o que significa que menos objetos são eliminados como resultado (EPIC GAMES, 2021). 
+
+Ele usa uma versão \textit{mipmap} do alvo de renderização de profundidade de cena para verificar os limites de um ator. Também requer menos buscas de textura ao amostrar de um \textit{mipmap} menos detalhado (EPIC GAMES, 2021)\nocite{unrealdocs}.
+
+A aplicação de técnicas de otimização de performance na Unreal se mostra mais difícil por exigir um conhecimento da ferramenta de console da engine para aplicar comandos necessários para alterar aspectos que afetam a performance.
+
+Um detalhe importante para levar em consideração é que ao invés de fornecer alternativas embutidas na própria engine, ela recomenda e oferece soluções de terceiros para realizar benchmark e otimizações de gráficos. Além disso, a sua documentação, diferente da Unity, não aborda tantas opções de melhorias de performance em um clique. 
+
+Por isso ela é considerada um motor de jogo mais apropriado para usuários avançados, por entender que esses já possuem o conhecimento das técnicas necessárias para melhorar a performance e conseguem aplicá-las sem o auxilio de opções simples embutidas na engine.
+
+A Tabela \ref{qua:unreal} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+
+\input{figuras/tabela-unreal.tex}
+
+TODO: DESCREVER OS RESULTADOS
+
 \section{Discussão dos resultados na Unity}
 \label{sec:resultado-unity}
 
 Na Unity foi criado um novo projeto com template 3D. Em seguida foram importados os modelos dos objetos para compor a cena. Ao importar os objetos foram removidas as importações de materiais e animações, pois estes não serão utilizados. A cena final é composta por uma câmera com posição fixa e contém aproximadamente 3 milhões e 300 mil triângulos (5 milhões e 500 mil vértices) resultando em 7211 \textit{batches} (chamadas de desenho).
 
-Para a criação dos materiais, foram utilizados os padrões da engine que consistem no shader de superfície padrão, exceto para a implementação de um shader de musgo que afeta as pedras e para o shader de água. Ambos foram escritos utilizando a linguagem \textit{ShaderLab} e constam nos Anexos \ref{an:shader-musgo-unity} e \ref{an:shader-agua-unity} respectivamente.
+Para a criação dos materiais, foram utilizados os padrões da engine que consistem no shader de superfície padrão, exceto para a implementação de um shader de musgo que afeta as pedras e para o shader de água. Ambos foram escritos utilizando a linguagem \textit{ShaderLab} e constam nos Anexos \ref{an:codigo-fonte-musgo-unity} e \ref{an:codigo-fonte-agua-unity} respectivamente.
 
 Por padrão, a Unity importa um rig genérico para modelos de não personagens. Isso faz com que um componente Animator seja adicionado se o modelo for instanciado no tempo de execução. Se o modelo não for animado por meio do sistema de animação, isso adiciona sobrecarga desnecessária ao sistema de animação, porque todos os animadores ativos devem ser marcados uma vez por quadro (UNITY TECHNOLOGIES, 2021)\nocite{unityTech2021}.
 
@@ -41,3 +72,9 @@ Esse é um método útil para renderizar malhas idênticas e cada instância pod
 Há ainda uma etapa de definição do nível de cascatas de sombra. Basicamente, quanto mais cascatas forem utilizadas, menos as sombras são afetadas pelo \textit{aliasing} de perspectiva. Aumentar o número aumenta a sobrecarga de renderização. No entanto, essa sobrecarga ainda é menor do que seria no caso de um mapa de alta resolução em toda a sombra.
 
 Outro processo descrito consiste em utilizar os shaders móveis otimizados embutidos na Unity; deve-se experimentar usá-los e ver se isso melhora o desempenho sem afetar a aparência do jogo. Esses shaders foram projetados para uso em plataformas móveis, mas são adequados para qualquer projeto. É perfeitamente normal usar shaders "móveis" em plataformas não móveis para aumentar o desempenho se eles fornecerem a fidelidade visual necessária para o projeto.
+
+A Tabela \ref{qua:unity} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+
+\input{figuras/tabela-unity.tex}
+
+TODO: DESCREVER OS RESULTADOS
