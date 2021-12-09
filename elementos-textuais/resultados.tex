@@ -3,6 +3,35 @@
 
 A seguir são apresentados os resultados do estudo conduzido para cada um dos motores de jogo, aplicando as recomendações mencionadas na documentação de cada um e utilizando o cenário base de testes. Como cada motor utiliza o seu próprio formato de arquivo para manipular os \textit{assets}, para que fosse possível replicar o mesmo cenário nos três motores foi necessário utilizar um cenário pré-modelado, onde os objetos 3D foram posicionados fixamente.
 
+A cena de testes consiste em várias cópias de um conjunto de objetos, dentre eles uma casa, algumas pedras, uma malha que representa a água, um plano para o chão, algumas árvores e cogumelos como mostrado na Figura \ref{fig:cena}. Esses objetos foram duplicados até que fosse obtido um valor médio de taxa de quadros dentro do padrão aceitável para jogos eletrônicos de 30 FPS.
+
+\input{figuras/figura-cena.tex}
+
+\section{Discussão dos resultados na Godot}
+\label{sec:resultado-godot}
+
+A cena de teste foi replicada na Godot engine preservando as caracterísiticas fundamentais de número de triângulos (vértices) e materiais (shaders). Obviamente, houve necessidade de adaptação nos shaders de musgo sobre rochas e no shader de água devido ao fato do motor de renderização da engine fazer uso de GLSL.
+
+Aqui é interessante destacar que a Godot executa automaticamente o culling para evitar a renderização de objetos que estão fora da janela de exibição. Isso funciona bem para jogos que acontecem em uma pequena área, no entanto, isso pode rapidamente se tornar problemático para níveis maiores.
+
+Seguindo a recomendação da documentação da Godot, foi utilizado o cozimento de iluminação. Os mapas de luz cozidos são um fluxo de trabalho alternativo para adicionar iluminação indireta a uma cena. 
+
+Lightmaps preparados funcionam bem em PCs de baixo custo e dispositivos móveis, visto que eles quase não consomem recursos em tempo de execução. Os mapas de luz preparados podem ser usados opcionalmente para armazenar iluminação direta, o que fornece ainda mais ganhos de desempenho (LINIETSKY; MANZUR, 2021)\nocite{manzur2021}.
+
+A iluminação de objetos é uma das operações de renderização mais caras. Iluminação em tempo real, sombras (especialmente luzes múltiplas) e GI são especialmente caros. Eles podem damandar muito de dispositivos móveis de baixa potência. O uso de iluminação cozida tem a desvantagem de não ser dinâmico. Em geral, se várias luzes precisam afetar uma cena, é melhor usar mapas de luz cozidos. O cozimento também pode melhorar a qualidade da cena, adicionando reflexos indiretos de luz (LINIETSKY; MANZUR, 2021).
+
+A próxima etapa consistiu em desativar o filtro das texturas. Ler texturas é uma operação cara, especialmente ao ler várias texturas em um sombreador de fragmento. Além disso, a filtragem pode desacelerar ainda mais esse processso (filtragem trilinear entre mipmaps e cálculo da média). Ler texturas também é caro em termos de uso de energia, o que é um grande problema em celulares.
+
+A Tabela \ref{qua:godot} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+
+\input{figuras/tabela-godot.tex}
+
+A partir dos dados obtidos fica nítido que o cozimento de luzes não se mostrou como uma solução efetiva para melhoria de performance, pois não aumentou de maneira considerável a taxa de quadros por segundo. 
+
+Também foi possível notar que o uso de memória aumentou, o que já era esperado tendo em vista que o cozimento de luzes processa as sombras em um arquivo de textura que é salvo em memória para ser lido em tempo de execução. 
+
+A etapa mais efetiva para ganho de desempenho acabou sendo o desativamento das sombras, com isso foi possível chegar mais próximo do objetivo de 30 FPS. Por último, desativar o filtro não se mostrou como uma medida viável visto que prejudicou a performance.
+
 \section{Discussão dos resultados na Unreal}
 \label{sec:resultado-unreal}
 
@@ -22,17 +51,24 @@ A próxima etapa consistiu em ajustar a oclusão de HZB (\acrlong{HZB}) que tem 
 
 Ele usa uma versão \textit{mipmap} do alvo de renderização de profundidade de cena para verificar os limites de um ator. Também requer menos buscas de textura ao amostrar de um \textit{mipmap} menos detalhado (EPIC GAMES, 2021)\nocite{unrealdocs}.
 
+A Tabela \ref{qua:unreal} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+
+\input{figuras/tabela-unreal.tex}
+
+A análise dos dados obtidos permitiu concluir que a melhor performance de taxa de quadros por segundo (39.67 FPS) ocorreu utilizando o modo de renderização direto com resolução de 75\%. Apesar de que esse modo adicionou aproximadamente 7 ms de tempo extra de renderização. Em compensação o uso máximo de mémoria foi reduzido em cerca de 12\%.
+
+Além disso o modo direto permitiu que a Unreal fosse capaz de renderizar mais triângulos (e consequentemente realizar mais chamadas de desenho) sem que houvesse uma perda extrema de performance.
+
 A aplicação de técnicas de otimização de performance na Unreal se mostra mais difícil por exigir um conhecimento da ferramenta de console da engine para aplicar comandos necessários para alterar aspectos que afetam a performance.
 
 Um detalhe importante para levar em consideração é que ao invés de fornecer alternativas embutidas na própria engine, ela recomenda e oferece soluções de terceiros para realizar benchmark e otimizações de gráficos. Além disso, a sua documentação, diferente da Unity, não aborda tantas opções de melhorias de performance em um clique. 
 
 Por isso ela é considerada um motor de jogo mais apropriado para usuários avançados, por entender que esses já possuem o conhecimento das técnicas necessárias para melhorar a performance e conseguem aplicá-las sem o auxilio de opções simples embutidas na engine.
 
-A Tabela \ref{qua:unreal} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+Por fim, é importante salientar que desempenho é um tópico onipresente na criação de jogos em tempo real. Para criar a ilusão de imagens em movimento, uma taxa de quadros de pelo menos 15 quadros por segundo é necessária. Dependendo da plataforma e do jogo, 30, 60 ou até mais quadros por segundo podem ser o alvo (EPIC GAMES, 2021).
 
-\input{figuras/tabela-unreal.tex}
+A Unreal Engine oferece muitos recursos e eles têm diferentes características de desempenho. A fim de otimizar o conteúdo ou código para atingir o desempenho necessário, é preciso ver onde o o desempenho é gasto. Cada caso é diferente e algum conhecimento sobre os componentes internos de hardware e software é necessário (EPIC GAMES, 2021). 
 
-TODO: DESCREVER OS RESULTADOS
 
 \section{Discussão dos resultados na Unity}
 \label{sec:resultado-unity}

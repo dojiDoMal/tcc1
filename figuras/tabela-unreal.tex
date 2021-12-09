@@ -1,21 +1,32 @@
 \begin{table}[h!]
-	\Caption{\label{qua:unreal} Contagem de elementos presentes na cena de teste}\UNIFORqua{}{
-	\begin{tabular}{|l|c|c|c|} \hline
-		            & Vértices  & Triângulos & Qtd.  \\ \hline
-		Casa        & 6901      & 4264       & 72    \\ \hline
-		Plano       & 4         & 2          & 144   \\ \hline
-		Árvores     & 794       & 368        & 288   \\ \hline
-		Cercas      & 7156      & 3632       & 360   \\ \hline
-		Cogumelos   & 2208      & 1056       & 360   \\ \hline
-		Rochas      & ---       & ---        & ---   \\ \hline
-		~Tipo 1     & 576       & 338        & 432   \\ \hline
-		~Tipo 2     & 554       & 338        & 144   \\ \hline
-		~Tipo 3     & 690       & 426        & 288   \\ \hline
-		~Tipo 4     & 512       & 280        & 216   \\ \hline  
-		~Tipo 5     & 120       & 62         & 72    \\ \hline
-		Água        & 8         & 12         & 4     \\ \hline
-		Soma        & 19523     & 10778      & 2380 \\ \hline
-		Total       & 46464740  & 25651640   & ---   \\ \hline
+	\Caption{\label{qua:unreal} Dados de \textit{profiling} de renderização na Unreal}\UNIFORqua{}{
+	\begin{tabular}{|l|c|c|c|c|} \hline
+		                    & \makecell{Valor médio \\ do maior gargalo \\ de renderização} & \makecell{Chamadas \\ de desenho} & \makecell{Uso máximo \\ de memória \\ de renderização} & \makecell{Triângulos \\ desenhados} \\ \hline
+		Configuração padrão & 17.01 ms   & 3654   & 408.26 MB & 870023 \\ \hline
+		Etapa 1 & & & & \\ \hline
+		~Sem projeção de sombra & 16.69 ms & 3654 & 408.26 MB & 870019 \\ \hline
+		Etapa 2 & & & & \\ \hline
+		~Sem redução de serrilhamento & 16.65 ms & 3654 & 408.01 MB & 870023 \\ \hline
+		~FXAA & 17.78 ms & 3654 & 393.68 MB & 870035 \\ \hline
+		~TAA & 16.77 ms & 3654 & 402.68 MB & 870023 \\ \hline
+		~MSAA & 17.19 ms & 3654 & 402.68 MB & 870023 \\ \hline
+		Etapa 3 & & & & \\ \hline
+		~Sem redução de serrilhamento & 24.59 ms & 5330 & 363.97 MB & 1190199 \\ \hline
+		~FXAA & 24.05 ms & 5330 & 363.97 MB & 1190235 \\ \hline
+		~TAA & 23.56 ms & 5330 & 369.31 MB & 1190223 \\ \hline
+		~MSAA & 23.59 ms & 5340 & 390.64 MB & 1193082 \\ \hline
+		Etapa 4 & & & & \\ \hline
+		~HZBO & 22.85 ms & 5330 & 361.59 MB & 1190235 \\ \hline
+		Etapa 5 & & & & \\ \hline
+		~Resolução 50\% & 22.73 ms & 5337 & 366.92 MB & 1191363 \\ \hline
+		~Resolução 75\% & 22.77 ms & 5334 & 361.59 MB & 1190779 \\ \hline
+		~Resolução 50\% & 22.42 ms & 5341 & 361.59 MB & 1192500 \\ \hline
+		~Qualidade média & 23.55 ms & 5341 & 383.01 MB & 1193025 \\ \hline
+		~Qualidade alta & 23.74 ms & 5468 & 389.02 MB & 1195871 \\ \hline
+		~Qualidade épica & 24.07 ms & 5473 & 399.02 MB & 1196494 \\ \hline
+		Etapa 6 & & & & \\ \hline
+		~Qualidade média (Materiais) & 23.84 ms & 5341 & 361.59 MB & 1192760 \\ \hline
+		~Qualidade alta (Materiais) & 23.02 ms & 5341 & 361.59 MB & 1192724 \\ \hline
 	\end{tabular} 
 	}{
 		\Fonte{Elaborado pelo Autor (2021)}

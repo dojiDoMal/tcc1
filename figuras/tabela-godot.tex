@@ -1,0 +1,16 @@
+\begin{table}[h!]
+	\Caption{\label{qua:godot} Dados de \textit{profiling} de renderização da Godot}\UNIFORqua{}{
+	\begin{tabular}{|l|c|c|c|c|} \hline
+		                         & FPS   & \makecell{Chamadas \\ de desenho} & \makecell{Vértices \\ desenhados} & \makecell{Uso de memória \\ de vídeo} \\ \hline
+		Configuração padrão      & 24    & 26143               & 11079162            & 338.7 MB                \\ \hline
+		Etapa 1                  &       &                     &                     &                         \\ \hline
+		~Uso de luz cozida (Low) & 26    & 26143               & 11079162            & 446.7 MB                \\ \hline
+		~Uso de luz cozida (Medium) & 24 & 26143               & 11079162            & 446.7 MB                \\ \hline
+		~Uso de luz cozida (High) & 25   & 26143               & 11079162            & 446.7 MB                \\ \hline
+		Etapa 2                  &       &                     &                     &                         \\ \hline
+		~Filtro desativado & 19    & 36437               & 15995958            & 338.7 MB                \\ \hline
+		~Filtro desativado (Sem sombras) & 28 & 26143 & 11079162 & 338.7 MB \\ \hline
+	\end{tabular} 
+	}{
+		\Fonte{Elaborado pelo Autor (2021)}}
+\end{table} 
