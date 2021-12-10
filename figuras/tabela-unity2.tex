@@ -1,0 +1,28 @@
+\begin{table}[h!]
+	\Caption{\label{qua:unity2} Dados de \textit{profiling} de renderização da Unity}\UNIFORqua{}{
+	\begin{tabular}{|l|c|c|c|} \hline
+		            & \makecell{Uso de VRAM \\ (MB)} & \makecell{Uso de \\ texturas} & \makecell{Renderização \\ de texturas} \\ \hline
+		Etapa 1 & & & \\ \hline
+		~Textura 1024x1024 & 39.1 --- 62.3 & 22.1 MB & 33.6 MB \\ \hline
+		~Textura 512x512 & 39.1 --- 48.8 & 8.6 MB & 33.6 MB \\ \hline
+		Etapa 2 & & & \\ \hline
+		~Sem Leitura e Escrita (Malha) & 52.5 --- 62.2 & 8.6 MB & 47.0 MB \\ \hline
+		~Compressão baixa (Malha) & 49.3 --- 59 & 8.6 MB & 43.8 MB \\ \hline
+		~Compressão média (Malha) & 62.2 --- 71.9 & 8.6 MB & 56.7 MB \\ \hline
+		~Compressão alta (Malha) & 59 --- 68.7 & 8.6 MB & 53.5 MB \\ \hline
+		Etapa 3 & & & \\ \hline
+		~Graphic Job ativado & 51.7 --- 61.3 & 8.6 MB & 46.2 MB \\ \hline
+		Etapa 4 & & & \\ \hline
+		~Névoa ativada & 51.6 --- 61.3 & 8.6 MB & 46.1 MB \\ \hline
+		~Culling ativado & 62.6 --- 72.3 & 8.6 MB & 57.1 MB \\ \hline
+		~Instanciação de GPU & 62.7 --- 72.3 & 8.6 MB & 57.2 MB \\ \hline
+		Etapa 5 & & & \\ \hline
+		~Cascata de sombra (0) & 51.6 --- 61.3 & 8.6 MB & 46.1 MB \\ \hline
+		~Cascata de sombra (2) & 47.6 --- 57.3 & 8.6 MB & 42.1 MB \\ \hline
+		Etapa 6 & & & \\ \hline
+		~Shaders \textit{mobile} & 55.1 --- 61 & 4.9 MB & 49.6 MB \\ \hline
+	\end{tabular} 
+	}{
+		\Fonte{Elaborado pelo Autor (2021)}
+	}
+\end{table} 

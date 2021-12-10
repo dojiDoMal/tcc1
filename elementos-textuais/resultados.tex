@@ -109,8 +109,24 @@ Há ainda uma etapa de definição do nível de cascatas de sombra. Basicamente,
 
 Outro processo descrito consiste em utilizar os shaders móveis otimizados embutidos na Unity; deve-se experimentar usá-los e ver se isso melhora o desempenho sem afetar a aparência do jogo. Esses shaders foram projetados para uso em plataformas móveis, mas são adequados para qualquer projeto. É perfeitamente normal usar shaders "móveis" em plataformas não móveis para aumentar o desempenho se eles fornecerem a fidelidade visual necessária para o projeto.
 
-A Tabela \ref{qua:unity} mostra os resultados obtidos para a aplicação de cada etapa de otmização.
+Devido a alta disponibilidade de dados de \textit{profiling} ofereceidos pela Unity, os dados foram divididos em mais de uma tabela para melhor visualização. A Tabela \ref{qua:unity} mostra os resultados obtidos para a aplicação de cada etapa de otmização para as estatísticas gráficas.
 
 \input{figuras/tabela-unity.tex}
 
-TODO: DESCREVER OS RESULTADOS
+Após análise dos dados acima fica bem claro que o uso da névoa foi a medida mais efetiva para melhorar a performance, chegando a marca de 56.7 FPS e um dos menores tempos de \textit{thread} de renderização. Isso também se deve ao fato de que o número de \textit{Batches} acaba sendo reduzido.
+
+\textit{Batching} é o nome do processo de criação de lotes --- grupos de objetos que são enviados como apenas um para a GPU. O Unity faz lotes estáticos e dinâmicos. Objetos estáticos que compartilham exatamente o mesmo material serão enviados como um único objeto (lote). Objetos dinâmicos que compartilham exatamente o mesmo material serão enviados como um único lote sob certas circunstâncias. Sem lote, cada objeto teria que ser enviado como seu próprio lote, criando uma grande sobrecarga de CPU.
+
+Outro ponto importante foi a utilização do nível 0 de cascata de sombra que também diminuiu bastante o tempo de \textit{thread} de renderização.
+
+Já a Tabela \ref{qua:unity2} contém os dados referentes à memória de renderização obtidos pelo \textit{profiler}. A ferramenta de \textit{profiling} dá informações detalhadas sobre o desempenho do jogo. Se o jogo apresentar baixa taxa de quadros ou alto uso de memória, essa ferramenta pode mostrar o que está causando esses problemas e ajudar a corrigi-los.
+
+A janela do \textit{Profiler}, mostra diferentes aspectos do desempenho do jogo. Por exemplo, uso de memória, quanto tempo de CPU está sendo usado para diferentes tarefas e com que frequência os cálculos físicos estão sendo realizados. É possível usar esses dados para ajudar a encontrar a causa dos problemas de desempenho e medir a eficácia de tentativas de correçãO (UNITY TECHNOLOGIES, 2021).
+
+É importante entender que há um pequeno custo de desempenho ao usar a janela do Profiler para registrar dados. Isso é comum a todas essas ferramentas; não é possível registrar e exibir dados detalhados como esses sem alguma sobrecarga. Embora seja improvável que isso faça uma diferença significativa na maneira como o jogo é executado (UNITY TECHNOLOGIES, 2021).
+
+\input{figuras/tabela-unity2.tex}
+
+Aqui é possível perceber que em termos de uso de memória, a redução da resolução das texturas ajudou a diminuir 60\% da carga de uso. Por outro lado, a porção de memória destinada a renderização apenas aumentou.
+
+Notou-se também que o melhor intervalo de uso de VRAM (\acrlong{VRAM}) ocorreu ao usar a menor resolução de textura (a baixa compressão de malha também gerou resultados interessantes). O uso dos shaders otimizados para dispositivos móveis embutidos na Unity ajudou a diminuir 3,7 MB de carga de uso de memória. O que no final das contas não fez uma diferença considerável.
