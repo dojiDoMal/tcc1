@@ -10,7 +10,7 @@ A cena de testes consiste em várias cópias de um conjunto de objetos, dentre e
 \section{Discussão dos resultados na Godot}
 \label{sec:resultado-godot}
 
-A cena de teste foi replicada na Godot engine preservando as caracterísiticas fundamentais de número de triângulos (vértices) e materiais (shaders). Obviamente, houve necessidade de adaptação nos shaders de musgo sobre rochas e no shader de água devido ao fato do motor de renderização da engine fazer uso de GLSL.
+A cena de teste foi replicada na Godot \textit{engine} preservando as caracterísiticas fundamentais de número de triângulos (vértices) e materiais (shaders). Obviamente, houve necessidade de adaptação nos \textit{shaders} de musgo sobre rochas e no \textit{shader} de água devido ao fato do motor de renderização da \textit{engine} fazer uso de GLSL.
 
 Aqui é interessante destacar que a Godot executa automaticamente o culling para evitar a renderização de objetos que estão fora da janela de exibição. Isso funciona bem para jogos que acontecem em uma pequena área, no entanto, isso pode rapidamente se tornar problemático para níveis maiores.
 
@@ -35,7 +35,7 @@ A etapa mais efetiva para ganho de desempenho acabou sendo o desativamento das s
 \section{Discussão dos resultados na Unreal}
 \label{sec:resultado-unreal}
 
-Na Unreal, um ponto positivo vai para a existência de materiais de ambiente (Grama, tijolos, pedras e até água) já prontos para serem utilizados, e inclusive com otimizações de performance como nível de detalhe e tesselação, dentro da pasta de conteúdo inicial do template de projeto padrão. Isso ajuda a reduzir bastante o trabalho dos desenvolvedores ao implementar shaders em seus jogos.
+Na Unreal, um ponto positivo vai para a existência de materiais de ambiente (Grama, tijolos, pedras e até água) já prontos para serem utilizados, e inclusive com otimizações de performance como nível de detalhe e tesselação, dentro da pasta de conteúdo inicial do template de projeto padrão. Isso ajuda a reduzir bastante o trabalho dos desenvolvedores ao implementar \textit{shaders} em seus jogos.
 
 A primeira recomendação na documentação da Unreal sugere desativar a projeção de sombra, que é uma opção que vem habilitada por padrão. As sombras fazem com que os objetos pareçam estar ancorados no mundo e dão ao observador uma sensação de profundidade e espaço. 
 
@@ -59,7 +59,7 @@ A análise dos dados obtidos permitiu concluir que a melhor performance de taxa 
 
 Além disso o modo direto permitiu que a Unreal fosse capaz de renderizar mais triângulos (e consequentemente realizar mais chamadas de desenho) sem que houvesse uma perda extrema de performance.
 
-A aplicação de técnicas de otimização de performance na Unreal se mostra mais difícil por exigir um conhecimento da ferramenta de console da engine para aplicar comandos necessários para alterar aspectos que afetam a performance.
+A aplicação de técnicas de otimização de performance na Unreal se mostra mais difícil por exigir um conhecimento da ferramenta de console da \textit{engine} para aplicar comandos necessários para alterar aspectos que afetam a performance.
 
 Um detalhe importante para levar em consideração é que ao invés de fornecer alternativas embutidas na própria engine, ela recomenda e oferece soluções de terceiros para realizar benchmark e otimizações de gráficos. Além disso, a sua documentação, diferente da Unity, não aborda tantas opções de melhorias de performance em um clique. 
 
@@ -67,7 +67,7 @@ Por isso ela é considerada um motor de jogo mais apropriado para usuários avan
 
 Por fim, é importante salientar que desempenho é um tópico onipresente na criação de jogos em tempo real. Para criar a ilusão de imagens em movimento, uma taxa de quadros de pelo menos 15 quadros por segundo é necessária. Dependendo da plataforma e do jogo, 30, 60 ou até mais quadros por segundo podem ser o alvo (EPIC GAMES, 2021).
 
-A Unreal Engine oferece muitos recursos e eles têm diferentes características de desempenho. A fim de otimizar o conteúdo ou código para atingir o desempenho necessário, é preciso ver onde o o desempenho é gasto. Cada caso é diferente e algum conhecimento sobre os componentes internos de hardware e software é necessário (EPIC GAMES, 2021). 
+A Unreal Engine oferece muitos recursos e eles têm diferentes características de desempenho. A fim de otimizar o conteúdo ou código para atingir o desempenho necessário, é preciso ver onde o o desempenho é gasto. Cada caso é diferente e algum conhecimento sobre os componentes internos de \textit{hardware} e \textit{software} é necessário (EPIC GAMES, 2021). 
 
 
 \section{Discussão dos resultados na Unity}
@@ -75,17 +75,17 @@ A Unreal Engine oferece muitos recursos e eles têm diferentes características 
 
 Na Unity foi criado um novo projeto com template 3D. Em seguida foram importados os modelos dos objetos para compor a cena. Ao importar os objetos foram removidas as importações de materiais e animações, pois estes não serão utilizados. A cena final é composta por uma câmera com posição fixa e contém aproximadamente 3 milhões e 300 mil triângulos (5 milhões e 500 mil vértices) resultando em 7211 \textit{batches} (chamadas de desenho).
 
-Para a criação dos materiais, foram utilizados os padrões da engine que consistem no shader de superfície padrão, exceto para a implementação de um shader de musgo que afeta as pedras e para o shader de água. Ambos foram escritos utilizando a linguagem \textit{ShaderLab} e constam nos Anexos \ref{an:codigo-fonte-musgo-unity} e \ref{an:codigo-fonte-agua-unity} respectivamente.
+Para a criação dos materiais, foram utilizados os padrões da \textit{engine} que consistem no \textit{shader} de superfície padrão, exceto para a implementação de um \textit{shader} de musgo que afeta as pedras e para o \textit{shader} de água. Ambos foram escritos utilizando a linguagem \textit{ShaderLab} e constam nos Anexos \ref{an:codigo-fonte-musgo-unity} e \ref{an:codigo-fonte-agua-unity} respectivamente.
 
 Por padrão, a Unity importa um rig genérico para modelos de não personagens. Isso faz com que um componente Animator seja adicionado se o modelo for instanciado no tempo de execução. Se o modelo não for animado por meio do sistema de animação, isso adiciona sobrecarga desnecessária ao sistema de animação, porque todos os animadores ativos devem ser marcados uma vez por quadro (UNITY TECHNOLOGIES, 2021)\nocite{unityTech2021}.
 
 Desativar o rig em modelos não animados para evitar esta adição automática de um componente Animator e possível adição inadvertida de animadores indesejados a uma cena é uma boa prática para objetos não animados e foi utilizada nessa cena (UNITY TECHNOLOGIES, 2021). 
 
-É importante ressaltar que ao criar um material na Unity ele já possui um shader padrão embutido, facilitando bastante a implementação de shaders básicos (como cores ou texturas). Ou seja, para implementar shaders simples não é necessário realizar nenhum tipo de programação.
+É importante ressaltar que ao criar um material na Unity ele já possui um \textit{shader} padrão embutido, facilitando bastante a implementação de \textit{shaders} básicos (como cores ou texturas). Ou seja, para implementar \textit{shaders} simples não é necessário realizar nenhum tipo de programação.
 
 Foram utilizadas as configurações pré-definidas da Unity (tamanho máximo de 2048x2048, compressão normal e algoritmo de redimensionamento Mitchell) para importação das texturas que compõem os materiais. A única mudança realizada foi a remoção do filtro bilinear.
 
-As etapas de otimização seguem as recomendações descritas na documentação da Unity para melhorias de performance. A cada etapa foram medidas as estatísticas fornecidas pela engine para comparar os procedimentos.
+As etapas de otimização seguem as recomendações descritas na documentação da Unity para melhorias de performance. A cada etapa foram medidas as estatísticas fornecidas pela \textit{engine} para comparar os procedimentos.
 
 A primeira etapa de otimização seguindo a recomendação da documentação da Unity consiste em utilizar tamanhos menores de textura. Para aplicações mobile, 2048x2048 ou 1024x1024 é um tamanho suficiente de atlas de textura, e 512x512 é um tamanho suficiente para texturas individuais aplicadas em modelos 3D. Em contrapartida isso pode gerar uma perda de qualidade visual.
 
@@ -107,7 +107,7 @@ Esse é um método útil para renderizar malhas idênticas e cada instância pod
 
 Há ainda uma etapa de definição do nível de cascatas de sombra. Basicamente, quanto mais cascatas forem utilizadas, menos as sombras são afetadas pelo \textit{aliasing} de perspectiva. Aumentar o número aumenta a sobrecarga de renderização. No entanto, essa sobrecarga ainda é menor do que seria no caso de um mapa de alta resolução em toda a sombra.
 
-Outro processo descrito consiste em utilizar os shaders móveis otimizados embutidos na Unity; deve-se experimentar usá-los e ver se isso melhora o desempenho sem afetar a aparência do jogo. Esses shaders foram projetados para uso em plataformas móveis, mas são adequados para qualquer projeto. É perfeitamente normal usar shaders "móveis" em plataformas não móveis para aumentar o desempenho se eles fornecerem a fidelidade visual necessária para o projeto.
+Outro processo descrito consiste em utilizar os \textit{shaders} móveis otimizados embutidos na Unity; deve-se experimentar usá-los e ver se isso melhora o desempenho sem afetar a aparência do jogo. Esses \textit{shaders} foram projetados para uso em plataformas móveis, mas são adequados para qualquer projeto. É perfeitamente normal usar \textit{shaders} "móveis" em plataformas não móveis para aumentar o desempenho se eles fornecerem a fidelidade visual necessária para o projeto.
 
 Devido a alta disponibilidade de dados de \textit{profiling} ofereceidos pela Unity, os dados foram divididos em mais de uma tabela para melhor visualização. A Tabela \ref{qua:unity} mostra os resultados obtidos para a aplicação de cada etapa de otmização para as estatísticas gráficas.
 
@@ -129,4 +129,12 @@ A janela do \textit{Profiler}, mostra diferentes aspectos do desempenho do jogo.
 
 Aqui é possível perceber que em termos de uso de memória, a redução da resolução das texturas ajudou a diminuir 60\% da carga de uso. Por outro lado, a porção de memória destinada a renderização apenas aumentou.
 
-Notou-se também que o melhor intervalo de uso de VRAM (\acrlong{VRAM}) ocorreu ao usar a menor resolução de textura (a baixa compressão de malha também gerou resultados interessantes). O uso dos shaders otimizados para dispositivos móveis embutidos na Unity ajudou a diminuir 3,7 MB de carga de uso de memória. O que no final das contas não fez uma diferença considerável.
+Notou-se também que o melhor intervalo de uso de VRAM (\acrlong{VRAM}) ocorreu ao usar a menor resolução de textura (a baixa compressão de malha também gerou resultados interessantes). O uso dos \textit{shaders} otimizados para dispositivos móveis embutidos na Unity ajudou a diminuir 3,7 MB de carga de uso de memória. O que no final das contas não fez uma diferença considerável.
+
+A Tabela \ref{qua:unity3} mostra os dados referentes ao \textit{profiling} de uso de memória e iluminação global.
+
+\input{figuras/tabela-unity3.tex}
+
+Pela análise dos dados obtidos percebe-se que o uso de \textit{Culling}, de \textit{Graphic Jobs} e a diminuição dos níveis de cascata de sombra são formas efetivas de diminuir o uso de memória de malha.
+
+O uso de \textit{shaders} de dispositivos móveis é uma boa prática para reduzir o uso de memória de material. Além disso o uso de instanciação e a diminuição dos níveis de cascata de sombra foram úteis para reduzir o tempo entre atualização de quadro.

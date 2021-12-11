@@ -1,9 +1,9 @@
-\anexo{Código-fonte do shader de contorno em GLSL}
+\anexo{Código-fonte do \textit{shader} de contorno em GLSL}
 \label{an:codigo-fonte-contorno-glsl}
 
 \input{figuras/listings-glsl.prf}
 
-\begin{lstlisting}[language=GLSL, caption={\label{cf:outline} Shader GLSL 3D simples para efeito de contorno}]
+\begin{lstlisting}[language=GLSL, caption={\label{cf:outline} \textit{Shader} GLSL 3D simples para efeito de contorno}]
 shader_type spatial;
 
 render_mode unshaded, cull_front, depth_draw_always; 
@@ -20,7 +20,7 @@ void vertex() {
 }
 
 void fragment() {
-    /* aplica a cor em cada pixel */
+    /* aplica a cor em cada \textit{pixel} */
 	ALBEDO = outline_color.rgb;
 	if(outline_color.a < 1.0) ALPHA = outline_color.a;
 }

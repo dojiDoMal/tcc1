@@ -1,0 +1,28 @@
+\begin{table}[h!]
+	\Caption{\label{qua:unity3} Dados de \textit{profiling} de memória e iluminação da Unity}\UNIFORqua{}{
+	\begin{tabular}{|l|c|c|c|c|} \hline
+		            & \makecell{Memória \\ de textura} & \makecell{Memória \\ de malha} & \makecell{Memória \\ de material} & \makecell{Tempo entre \\ \textit{Updates}} \\ \hline
+		Etapa 1 & & & & \\ \hline
+		~Textura 1024x1024 & 72 MB & 2.9 MB & 94 KB & 35.31 ms \\ \hline
+		~Textura 512x512 & 41.8 MB & 2.5 MB & 95 KB & 40.77 ms \\ \hline
+		Etapa 2 & & & & \\ \hline
+		~Sem Leitura e Escrita (Malha) & 41.5 MB & 2.8 MB & 96 KB & 41.07 ms \\ \hline
+		~Compressão baixa (Malha) & 41.5 MB & 2.4 MB & 96 KB & 40.45 ms \\ \hline
+		~Compressão média (Malha) & 41.5 MB & 2.6 MB & 96 KB & 37.19 ms \\ \hline
+		~Compressão alta (Malha) & 41.5 MB & 2.6 MB & 96 KB & 41.38 ms \\ \hline
+		Etapa 3 & & & & \\ \hline
+		~Graphic Job ativado & 48.7 MB & 2.1 MB & 97 KB & 36.56 ms \\ \hline
+		Etapa 4 & & & & \\ \hline
+		~Névoa ativada & 48.7 MB & 2.6 MB & 97 KB & 19.29 ms \\ \hline
+		~Culling ativado & 48.7 MB & 2.2 MB & 97 KB & 38.71 ms \\ \hline
+		~Instanciação de GPU & 48.7 MB & 2.8 MB & 99 KB & 9.88 ms \\ \hline
+		Etapa 5 & & & & \\ \hline
+		~Cascata de sombra (0) & 48.7 MB & 2.1 MB & 99 KB & 26.74 ms \\ \hline
+		~Cascata de sombra (2) & 48.7 MB & 2.9 MB & 99 KB & 9.79 ms \\ \hline
+		Etapa 6 & & & & \\ \hline
+		~Shaders \textit{mobile} & 48.7 MB & 2.7 MB & 90 KB & 38.83 ms \\ \hline
+	\end{tabular} 
+	}{
+		\Fonte{Elaborado pelo Autor (2021)}
+	}
+\end{table} 

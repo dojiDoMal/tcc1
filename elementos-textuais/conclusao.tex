@@ -1,24 +1,18 @@
-\chapter{Conclusões e Trabalhos Futuros}
-\label{chap:conclusoes-e-trabalhos-futuros}
+\chapter{Conclusão}
+\label{chap:conclusao}
 
-\lipsum[2]
-\lipsum[34]
+Tendo em vista os aspectos analisados nesse estudo, foi possível comparar as principais ferramentas de desenvolvimento de \textit{shaders} entre os motores de jogo Unity, Unreal e Godot com foco na otimização de performance em cada uma. 
 
-\section{Contribuições do Trabalho}
-\label{sec:contribuicoes-do-trabalho}
+Foi observado que a Unity mostrou-se como uma solução mais completa por oferecer, de maneira eficaz, ferramentas de análise de execução de \textit{shaders} e opções de otimização para o usuário. E também por disponibilizar \textit{shaders} otimizados para uso imediato. No final, mostrou-se como um motor de jogo mais amigável a novos usuários por conter uma documentação rica em detalhes e técnicas de otimização.
 
-\lipsum[3]
+A Unreal também ofereceu uma variedade de \textit{shaders} otimizados (apesar de não serem voltados para dispositivos móveis), porém suas ferramentas de análise de desempenho e opções de otimização deixaram a desejar quando comparadas as da Unity. Sua documentação mostrou-se voltada para usuários com conhecimento avançado em técnicas de otimização. 
 
-\section{Limitações}
-\label{sec:limitacoes}
+A Godot possui uma documentação muito boa, de leitura fácil, porém que peca por trazer exemplos muito generalizados de uso. Isso acabou por criar uma limitação de técnicas que poderiam ser aplicadas para otimizar os shaders. Além disso, os resultados obtidos com esse motor de jogo foram os piores dentre os três.
 
-\lipsum[4]
+Uma recomendação interessante, que foi além do escopo desse estudo, consiste em desativar os \textit{mipmaps} para objetos que não apresentam grande variação de profundidade no campo de visão da câmera (como texturas com tamanho fixo), para salvar cerca de um terço de memória de carregamento de textura. Por outro lado, caso haja variação é recomendado ativar o uso de \textit{mipmaps} para melhorar a performance.
 
-\section{Trabalhos Futuros}
-\label{sec:trabalhos-futuros}
+Cabe ressaltar que os objetos que compartilham configurações semelhantes podem ser combinados na mesma chamada de desenho através da criação de lotes. A CPU cria um pacote de dados para cada chamada. Às vezes, os lotes podem conter outros dados além das chamadas de desenho, mas é improvável que essas situações contribuam para problemas comuns de desempenho.
 
-\lipsum[5]
+A CPU coleta informações sobre cada objeto que será renderizado e classifica esses dados em comandos conhecidos como chamadas de desenho. Uma chamada de desenho contém dados sobre uma única malha e como essa malha deve ser renderizada (por exemplo, quais texturas devem ser usadas). 
 
-
-
-
+Outrossim, otimizar partes que não possuem relação com os gargalos é uma perda de tempo e provavelmente irá introduzir novos \textit{bugs} ou até mesmo regressões de desempenho em outros casos. A cada nova etapa de otimização, o ideal é utilizar a ferramenta de \textit{profiling} novamente, pois isso pode revelar um novo gargalo de desempenho que antes estava oculto.
