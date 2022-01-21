@@ -1,6 +1,6 @@
 # TCC I
 
-## Estudo comparativo de ferramentas de \textit{shaders} em diferentes \textit{game} \textit{engines}
+## Estudo comparativo de ferramentas de shaders em diferentes game engines
 
 Anderson Araujo Macedo <br />
 ENGENHARIA DE COMPUTAÇÃO <br />
